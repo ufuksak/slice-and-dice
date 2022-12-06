@@ -1,0 +1,15 @@
+# Ignore artifacts:
+build
+dist
+coverage
+src/types/schema.ts
+*.ejs
+*.md
+*.yml
+*.json
+*.yaml
+Makefile
+Dockerfile
+docker/*.Dockerfile
+docker/*.js
+charts

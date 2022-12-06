@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  description: API for Slice Dice Service.
+  version: 1.0.0
+  title: Slice Dice Base API
+
+tags:
+  - name: SliceDice
+    description: SliceDice related apis.
+
+paths:
+
+  /auth/login:
+    post:
+      tags:
+        - SliceDice
+      summary: Save The Slice Dice  Selections
+      operationId: postSaveRepo
+      requestBody:
+        description: 'save repo selections'
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UserEntity'
+      responses:
+        '201':
+          description: 'User has been successfully created'
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ 'id' ]
+                properties:
+                  id:
+                    type: string
+                    format: 'uuid'
+                  revision:
+                    type: string
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/logout:
+    post:
+      tags:
+        - SliceDice
+      summary: Logout the user
+      operationId: postLogout
+      requestBody:
+        description: 'logout'
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UserToken'
+      responses:
+        '201':
+          description: 'User has been successfully logged out'
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ 'id' ]
+                properties:
+                  id:
+                    type: string
+                    format: 'uuid'
+                  revision:
+                    type: string
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/update:
+    put:
+      tags:
+        - SliceDice
+      summary: update user
+      operationId: updateUser
+      requestBody:
+        description: 'update the user profile'
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UserEntity'
+      responses:
+        '201':
+          description: 'User has been successfully created'
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ 'id' ]
+                properties:
+                  id:
+                    type: string
+                    format: 'uuid'
+                  revision:
+                    type: string
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/statistics:
+    get:
+      tags:
+        - SliceDice
+      summary: Get The Salaries Details
+      operationId: getSalaries
+      parameters:
+        - in: query
+          name: 'contract'
+          description: 'contract type'
+          schema:
+            type: string
+        - in: query
+          name: 'department'
+          description: 'department group'
+          schema:
+            type: string
+        - in: query
+          name: 'subDepartment'
+          description: 'department group'
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of salaries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryResponse'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/users:
+    get:
+      tags:
+        - SliceDice
+      summary: Get The Users
+      operationId: getUsers
+      responses:
+        200:
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/register:
+    post:
+      tags:
+        - SliceDice
+      summary: Save The Slice Dice  Selections
+      operationId: postSaveRepo
+      requestBody:
+        description: 'save repo selections'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserList'
+      responses:
+        '201':
+          description: 'User has been successfully created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - SliceDice
+      summary: 'Delete The User By name'
+      operationId: 'deleteUserByName'
+      requestBody:
+        description: 'delete users'
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UserList'
+      responses:
+        '204':
+          description: 'User deleted'
+          headers:
+            ETag:
+              schema:
+                type: 'string'
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            code: 'error.resource.not-found'
+            message: 'Requested resource with ID: 3fa85f64-5717-4562-b3fc-2c963f66afa6 was not found'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            code: 'error.auth.unauthorized'
+            status: 401
+    RequestEntityTooLarge:
+      description: Request entity too large
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            status: 413
+    ExpectationFailed:
+      description: Expectation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            status: 417
+            message: The user has already created credit request
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            status: 500
+            message: Unexpected error while validating the request id
+    ServiceUnavailable:
+      description: Service not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            status: 503
+            message: Failed to connect to VAA service
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            statusCode: 'error.request.invalid'
+            message: 'Request contains invalid values or missing required properties'
+    Conflict:
+      description: Old Version received from Client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            code: error.data-source.client.old-version
+            message: ' client sends an update for old version of the document using If-Match header'
+    PreconditionFailed:
+      description: Precondition Failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            code: 'error.auth.github-access-token-expired'
+            status: 412
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserEntity'
+
+    UserEntity:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        salary:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        department:
+          type: string
+          nullable: true
+        on_contract:
+          type: string
+          nullable: true
+        sub_department:
+          type: string
+          nullable: true
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressItem'
+        privileges:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrivilegeItem'
+
+    AddressItem:
+      type: object
+      properties:
+        line1:
+          type: string
+        city:
+          type: string
+
+    PrivilegeItem:
+      type: object
+      properties:
+        entity:
+          type: string
+        read:
+          type: boolean
+        create:
+          type: boolean
+        update:
+          type: boolean
+        delete:
+          type: boolean
+        admin:
+          type: boolean
+
+    UserToken:
+      type: object
+      additionalProperties: false
+      properties:
+        refreshToken:
+          type: string
+
+    SalaryResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        department_name:
+          type: string
+        averageSalary:
+          type: number
+        minSalary:
+          type: number
+        maxSalary:
+          type: number
+
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A short, summary of the problem type. Written in english and readable for engineers.
+          example: Service Unavailable
+        code:
+          type: string
+          description: Error code. Can be used for translation.
+          example: error.resource.not-found
+
+        target:
+          type: string
+          description: The target of the error.
+
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+
+          description: List of failed swagger validations.
+          example: |
+            [
+              {
+                "target": ".body.name",
+                "message": "should match pattern \"^([a-zA-Z])([a-zA-Z]|\\d|\\ )*$\"",
+                "code": "pattern.openapi.validation"
+              },
+              {
+                "target": ".body.logo",
+                "message": "should match format \"uuid\"",
+                "code": "format.openapi.validation"
+              }
+            ]
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io

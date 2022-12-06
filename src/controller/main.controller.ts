@@ -1,0 +1,149 @@
+import { Request, RequestHandler, Response } from 'express';
+import httpStatus from 'http-status';
+import { forwardError } from '../forward-error';
+import { initLogger, Logger } from '../helpers/logger';
+import { AppDataSource } from '../orm';
+import { User } from '../orm/entity/user';
+import { deriveTokens, ITokens, verifyRefreshToken } from '../providers/encryption';
+import { MainServices } from '../services/main.services';
+import { userHasPrivilege } from '../orm/entity/privilege';
+import ApiError, { UserDuplicated } from '../helpers/APIError';
+
+class MainController {
+  public logger: Logger;
+
+  private service: MainServices;
+
+  constructor() {
+    this.logger = initLogger('GitRepoController');
+    this.service = new MainServices();
+  }
+
+  login = async (user: any, res: Response) => {
+    const { accessToken, refreshToken }: ITokens = deriveTokens(user);
+    res.status(httpStatus.CREATED).send({ accessToken, refreshToken });
+  };
+
+  logout = async (user: any, res: Response) => {
+    // delete refreshToken from redis
+    res.status(204).json({ message: 'goodbye!' });
+  };
+
+  postLogin: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.user as User;
+      await this.login(user, res);
+    } catch (e: any) {
+      console.error(e.message);
+      res.status(403).json({ error: e.message });
+    }
+  });
+
+  postLogout: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { refreshToken } = req.body;
+      // if there's no token, return 401
+      if (!refreshToken) {
+        res.status(401).send({ message: 'missing params' });
+      }
+      // verify signature
+      const verified: any = verifyRefreshToken(refreshToken);
+      const { user } = verified;
+      // logout user
+      await this.logout(user, res);
+    } catch (e: any) {
+      console.error(e.message);
+      res.status(403).send({ error: e.message });
+    }
+  });
+
+  postSaveUser: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { name, password } = req.body[0];
+      if (!name || !password) {
+        res.status(400).send({ message: 'invalid params' });
+      }
+      const userWithPrivileges = [];
+      for (const requestObject of req.body) {
+        userWithPrivileges.push(await this.service.postSaveUser(requestObject));
+      }
+      await this.login(userWithPrivileges[0], res);
+    } catch (e: any) {
+      if (e instanceof UserDuplicated) {
+        const apiErrorItem = e as UserDuplicated;
+        throw new ApiError(apiErrorItem.message, apiErrorItem);
+      } else {
+        console.error(e.message);
+        res.status(500).send({ error: e.message });
+      }
+    }
+  });
+
+  getUsers: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.user as User;
+      if (!userHasPrivilege(user, { entity: User.name, action: 'admin', value: true })) {
+        res.status(403).json({ message: 'You have no power here!' });
+      }
+      res.status(200).send(await this.service.getUsers());
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  getStatistics: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      let response;
+      if (req.query.contract) {
+        response = await this.service.getStatisticsByOnContract();
+      } else if (req.query.department) {
+        response = await this.service.getStatisticsByDepartment();
+      } else if (req.query.subDepartment) {
+        response = await this.service.getStatisticsByDepartmentAndSubDepartment();
+      } else {
+        response = await this.service.getStatistics();
+      }
+
+      res.status(200).json(response);
+    } catch (e: any) {
+      console.error(e.message);
+      res.status(500).send({ error: e.message });
+    }
+  });
+
+  updateUser: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.user as User;
+      const { displayName, firstName, lastName, bio, avatar, phone, country } = req.body;
+      const newData = {
+        displayName,
+        firstName,
+        lastName,
+        bio,
+        avatar,
+        phone,
+        country,
+      };
+      const repo = AppDataSource.getRepository(User);
+      await repo.update(user.id, newData);
+      const current = await repo.findOneBy({ id: user.id });
+      res.status(200).send({ profile: { ...current, password: null } });
+    } catch (e: any) {
+      console.error(e.message);
+      res.status(500).send({ error: e.message });
+    }
+  });
+
+  delete: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { name } = req.body;
+      const user = await this.service.deleteUser(name);
+      res.status(204).json({ user });
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+}
+
+export default new MainController();
