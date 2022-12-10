@@ -249,7 +249,332 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /ping:
+    get:
+      tags:
+        - Connection
+      summary: Check server connection.
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /time:
+    get:
+      tags:
+        - Connection
+      summary: Get server time.
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  serverTime:
+                    type: integer
+                    description: UNIX time
+                example:
+                  serverTime: 1642521843938
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /CentralSystem/ChargePointList:
+    get:
+      tags:
+        - CentralSystem
+      summary: Get a list of connected charging stations.
+      operationId: ChargePointList
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargePointListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /CentralSystem/TransactionList:
+    post:
+      tags:
+        - CentralSystem
+      summary: Transaction list.
+      operationId: TransactionList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionList'
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /CentralSystem/ReservationList:
+    post:
+      tags:
+        - CentralSystem
+      summary: Reservation list.
+      operationId: ReservationList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationList'
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /ChargePoint/{identity}/CancelReservation:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.1. Cancel Reservation
+      description: >
+        To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point.
+        If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status
+        ‘Accepted’. Otherwise it SHALL return ‘Rejected’.
+      operationId: CancelReservation
+      parameters:
+        - $ref: '#/components/parameters/Identity'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelReservation'
+      responses:
+        '200':
+          description: >
+            This indicates the success or failure of the cancelling of a reservation by Central System.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelReservationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /ChargePoint/{identity}/ChangeAvailability:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.2. Change Availability
+      description: >
+        Central System can request a Charge Point to change its availability. A Charge Point is considered available
+        (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not
+        allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point
+        to change its availability. The Central System can change the availability to available or unavailable.
+      operationId: ChangeAvailability
+      parameters:
+        - $ref: '#/components/parameters/Identity'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeAvailability'
+      responses:
+        '200':
+          description: >
+            This indicates whether the Charge Point is able to perform the availability change.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilityResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /ChargePoint/{identity}/RemoteStartTransaction:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.11. Remote Start Transaction
+      description: >
+        Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon
+        receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has
+        accepted the request and will attempt to start a transaction.
+      operationId: RemoteStartTransaction
+      parameters:
+        - $ref: '#/components/parameters/Identity'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteStartTransactionJson'
+      responses:
+        '200':
+          description: >
+            This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteStartTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /ChargePoint/{identity}/RemoteStopTransaction:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.12. Remote Stop Transaction
+      description: >
+        Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to
+        Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf
+        and a status indicating whether it has accepted the request and a transaction with the given transactionId is
+        ongoing and will be stopped.
+      operationId: RemoteStopTransaction
+      parameters:
+        - $ref: '#/components/parameters/Identity'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteStopTransaction'
+      responses:
+        '200':
+          description: >
+            This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteStopTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /ChargePoint/{identity}/SetChargingProfile:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.16. Set Charging Profile
+      description: >
+        A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
+          • At the start of a transaction to set the charging profile for the transaction;
+          • In a RemoteStartTransaction.req sent to a Charge Point
+          • During a transaction to change the active profile for the transaction;
+          • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
+      operationId: SetChargingProfile
+      parameters:
+        - $ref: '#/components/parameters/Identity'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetChargingProfile'
+      responses:
+        '200':
+          description: >
+            This contains the field definition of the SetChargingProfile.conf PDU sent by the Charge Point to the Central System in response to a SetChargingProfile.req PDU.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetChargingProfileResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
 components:
+  parameters:
+    Identity:
+      in: path
+      name: identity
+      description: Charge point identity
+      required: true
+      schema:
+        type: string
   responses:
     NotFound:
       description: The specified resource was not found
@@ -269,6 +594,14 @@ components:
           example:
             code: 'error.auth.unauthorized'
             status: 401
+
+    InternalError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+
     RequestEntityTooLarge:
       description: Request entity too large
       content:
@@ -443,6 +776,347 @@ components:
         maxSalary:
           type: number
 
+    ChargingSchedule:
+      type: object
+      required:
+        - chargingRateUnit
+        - chargingSchedulePeriod
+      properties:
+        duration:
+          type: integer
+          format: int32
+          description: >
+            Duration of the charging schedule in seconds.
+            If the duration is left empty, the last period will continue indefinitely or until end of the transaction in case startSchedule is absent.
+        startSchedule:
+          type: string
+          format: date-time
+        chargingRateUnit:
+          type: string
+          enum: [ W, A ]
+          description: The unit of measure Limit is expressed in.
+        chargingSchedulePeriod:
+          type: object
+          required:
+            - startPeriod
+            - limit
+          properties:
+            startPeriod:
+              type: integer
+              format: int32
+              description: Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
+            limit:
+              type: number
+              format: double
+              description: Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
+            numberPhases:
+              type: integer
+              format: int32
+              description: The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
+        minChargingRate:
+          type: number
+          format: double
+          description: >
+            Minimum charging rate supported by the electric vehicle. The unit of measure is defined by the chargingRateUnit.
+            This parameter is intended to be used by a local smart charging algorithm to optimize the power allocation for in the case a
+            charging process is inefficient at lower charging rates.
+
+    ChargingProfile:
+      type: object
+      required:
+        - chargingProfileId
+        - stackLevel
+        - chargingProfilePurpose
+        - chargingProfileKind
+        - chargingSchedule
+      properties:
+        chargingProfileId:
+          type: integer
+          format: int32
+          description: Unique identifier for this profile.
+        transactionId:
+          type: integer
+          format: int32
+          description: Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
+        stackLevel:
+          type: integer
+          format: int32
+          description: Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.
+        chargingProfilePurpose:
+          type: string
+          description: Defines the purpose of the schedule transferred by this message.
+          enum: [ ChargePointMaxProfile, TxDefaultProfile, TxProfile ]
+        chargingProfileKind:
+          type: string
+          enum: [ Absolute, Recurring, Relative ]
+          description: Indicates the kind of schedule.
+        recurrencyKind:
+          type: string
+          enum: [ Daily, Weekly ]
+          description: Indicates the start point of a recurrence.
+        validFrom:
+          type: string
+          format: date-time
+          description: Point in time at which the profile starts to be valid. If absent, the profile is valid as soon as it is received by the Charge Point.
+        validTo:
+          type: string
+          format: date-time
+          description: Point in time at which the profile stops to be valid. If absent, the profile is valid until it is replaced by another profile.
+        chargingSchedule:
+          $ref: '#/components/schemas/ChargingSchedule'
+
+    SetChargingProfile:
+      type: object
+      required:
+        - connectorId
+        - csChargingProfiles
+      properties:
+        connectorId:
+          type: integer
+          format: int32
+          description: >
+            The connector to which the charging profile applies. If connectorId = 0,the message contains an overall limit for the Charge Point.
+        csChargingProfiles:
+          $ref: '#/components/schemas/ChargingProfile'
+
+    SetChargingProfileResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          description: >
+            Returns whether the Charge Point has been able to process the message successfully.
+            This does not guarantee the schedule will be followed to the letter. There might be other constraints the Charge Point may need to take into account.
+          enum: [ Accepted, Rejected, NotSupported ]
+
+    ChargePointListResponse:
+      type: object
+      required:
+        - ChargePointList
+      properties:
+        ChargePointList:
+          type: array
+          items:
+            type: object
+            properties:
+              Identity:
+                type: string
+                description: Charge point identity.
+              Address:
+                type: string
+              Connection:
+                type: object
+                properties:
+                  Socket:
+                    type: integer
+                    format: int32
+                  IP:
+                    type: string
+                  Port:
+                    type: integer
+                    format: int32
+
+    RemoteStartTransactionJson:
+      type: object
+      required:
+        - idTag
+      properties:
+        connectorId:
+          type: integer
+          format: int32
+          description: >
+            Number of the connector on which to start the transaction. connectorId SHALL be > 0.
+        idTag:
+          type: string
+          description: The identifier that Charge Point must use to start a transaction.
+        chargingProfile:
+          $ref: '#/components/schemas/ChargingProfile'
+
+    RemoteStartTransactionResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          description: Status indicating whether Charge Point accepts the request to stop a transaction.
+          enum: [ Accepted, Rejected ]
+
+    RemoteStopTransaction:
+      type: object
+      required:
+        - transactionId
+      properties:
+        transactionId:
+          type: integer
+          format: int32
+          description: The identifier of the transaction which Charge Point is requested to stop.
+
+    RemoteStopTransactionResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          description: Status indicating whether Charge Point accepts the request to stop a transaction.
+          enum: [ Accepted, Rejected ]
+
+    TransactionList:
+      type: object
+      required:
+        - identity
+      properties:
+        identity:
+          type: string
+          description: Charge point identity.
+        dateFrom:
+          type: string
+          format: date-time
+        dateTo:
+          type: string
+          format: date-time
+
+    TransactionListResponse:
+      type: object
+      required:
+        - TransactionList
+      properties:
+        TransactionList:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+                description: Transaction ID.
+              idTag:
+                type: string
+                description: The identifier to which this authorization applies.
+              identity:
+                type: string
+              serialNumber:
+                type: string
+              connectorId:
+                type: integer
+                format: int32
+              meterStart:
+                type: number
+                format: double
+              meterStop:
+                type: number
+                format: double
+              value:
+                type: number
+                format: double
+              reservationId:
+                type: integer
+                format: int32
+              reason:
+                type: string
+              data:
+                type: object
+              dateStart:
+                type: string
+                format: date-time
+              dateStop:
+                type: string
+                format: date-time
+
+    ReservationList:
+      type: object
+      required:
+        - identity
+      properties:
+        identity:
+          type: string
+          description: Charge point identity.
+        dateFrom:
+          type: string
+          format: date-time
+        dateTo:
+          type: string
+          format: date-time
+
+    ReservationListResponse:
+      type: object
+      required:
+        - ReservationList
+      properties:
+        ReservationList:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+                description: Reservation ID.
+              idTag:
+                type: string
+                description: The identifier to which this authorization applies.
+              identity:
+                type: string
+              serialNumber:
+                type: string
+              connectorId:
+                type: integer
+                format: int32
+              expiryDate:
+                type: string
+                format: date-time
+              dateStart:
+                type: string
+                format: date-time
+              dateStop:
+                type: string
+                format: date-time
+
+    ChangeAvailability:
+      type: object
+      required:
+        - connectorId
+        - type
+      properties:
+        connectorId:
+          type: integer
+          format: int32
+          description: >
+            The id of the connector for which availability needs to change.
+            Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.
+        type:
+          type: string
+          enum: [ Inoperative, Operative ]
+          description: This contains the type of availability change that the Charge Point should perform.
+
+    AvailabilityResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ Accepted, Rejected, Scheduled ]
+
+    CancelReservation:
+      type: object
+      required:
+        - reservationId
+      properties:
+        reservationId:
+          type: integer
+          format: int32
+          description: Id of the reservation to cancel.
+    CancelReservationResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [ Accepted, Rejected ]
+
     ApiError:
       type: object
       properties:
@@ -478,7 +1152,34 @@ components:
                 "code": "format.openapi.validation"
               }
             ]
-
+    response:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+            message:
+              type: string
+    error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+            message:
+              type: string
   securitySchemes:
     cookieAuth:
       type: apiKey
