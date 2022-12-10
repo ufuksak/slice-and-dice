@@ -2,6 +2,7 @@ import { GLOBAL } from '../constants';
 import { initLogger, Logger } from '../helpers/logger';
 import { AppDataSource } from '../orm';
 import { Address } from '../orm/entity/address';
+import { ChargingProfile } from '../orm/entity/chargingProfile';
 import { Department } from '../orm/entity/department';
 import { Privilege } from '../orm/entity/privilege';
 import { Salary } from '../orm/entity/salary';
@@ -13,6 +14,7 @@ import { UserDuplicated } from '../helpers/APIError';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
+type ChargingProfileItem = components['schemas']['ChargingProfile'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -126,6 +128,10 @@ export class MainServices {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  public async setChargingProfile(chargingProfile: ChargingProfileItem) {
+    await AppDataSource.getRepository(ChargingProfile).save(chargingProfile);
   }
 
   public async getStatistics() {

@@ -249,7 +249,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /ping:
+  /auth/ping:
     get:
       tags:
         - Connection
@@ -268,7 +268,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /time:
+  /auth/time:
     get:
       tags:
         - Connection
@@ -279,13 +279,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  serverTime:
-                    type: integer
-                    description: UNIX time
-                example:
-                  serverTime: 1642521843938
+                $ref: '#/components/schemas/ServerTime'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -293,7 +287,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /CentralSystem/ChargePointList:
+  /auth/chargePointList:
     get:
       tags:
         - CentralSystem
@@ -317,7 +311,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /CentralSystem/TransactionList:
+  /auth/transactionList:
     post:
       tags:
         - CentralSystem
@@ -347,7 +341,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /CentralSystem/ReservationList:
+  /auth/reservationList:
     post:
       tags:
         - CentralSystem
@@ -377,18 +371,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/CancelReservation:
+  /auth/cancelReservation:
     post:
       tags:
         - ChargePoint
       summary: 5.1. Cancel Reservation
-      description: >
-        To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point.
-        If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status
-        ‘Accepted’. Otherwise it SHALL return ‘Rejected’.
       operationId: CancelReservation
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -414,19 +402,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/ChangeAvailability:
+  /auth/changeAvailability:
     post:
       tags:
         - ChargePoint
       summary: 5.2. Change Availability
-      description: >
-        Central System can request a Charge Point to change its availability. A Charge Point is considered available
-        (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not
-        allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point
-        to change its availability. The Central System can change the availability to available or unavailable.
       operationId: ChangeAvailability
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -452,18 +433,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/RemoteStartTransaction:
+  /auth/remoteStartTransaction:
     post:
       tags:
         - ChargePoint
       summary: 5.11. Remote Start Transaction
-      description: >
-        Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon
-        receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has
-        accepted the request and will attempt to start a transaction.
       operationId: RemoteStartTransaction
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -489,19 +464,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/RemoteStopTransaction:
+  /auth/remoteStopTransaction:
     post:
       tags:
         - ChargePoint
       summary: 5.12. Remote Stop Transaction
-      description: >
-        Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to
-        Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf
-        and a status indicating whether it has accepted the request and a transaction with the given transactionId is
-        ongoing and will be stopped.
       operationId: RemoteStopTransaction
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -527,20 +495,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/SetChargingProfile:
+  /auth/setChargingProfile:
     post:
       tags:
         - ChargePoint
       summary: 5.16. Set Charging Profile
-      description: >
-        A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
-          • At the start of a transaction to set the charging profile for the transaction;
-          • In a RemoteStartTransaction.req sent to a Charge Point
-          • During a transaction to change the active profile for the transaction;
-          • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
       operationId: SetChargingProfile
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -780,7 +740,6 @@ components:
       type: object
       required:
         - chargingRateUnit
-        - chargingSchedulePeriod
       properties:
         duration:
           type: integer
@@ -795,24 +754,18 @@ components:
           type: string
           enum: [ W, A ]
           description: The unit of measure Limit is expressed in.
-        chargingSchedulePeriod:
-          type: object
-          required:
-            - startPeriod
-            - limit
-          properties:
-            startPeriod:
-              type: integer
-              format: int32
-              description: Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
-            limit:
-              type: number
-              format: double
-              description: Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
-            numberPhases:
-              type: integer
-              format: int32
-              description: The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
+        startPeriod:
+          type: integer
+          format: int32
+          description: Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
+        limit:
+          type: number
+          format: double
+          description: Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
+        numberPhases:
+          type: integer
+          format: int32
+          description: The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
         minChargingRate:
           type: number
           format: double
@@ -1116,6 +1069,15 @@ components:
         status:
           type: string
           enum: [ Accepted, Rejected ]
+
+    ServerTime:
+      type: object
+      properties:
+        serverTime:
+          type: integer
+          description: UNIX time
+      example:
+        serverTime: 1642521843938
 
     ApiError:
       type: object

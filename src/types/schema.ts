@@ -23,7 +23,7 @@ export interface paths {
     post: operations["postSaveRepo"];
     delete: operations["deleteUserByName"];
   };
-  "/ping": {
+  "/auth/ping": {
     get: {
       responses: {
         /** Successfully. */
@@ -38,16 +38,13 @@ export interface paths {
       };
     };
   };
-  "/time": {
+  "/auth/time": {
     get: {
       responses: {
         /** Successfully. */
         200: {
           content: {
-            "application/json": {
-              /** @description UNIX time */
-              serverTime?: number;
-            };
+            "application/json": components["schemas"]["ServerTime"];
           };
         };
         400: components["responses"]["BadRequest"];
@@ -56,39 +53,28 @@ export interface paths {
       };
     };
   };
-  "/CentralSystem/ChargePointList": {
+  "/auth/chargePointList": {
     get: operations["ChargePointList"];
   };
-  "/CentralSystem/TransactionList": {
+  "/auth/transactionList": {
     post: operations["TransactionList"];
   };
-  "/CentralSystem/ReservationList": {
+  "/auth/reservationList": {
     post: operations["ReservationList"];
   };
-  "/ChargePoint/{identity}/CancelReservation": {
-    /** To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point. If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status ‘Accepted’. Otherwise it SHALL return ‘Rejected’. */
+  "/auth/cancelReservation": {
     post: operations["CancelReservation"];
   };
-  "/ChargePoint/{identity}/ChangeAvailability": {
-    /** Central System can request a Charge Point to change its availability. A Charge Point is considered available (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point to change its availability. The Central System can change the availability to available or unavailable. */
+  "/auth/changeAvailability": {
     post: operations["ChangeAvailability"];
   };
-  "/ChargePoint/{identity}/RemoteStartTransaction": {
-    /** Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has accepted the request and will attempt to start a transaction. */
+  "/auth/remoteStartTransaction": {
     post: operations["RemoteStartTransaction"];
   };
-  "/ChargePoint/{identity}/RemoteStopTransaction": {
-    /** Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf and a status indicating whether it has accepted the request and a transaction with the given transactionId is ongoing and will be stopped. */
+  "/auth/remoteStopTransaction": {
     post: operations["RemoteStopTransaction"];
   };
-  "/ChargePoint/{identity}/SetChargingProfile": {
-    /**
-     * A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
-     *   • At the start of a transaction to set the charging profile for the transaction;
-     *   • In a RemoteStartTransaction.req sent to a Charge Point
-     *   • During a transaction to change the active profile for the transaction;
-     *   • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
-     */
+  "/auth/setChargingProfile": {
     post: operations["SetChargingProfile"];
   };
 }
@@ -152,23 +138,21 @@ export interface components {
        * @enum {string}
        */
       chargingRateUnit: "W" | "A";
-      chargingSchedulePeriod: {
-        /**
-         * Format: int32
-         * @description Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
-         */
-        startPeriod: number;
-        /**
-         * Format: double
-         * @description Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
-         */
-        limit: number;
-        /**
-         * Format: int32
-         * @description The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
-         */
-        numberPhases?: number;
-      };
+      /**
+       * Format: int32
+       * @description Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
+       */
+      startPeriod?: number;
+      /**
+       * Format: double
+       * @description Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
+       */
+      limit?: number;
+      /**
+       * Format: int32
+       * @description The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
+       */
+      numberPhases?: number;
       /**
        * Format: double
        * @description Minimum charging rate supported by the electric vehicle. The unit of measure is defined by the chargingRateUnit. This parameter is intended to be used by a local smart charging algorithm to optimize the power allocation for in the case a charging process is inefficient at lower charging rates.
@@ -374,6 +358,15 @@ export interface components {
     CancelReservationResponse: {
       /** @enum {string} */
       status: "Accepted" | "Rejected";
+    };
+    /**
+     * @example {
+     *   "serverTime": 1642521843938
+     * }
+     */
+    ServerTime: {
+      /** @description UNIX time */
+      serverTime?: number;
     };
     ApiError: {
       /**
@@ -684,14 +677,7 @@ export interface operations {
       };
     };
   };
-  /** To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point. If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status ‘Accepted’. Otherwise it SHALL return ‘Rejected’. */
   CancelReservation: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This indicates the success or failure of the cancelling of a reservation by Central System. */
       200: {
@@ -711,14 +697,7 @@ export interface operations {
       };
     };
   };
-  /** Central System can request a Charge Point to change its availability. A Charge Point is considered available (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point to change its availability. The Central System can change the availability to available or unavailable. */
   ChangeAvailability: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This indicates whether the Charge Point is able to perform the availability change. */
       200: {
@@ -738,14 +717,7 @@ export interface operations {
       };
     };
   };
-  /** Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has accepted the request and will attempt to start a transaction. */
   RemoteStartTransaction: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System. */
       200: {
@@ -765,14 +737,7 @@ export interface operations {
       };
     };
   };
-  /** Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf and a status indicating whether it has accepted the request and a transaction with the given transactionId is ongoing and will be stopped. */
   RemoteStopTransaction: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU. */
       200: {
@@ -792,20 +757,7 @@ export interface operations {
       };
     };
   };
-  /**
-   * A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
-   *   • At the start of a transaction to set the charging profile for the transaction;
-   *   • In a RemoteStartTransaction.req sent to a Charge Point
-   *   • During a transaction to change the active profile for the transaction;
-   *   • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
-   */
   SetChargingProfile: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This contains the field definition of the SetChargingProfile.conf PDU sent by the Charge Point to the Central System in response to a SetChargingProfile.req PDU. */
       200: {

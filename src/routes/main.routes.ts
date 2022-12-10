@@ -13,6 +13,13 @@ class GitRepoRouter {
     this.router.put('/update', Auth.authenticate('jwt', { session: false }), MainController.updateUser);
     this.router.get('/statistics', MainController.getStatistics);
     this.router.get('/users', Auth.authenticate('jwt', { session: false }), MainController.getUsers);
+    this.router.get('/ping', Auth.authenticate('jwt', { session: false }), MainController.ping);
+    this.router.get('/time', Auth.authenticate('jwt', { session: false }), MainController.getTime);
+    this.router.post(
+      '/setChargingProfile',
+      Auth.authenticate('jwt', { session: false }),
+      MainController.setChargingProfile,
+    );
   }
 
   getRouter() {

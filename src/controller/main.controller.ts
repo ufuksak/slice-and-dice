@@ -8,6 +8,12 @@ import { deriveTokens, ITokens, verifyRefreshToken } from '../providers/encrypti
 import { MainServices } from '../services/main.services';
 import { userHasPrivilege } from '../orm/entity/privilege';
 import ApiError, { UserDuplicated } from '../helpers/APIError';
+import { components } from '../types/schema';
+
+type GeneralResponse = components['schemas']['response'];
+type ServerTimeResponse = components['schemas']['ServerTime'];
+type SetChargingProfile = components['schemas']['SetChargingProfile'];
+type SetChargingProfileResponse = components['schemas']['SetChargingProfileResponse'];
 
 class MainController {
   public logger: Logger;
@@ -139,6 +145,45 @@ class MainController {
       const { name } = req.body;
       const user = await this.service.deleteUser(name);
       res.status(204).json({ user });
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  ping: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const response: GeneralResponse = {
+        code: 200,
+        message: 'the server is up',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  getTime: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const response: ServerTimeResponse = {
+        serverTime: Date.now(),
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  setChargingProfile: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: SetChargingProfile = req.body;
+      await this.service.setChargingProfile(payload.csChargingProfiles);
+      const response: SetChargingProfileResponse = {
+        status: 'Accepted',
+      };
+      res.status(200).json(response);
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);

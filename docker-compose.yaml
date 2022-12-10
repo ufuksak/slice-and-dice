@@ -13,6 +13,52 @@ services:
     ports:
       - '6378:6379'
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    volumes:
+      - /var/lib/rabbitmq
+    command: [
+        "bash", "-c",
+        "rabbitmq-plugins enable rabbitmq_consistent_hash_exchange; docker-entrypoint.sh rabbitmq-server"
+    ]
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack-light:0.14.0
+    ports:
+      - 4566:4566
+      - 4571:4571
+    environment:
+      HOSTNAME_EXTERNAL: localstack
+      SERVICES: "sns,sqs,s3"
+
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8087:80'
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: test
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    command: --sql_mode=NO_ENGINE_SUBSTITUTION
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: charging
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+
   api:
     build:
       context: ../slice-and-dice
