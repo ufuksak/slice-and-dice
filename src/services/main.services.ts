@@ -5,20 +5,24 @@ import { Address } from '../orm/entity/address';
 import { ChargingProfile } from '../orm/entity/chargingProfile';
 import { Department } from '../orm/entity/department';
 import { Privilege } from '../orm/entity/privilege';
+import { Rate } from '../orm/entity/rate';
 import { Salary } from '../orm/entity/salary';
 import { SubDepartment } from '../orm/entity/subdepartment';
 import { User } from '../orm/entity/user';
 import { TestDataSource } from '../test/test.datasource';
 import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
+import { DataSource } from 'typeorm';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
 type ChargingProfileItem = components['schemas']['ChargingProfile'];
+type RateObject = components['schemas']['RateObject'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
 };
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 interface payloadType {
   name: string;
@@ -31,10 +35,11 @@ interface payloadType {
   sub_department: string;
   on_contract: boolean;
 }
+
 export class MainServices {
   public logger: Logger;
 
-  private dbSource;
+  private dbSource: DataSource;
 
   constructor() {
     this.logger = initLogger(this.constructor.name);
@@ -132,6 +137,10 @@ export class MainServices {
 
   public async setChargingProfile(chargingProfile: ChargingProfileItem) {
     await AppDataSource.getRepository(ChargingProfile).save(chargingProfile);
+  }
+
+  public async setRate(rateObject: RateObject) {
+    await AppDataSource.getRepository(Rate).save(rateObject);
   }
 
   public async getStatistics() {

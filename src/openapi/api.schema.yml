@@ -526,6 +526,37 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
+  /auth/setRate:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.16. Set Rate Object
+      operationId: SetRateObject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateObject'
+      responses:
+        '200':
+          description: >
+            This contains the Rate Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
 components:
   parameters:
     Identity:
@@ -870,6 +901,25 @@ components:
                   Port:
                     type: integer
                     format: int32
+    PriceComponent:
+      type: array
+      items:
+        type: object
+        properties:
+          tax:
+            type: number
+          type:
+            type: string
+          price:
+            type: number
+
+    RateObject:
+      type: object
+      properties:
+        currency:
+          type: string
+        price_components:
+          $ref: '#/components/schemas/PriceComponent'
 
     RemoteStartTransactionJson:
       type: object
@@ -1061,6 +1111,7 @@ components:
           type: integer
           format: int32
           description: Id of the reservation to cancel.
+
     CancelReservationResponse:
       type: object
       required:

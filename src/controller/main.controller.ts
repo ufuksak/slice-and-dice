@@ -14,6 +14,8 @@ type GeneralResponse = components['schemas']['response'];
 type ServerTimeResponse = components['schemas']['ServerTime'];
 type SetChargingProfile = components['schemas']['SetChargingProfile'];
 type SetChargingProfileResponse = components['schemas']['SetChargingProfileResponse'];
+type RateObject = components['schemas']['RateObject'];
+type ResponseItem = components['schemas']['response'];
 
 class MainController {
   public logger: Logger;
@@ -182,6 +184,21 @@ class MainController {
       await this.service.setChargingProfile(payload.csChargingProfiles);
       const response: SetChargingProfileResponse = {
         status: 'Accepted',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  setRate: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: RateObject = req.body;
+      await this.service.setRate(payload);
+      const response: ResponseItem = {
+        code: 200,
+        message: 'Rate Object Created',
       };
       res.status(200).json(response);
     } catch (e: any) {
