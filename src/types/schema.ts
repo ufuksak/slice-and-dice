@@ -80,6 +80,9 @@ export interface paths {
   "/auth/setRate": {
     post: operations["SetRateObject"];
   };
+  "/auth/setConnector": {
+    post: operations["SetConnector"];
+  };
 }
 
 export interface components {
@@ -240,12 +243,23 @@ export interface components {
     };
     PriceComponent: {
       tax?: number;
+      step_size?: number;
       type?: string;
       price?: number;
     }[];
     RateObject: {
       currency?: string;
       price_components?: components["schemas"]["PriceComponent"];
+    };
+    Connector: {
+      active?: boolean;
+      status?: string;
+      type?: string;
+      format?: string;
+      power_type?: string;
+      power?: number;
+      chargestation?: string;
+      rate?: components["schemas"]["RateObject"];
     };
     RemoteStartTransactionJson: {
       /**
@@ -790,6 +804,26 @@ export interface operations {
     };
   };
   SetRateObject: {
+    responses: {
+      /** This contains the Rate Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RateObject"];
+      };
+    };
+  };
+  SetConnector: {
     responses: {
       /** This contains the Rate Object details */
       200: {

@@ -557,6 +557,36 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
+  /auth/setConnector:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.17. Set Connector Object
+      operationId: SetConnector
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateObject'
+      responses:
+        '200':
+          description: >
+            This contains the Rate Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
 components:
   parameters:
     Identity:
@@ -908,6 +938,8 @@ components:
         properties:
           tax:
             type: number
+          step_size:
+            type: number
           type:
             type: string
           price:
@@ -920,6 +952,26 @@ components:
           type: string
         price_components:
           $ref: '#/components/schemas/PriceComponent'
+
+    Connector:
+      type: object
+      properties:
+        active:
+          type: boolean
+        status:
+          type: string
+        type:
+          type: string
+        format:
+          type: string
+        power_type:
+          type: string
+        power:
+          type: number
+        chargestation:
+          type: string
+        rate:
+          $ref: '#/components/schemas/RateObject'
 
     RemoteStartTransactionJson:
       type: object

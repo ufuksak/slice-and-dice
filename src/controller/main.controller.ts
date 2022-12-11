@@ -15,6 +15,7 @@ type ServerTimeResponse = components['schemas']['ServerTime'];
 type SetChargingProfile = components['schemas']['SetChargingProfile'];
 type SetChargingProfileResponse = components['schemas']['SetChargingProfileResponse'];
 type RateObject = components['schemas']['RateObject'];
+type ConnectorItem = components['schemas']['Connector'];
 type ResponseItem = components['schemas']['response'];
 
 class MainController {
@@ -199,6 +200,21 @@ class MainController {
       const response: ResponseItem = {
         code: 200,
         message: 'Rate Object Created',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  setConnector: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: ConnectorItem = req.body;
+      await this.service.setConnector(payload);
+      const response: ResponseItem = {
+        code: 200,
+        message: 'Connector Object Created',
       };
       res.status(200).json(response);
     } catch (e: any) {

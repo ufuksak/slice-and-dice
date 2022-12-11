@@ -2,7 +2,6 @@
 import { Entity, Column, OneToOne } from 'typeorm';
 import { BaseEntity } from './base';
 import { ChargingSchedule } from './chargingSchedule';
-import { User } from './user';
 
 export interface IChargingProfile {
   transactionId?: number;

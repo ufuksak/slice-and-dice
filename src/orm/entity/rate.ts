@@ -1,11 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 import { BaseEntity } from './base';
+import { Connector } from './connector';
 import { PriceComponent } from './priceComponent';
 
 export interface IChargingProfile {
   currency?: string;
   price_components?: PriceComponent[];
+  connector: Connector;
 }
 
 @Entity('rate')
@@ -18,4 +20,7 @@ export class Rate extends BaseEntity implements IChargingProfile {
 
   @OneToMany(() => PriceComponent, (priceComponents) => priceComponents.rate, { cascade: true })
   price_components?: PriceComponent[];
+
+  @OneToOne(() => Connector, (connector) => connector.rate)
+  connector: Connector;
 }

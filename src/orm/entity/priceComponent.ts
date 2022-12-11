@@ -5,6 +5,7 @@ import { Rate } from './rate';
 
 export interface IPriceComponent {
   tax?: number;
+  step_size?: number;
   type?: string;
   price?: number;
   grace_period?: number;
@@ -18,6 +19,11 @@ export class PriceComponent extends BaseEntity implements IPriceComponent {
     nullable: true,
   })
   tax?: number;
+
+  @Column({
+    nullable: true,
+  })
+  step_size?: number;
 
   @Column({
     nullable: true,

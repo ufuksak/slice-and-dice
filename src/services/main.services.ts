@@ -3,6 +3,7 @@ import { initLogger, Logger } from '../helpers/logger';
 import { AppDataSource } from '../orm';
 import { Address } from '../orm/entity/address';
 import { ChargingProfile } from '../orm/entity/chargingProfile';
+import { Connector } from '../orm/entity/connector'
 import { Department } from '../orm/entity/department';
 import { Privilege } from '../orm/entity/privilege';
 import { Rate } from '../orm/entity/rate';
@@ -18,6 +19,7 @@ type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
 type ChargingProfileItem = components['schemas']['ChargingProfile'];
 type RateObject = components['schemas']['RateObject'];
+type ConnectorItem = components['schemas']['Connector'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -141,6 +143,13 @@ export class MainServices {
 
   public async setRate(rateObject: RateObject) {
     await AppDataSource.getRepository(Rate).save(rateObject);
+  }
+
+  public async setConnector(connector: ConnectorItem) {
+    let rateObject: Rate = connector.rate as Rate;
+    await AppDataSource.getRepository(Rate).save(rateObject);
+    connector.rate = rateObject;
+    await AppDataSource.getRepository(Connector).save(connector);
   }
 
   public async getStatistics() {

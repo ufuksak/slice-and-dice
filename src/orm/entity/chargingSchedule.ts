@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Entity, Column, ManyToOne, OneToOne } from 'typeorm'
+import { Entity, Column, OneToOne } from 'typeorm';
 import { BaseEntity } from './base';
-import { ChargingProfile } from './chargingProfile'
+import { ChargingProfile } from './chargingProfile';
 
 export interface IChargingSchedule {
   duration: number;
