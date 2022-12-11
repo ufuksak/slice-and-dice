@@ -2,8 +2,9 @@ import { GLOBAL } from '../constants';
 import { initLogger, Logger } from '../helpers/logger';
 import { AppDataSource } from '../orm';
 import { Address } from '../orm/entity/address';
+import { Chargestation } from '../orm/entity/chargestation';
 import { ChargingProfile } from '../orm/entity/chargingProfile';
-import { Connector } from '../orm/entity/connector'
+import { Connector } from '../orm/entity/connector';
 import { Department } from '../orm/entity/department';
 import { Privilege } from '../orm/entity/privilege';
 import { Rate } from '../orm/entity/rate';
@@ -20,6 +21,7 @@ type AddressItem = components['schemas']['AddressItem'];
 type ChargingProfileItem = components['schemas']['ChargingProfile'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
+type ChargestationItem = components['schemas']['Chargestation'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -150,6 +152,17 @@ export class MainServices {
     await AppDataSource.getRepository(Rate).save(rateObject);
     connector.rate = rateObject;
     await AppDataSource.getRepository(Connector).save(connector);
+  }
+
+  public async setChargestation(chargestationItem: ChargestationItem) {
+    let chargestationObject: Chargestation = chargestationItem as Chargestation;
+    chargestationObject.connectors.forEach((connector) => {
+      let rateObject: Rate = connector.rate as Rate;
+      AppDataSource.getRepository(Rate).save(rateObject);
+      connector.rate = rateObject;
+      AppDataSource.getRepository(Connector).save(connector);
+    });
+    await AppDataSource.getRepository(Chargestation).save(chargestationObject);
   }
 
   public async getStatistics() {

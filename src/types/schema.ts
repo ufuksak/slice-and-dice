@@ -83,6 +83,9 @@ export interface paths {
   "/auth/setConnector": {
     post: operations["SetConnector"];
   };
+  "/auth/setChargestation": {
+    post: operations["SetChargestation"];
+  };
 }
 
 export interface components {
@@ -260,6 +263,37 @@ export interface components {
       power?: number;
       chargestation?: string;
       rate?: components["schemas"]["RateObject"];
+    };
+    BootInfo: {
+      chargeBoxSerialNumber?: string;
+      chargePointModel?: string;
+      chargePointSerialNumber?: string;
+      chargePointVendor?: string;
+      firmwareVersion?: string;
+      iccid?: string;
+      imsi?: string;
+    };
+    Chargestation: {
+      location?: string;
+      protocol?: string;
+      endpoint?: string;
+      static_endpoint?: string;
+      online?: boolean;
+      active?: boolean;
+      public?: boolean;
+      model?: string;
+      bootInfo?: components["schemas"]["BootInfo"];
+      /**
+       * @example [
+       *   4.865672799999999,
+       *   52.3310936
+       * ]
+       */
+      coordinates?: number[];
+      connectors?: components["schemas"]["Connector"][];
+      lastConnectAt?: string;
+      lastDisconnectAt?: string;
+      lastMessageAt?: string;
     };
     RemoteStartTransactionJson: {
       /**
@@ -825,7 +859,7 @@ export interface operations {
   };
   SetConnector: {
     responses: {
-      /** This contains the Rate Object details */
+      /** This contains the Connector Object details */
       200: {
         content: {
           "application/json": components["schemas"]["response"];
@@ -840,6 +874,26 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["RateObject"];
+      };
+    };
+  };
+  SetChargestation: {
+    responses: {
+      /** This contains the Chargestation Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Chargestation"];
       };
     };
   };

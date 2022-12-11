@@ -16,6 +16,7 @@ type SetChargingProfile = components['schemas']['SetChargingProfile'];
 type SetChargingProfileResponse = components['schemas']['SetChargingProfileResponse'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
+type ChargestationItem = components['schemas']['Chargestation'];
 type ResponseItem = components['schemas']['response'];
 
 class MainController {
@@ -215,6 +216,21 @@ class MainController {
       const response: ResponseItem = {
         code: 200,
         message: 'Connector Object Created',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  setChargestation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: ChargestationItem = req.body;
+      await this.service.setChargestation(payload);
+      const response: ResponseItem = {
+        code: 200,
+        message: 'Chargestation Object Created',
       };
       res.status(200).json(response);
     } catch (e: any) {

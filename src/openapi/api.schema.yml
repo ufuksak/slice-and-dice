@@ -572,7 +572,7 @@ paths:
       responses:
         '200':
           description: >
-            This contains the Rate Object details
+            This contains the Connector Object details
           content:
             application/json:
               schema:
@@ -587,6 +587,38 @@ paths:
           $ref: '#/components/responses/NotFound'
         '5XX':
           $ref: '#/components/responses/InternalError'
+
+  /auth/setChargestation:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.18. Set Chargestation Object
+      operationId: SetChargestation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chargestation'
+      responses:
+        '200':
+          description: >
+            This contains the Chargestation Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
 components:
   parameters:
     Identity:
@@ -972,6 +1004,62 @@ components:
           type: string
         rate:
           $ref: '#/components/schemas/RateObject'
+
+    BootInfo:
+      type: object
+      properties:
+        chargeBoxSerialNumber:
+          type: string
+        chargePointModel:
+          type: string
+        chargePointSerialNumber:
+          type: string
+        chargePointVendor:
+          type: string
+        firmwareVersion:
+          type: string
+        iccid:
+          type: string
+        imsi:
+          type: string
+
+    Chargestation:
+      type: object
+      properties:
+        location:
+          type: string
+        protocol:
+          type: string
+        endpoint:
+          type: string
+        static_endpoint:
+          type: string
+        online:
+          type: boolean
+        active:
+          type: boolean
+        public:
+          type: boolean
+        model:
+          type: string
+        bootInfo:
+          $ref: '#/components/schemas/BootInfo'
+        coordinates:
+          type: array
+          items:
+            type: number
+          example: [4.865672799999999,
+                    52.3310936]
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+        lastConnectAt:
+          type: string
+        lastDisconnectAt:
+          type: string
+        lastMessageAt:
+          type: string
 
     RemoteStartTransactionJson:
       type: object
