@@ -156,13 +156,14 @@ export class MainServices {
 
   public async setChargestation(chargestationItem: ChargestationItem) {
     let chargestationObject: Chargestation = chargestationItem as Chargestation;
+    await AppDataSource.getRepository(Chargestation).save(chargestationObject);
     chargestationObject.connectors.forEach((connector) => {
       let rateObject: Rate = connector.rate as Rate;
       AppDataSource.getRepository(Rate).save(rateObject);
       connector.rate = rateObject;
+      connector.chargestationObject = chargestationObject;
       AppDataSource.getRepository(Connector).save(connector);
     });
-    await AppDataSource.getRepository(Chargestation).save(chargestationObject);
   }
 
   public async getStatistics() {
