@@ -11,6 +11,7 @@ export interface IBootInfo {
   firmwareVersion?: string;
   iccid?: string;
   imsi?: string;
+  chargestation: Chargestation;
 }
 
 @Entity('boot_info')

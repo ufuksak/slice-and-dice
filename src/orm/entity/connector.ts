@@ -12,8 +12,8 @@ export interface IConnector {
   power_type: string;
   power?: number;
   chargestation?: string;
-  chargestationObject: Chargestation;
   rate: Rate;
+  chargestationObject: Chargestation;
 }
 
 @Entity('connector')

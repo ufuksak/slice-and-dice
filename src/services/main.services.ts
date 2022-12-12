@@ -15,6 +15,7 @@ import { TestDataSource } from '../test/test.datasource';
 import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
 import { DataSource } from 'typeorm';
+import { BootInfo } from '../orm/entity/bootInfo';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
@@ -157,6 +158,9 @@ export class MainServices {
   public async setChargestation(chargestationItem: ChargestationItem) {
     let chargestationObject: Chargestation = chargestationItem as Chargestation;
     await AppDataSource.getRepository(Chargestation).save(chargestationObject);
+    const bootInfo = chargestationObject.bootInfo;
+    bootInfo.chargestation = chargestationObject;
+    await AppDataSource.getRepository(BootInfo).save(bootInfo);
     chargestationObject.connectors.forEach((connector) => {
       let rateObject: Rate = connector.rate as Rate;
       AppDataSource.getRepository(Rate).save(rateObject);
