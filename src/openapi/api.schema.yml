@@ -287,30 +287,6 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /auth/chargePointList:
-    get:
-      tags:
-        - CentralSystem
-      summary: Get a list of connected charging stations.
-      operationId: ChargePointList
-      responses:
-        '200':
-          description: Successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChargePointListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '5XX':
-          $ref: '#/components/responses/InternalError'
-
   /auth/transactionList:
     post:
       tags:
@@ -588,26 +564,65 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /auth/setChargestation:
+  /auth/chargeStation:
     post:
       tags:
         - ChargePoint
-      summary: 5.18. Set Chargestation Object
-      operationId: SetChargestation
+      summary: 5.18. Set Charge Station Object
+      operationId: SetChargeStation
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Chargestation'
+              $ref: '#/components/schemas/ChargeStation'
       responses:
         '200':
           description: >
-            This contains the Chargestation Object details
+            This contains the ChargeStation Object details
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+    get:
+      tags:
+        - ChargePoint
+      summary: Get a list of connected charging stations.
+      operationId: ChargePointList
+      parameters:
+        - in: query
+          name: location
+          description: 'location'
+          schema:
+            type: string
+        - in: query
+          name: model
+          description: 'model'
+          schema:
+            type: string
+        - in: query
+          name: active
+          description: 'active'
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargePointListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -1023,7 +1038,7 @@ components:
         imsi:
           type: string
 
-    Chargestation:
+    ChargeStation:
       type: object
       properties:
         location:

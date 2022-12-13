@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Entity, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base';
-import { Chargestation } from './chargestation';
+import { ChargeStation } from './chargeStation';
 import { Rate } from './rate';
 
 export interface IConnector {
@@ -13,7 +13,7 @@ export interface IConnector {
   power?: number;
   chargestation?: string;
   rate: Rate;
-  chargestationObject: Chargestation;
+  chargestationObject: ChargeStation;
 }
 
 @Entity('connector')
@@ -60,6 +60,6 @@ export class Connector extends BaseEntity implements IConnector {
   @OneToOne(() => Rate, (rate) => rate.connector)
   rate: Rate;
 
-  @ManyToOne(() => Chargestation, (chargestation) => chargestation.connectors)
-  chargestationObject: Chargestation;
+  @ManyToOne(() => ChargeStation, (chargestation) => chargestation.connectors)
+  chargestationObject: ChargeStation;
 }

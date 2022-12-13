@@ -8,7 +8,7 @@ import { deriveTokens, ITokens, verifyRefreshToken } from '../providers/encrypti
 import { MainServices } from '../services/main.services';
 import { userHasPrivilege } from '../orm/entity/privilege';
 import ApiError, { UserDuplicated } from '../helpers/APIError';
-import { components } from '../types/schema';
+import { components, operations } from '../types/schema';
 
 type GeneralResponse = components['schemas']['response'];
 type ServerTimeResponse = components['schemas']['ServerTime'];
@@ -16,8 +16,10 @@ type SetChargingProfile = components['schemas']['SetChargingProfile'];
 type SetChargingProfileResponse = components['schemas']['SetChargingProfileResponse'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
-type ChargestationItem = components['schemas']['Chargestation'];
+type ChargestationItem = components['schemas']['ChargeStation'];
 type ResponseItem = components['schemas']['response'];
+
+type ChargePointParameters = operations['ChargePointList']['parameters'];
 
 class MainController {
   public logger: Logger;
@@ -224,13 +226,28 @@ class MainController {
     }
   });
 
-  setChargestation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+  setChargeStation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
     try {
       const payload: ChargestationItem = req.body;
-      await this.service.setChargestation(payload);
+      await this.service.setChargeStation(payload);
       const response: ResponseItem = {
         code: 200,
-        message: 'Chargestation Object Created',
+        message: 'Charge Station Object Created',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  getChargeStation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const queryParams: ChargePointParameters['query'] = req.query;
+      await this.service.getChargeStation(queryParams.active, queryParams.model, queryParams.location);
+      const response: ResponseItem = {
+        code: 200,
+        message: 'Charge Station Object Returned',
       };
       res.status(200).json(response);
     } catch (e: any) {

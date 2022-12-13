@@ -22,11 +22,8 @@ class GitRepoRouter {
     );
     this.router.post('/setRate', Auth.authenticate('jwt', { session: false }), MainController.setRate);
     this.router.post('/setConnector', Auth.authenticate('jwt', { session: false }), MainController.setConnector);
-    this.router.post(
-      '/setChargestation',
-      Auth.authenticate('jwt', { session: false }),
-      MainController.setChargestation,
-    );
+    this.router.post('/chargeStation', Auth.authenticate('jwt', { session: false }), MainController.setChargeStation);
+    this.router.get('/chargeStation', Auth.authenticate('jwt', { session: false }), MainController.getChargeStation);
   }
 
   getRouter() {

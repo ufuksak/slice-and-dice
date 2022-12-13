@@ -2,7 +2,7 @@ import { GLOBAL } from '../constants';
 import { initLogger, Logger } from '../helpers/logger';
 import { AppDataSource } from '../orm';
 import { Address } from '../orm/entity/address';
-import { Chargestation } from '../orm/entity/chargestation';
+import { ChargeStation } from '../orm/entity/chargeStation';
 import { ChargingProfile } from '../orm/entity/chargingProfile';
 import { Connector } from '../orm/entity/connector';
 import { Department } from '../orm/entity/department';
@@ -22,7 +22,7 @@ type AddressItem = components['schemas']['AddressItem'];
 type ChargingProfileItem = components['schemas']['ChargingProfile'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
-type ChargestationItem = components['schemas']['Chargestation'];
+type ChargestationItem = components['schemas']['ChargeStation'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -155,11 +155,11 @@ export class MainServices {
     await AppDataSource.getRepository(Connector).save(connector);
   }
 
-  public async setChargestation(chargestationItem: ChargestationItem) {
-    let chargestationObject: Chargestation = chargestationItem as Chargestation;
-    await AppDataSource.getRepository(Chargestation).save(chargestationObject);
+  public async setChargeStation(chargeStationItem: ChargestationItem) {
+    let chargestationObject: ChargeStation = chargeStationItem as ChargeStation;
+    await AppDataSource.getRepository(ChargeStation).save(chargestationObject);
     const bootInfo = chargestationObject.bootInfo;
-    bootInfo.chargestation = chargestationObject;
+    bootInfo.chargeStation = chargestationObject;
     await AppDataSource.getRepository(BootInfo).save(bootInfo);
     chargestationObject.connectors.forEach((connector) => {
       let rateObject: Rate = connector.rate as Rate;
@@ -168,6 +168,10 @@ export class MainServices {
       connector.chargestationObject = chargestationObject;
       AppDataSource.getRepository(Connector).save(connector);
     });
+  }
+
+  public async getChargeStation(active: boolean | undefined, model: string | undefined, location: string | undefined) {
+    this.logger.info(`${active}-${model}-${location}`);
   }
 
   public async getStatistics() {

@@ -4,7 +4,7 @@ import { BaseEntity } from './base';
 import { BootInfo } from './bootInfo';
 import { Connector } from './connector';
 
-export interface IChargestation {
+export interface IChargeStation {
   location?: string;
   protocol?: string;
   endpoint?: string;
@@ -23,7 +23,7 @@ export interface IChargestation {
 
 @Entity('chargestation')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class Chargestation extends BaseEntity implements IChargestation {
+export class ChargeStation extends BaseEntity implements IChargeStation {
   @Column({
     nullable: true,
   })
@@ -65,7 +65,7 @@ export class Chargestation extends BaseEntity implements IChargestation {
   model: string;
 
   @JoinColumn()
-  @OneToOne(() => BootInfo, (bootInfo) => bootInfo.chargestation)
+  @OneToOne(() => BootInfo, (bootInfo) => bootInfo.chargeStation)
   bootInfo: BootInfo;
 
   @Column('simple-array', {

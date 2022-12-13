@@ -53,9 +53,6 @@ export interface paths {
       };
     };
   };
-  "/auth/chargePointList": {
-    get: operations["ChargePointList"];
-  };
   "/auth/transactionList": {
     post: operations["TransactionList"];
   };
@@ -83,8 +80,9 @@ export interface paths {
   "/auth/setConnector": {
     post: operations["SetConnector"];
   };
-  "/auth/setChargestation": {
-    post: operations["SetChargestation"];
+  "/auth/chargeStation": {
+    get: operations["ChargePointList"];
+    post: operations["SetChargeStation"];
   };
 }
 
@@ -273,7 +271,7 @@ export interface components {
       iccid?: string;
       imsi?: string;
     };
-    Chargestation: {
+    ChargeStation: {
       location?: string;
       protocol?: string;
       endpoint?: string;
@@ -682,21 +680,6 @@ export interface operations {
       };
     };
   };
-  ChargePointList: {
-    responses: {
-      /** Successfully. */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChargePointListResponse"];
-        };
-      };
-      400: components["responses"]["BadRequest"];
-      401: components["responses"]["Unauthorized"];
-      403: components["responses"]["Unauthorized"];
-      404: components["responses"]["NotFound"];
-      "5XX": components["responses"]["InternalError"];
-    };
-  };
   TransactionList: {
     responses: {
       /** Successfully. */
@@ -877,9 +860,34 @@ export interface operations {
       };
     };
   };
-  SetChargestation: {
+  ChargePointList: {
+    parameters: {
+      query: {
+        /** location */
+        location?: string;
+        /** model */
+        model?: string;
+        /** active */
+        active?: boolean;
+      };
+    };
     responses: {
-      /** This contains the Chargestation Object details */
+      /** Successfully. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChargePointListResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+  };
+  SetChargeStation: {
+    responses: {
+      /** This contains the ChargeStation Object details */
       200: {
         content: {
           "application/json": components["schemas"]["response"];
@@ -893,7 +901,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["Chargestation"];
+        "application/json": components["schemas"]["ChargeStation"];
       };
     };
   };

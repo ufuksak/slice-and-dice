@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './base';
-import { Chargestation } from './chargestation';
+import { ChargeStation } from './chargeStation';
 
 export interface IBootInfo {
   chargeBoxSerialNumber?: string;
@@ -11,7 +11,7 @@ export interface IBootInfo {
   firmwareVersion?: string;
   iccid?: string;
   imsi?: string;
-  chargestation: Chargestation;
+  chargeStation: ChargeStation;
 }
 
 @Entity('boot_info')
@@ -52,6 +52,6 @@ export class BootInfo extends BaseEntity implements IBootInfo {
   })
   imsi?: string;
 
-  @OneToOne(() => Chargestation, (chargestation) => chargestation.bootInfo)
-  chargestation: Chargestation;
+  @OneToOne(() => ChargeStation, (chargestation) => chargestation.bootInfo)
+  chargeStation: ChargeStation;
 }
