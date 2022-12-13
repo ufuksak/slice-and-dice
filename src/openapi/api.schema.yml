@@ -953,31 +953,10 @@ components:
           enum: [ Accepted, Rejected, NotSupported ]
 
     ChargePointListResponse:
-      type: object
-      required:
-        - ChargePointList
-      properties:
-        ChargePointList:
-          type: array
-          items:
-            type: object
-            properties:
-              Identity:
-                type: string
-                description: Charge point identity.
-              Address:
-                type: string
-              Connection:
-                type: object
-                properties:
-                  Socket:
-                    type: integer
-                    format: int32
-                  IP:
-                    type: string
-                  Port:
-                    type: integer
-                    format: int32
+      type: array
+      items:
+        $ref: '#/components/schemas/ChargeStation'
+
     PriceComponent:
       type: array
       items:
@@ -1061,8 +1040,6 @@ components:
           $ref: '#/components/schemas/BootInfo'
         coordinates:
           type: array
-          items:
-            type: number
           example: [4.865672799999999,
                     52.3310936]
         connectors:

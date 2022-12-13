@@ -171,7 +171,14 @@ export class MainServices {
   }
 
   public async getChargeStation(active: boolean | undefined, model: string | undefined, location: string | undefined) {
-    this.logger.info(`${active}-${model}-${location}`);
+    let response: ChargeStation[] = [];
+    await AppDataSource.getRepository(ChargeStation)
+      .findBy({ model, active, location })
+      .then((stationResponse) => {
+        this.logger.debug(stationResponse);
+        response = stationResponse;
+      });
+    return response;
   }
 
   public async getStatistics() {

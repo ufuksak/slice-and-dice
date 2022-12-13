@@ -244,12 +244,9 @@ class MainController {
   getChargeStation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
     try {
       const queryParams: ChargePointParameters['query'] = req.query;
-      await this.service.getChargeStation(queryParams.active, queryParams.model, queryParams.location);
-      const response: ResponseItem = {
-        code: 200,
-        message: 'Charge Station Object Returned',
-      };
-      res.status(200).json(response);
+      res
+        .status(200)
+        .json(await this.service.getChargeStation(queryParams.active, queryParams.model, queryParams.location));
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);

@@ -228,20 +228,7 @@ export interface components {
        */
       status: "Accepted" | "Rejected" | "NotSupported";
     };
-    ChargePointListResponse: {
-      ChargePointList: {
-        /** @description Charge point identity. */
-        Identity?: string;
-        Address?: string;
-        Connection?: {
-          /** Format: int32 */
-          Socket?: number;
-          IP?: string;
-          /** Format: int32 */
-          Port?: number;
-        };
-      }[];
-    };
+    ChargePointListResponse: components["schemas"]["ChargeStation"][];
     PriceComponent: {
       tax?: number;
       step_size?: number;
@@ -287,7 +274,7 @@ export interface components {
        *   52.3310936
        * ]
        */
-      coordinates?: number[];
+      coordinates?: unknown[];
       connectors?: components["schemas"]["Connector"][];
       lastConnectAt?: string;
       lastDisconnectAt?: string;
