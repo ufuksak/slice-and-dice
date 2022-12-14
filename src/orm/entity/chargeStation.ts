@@ -21,7 +21,7 @@ export interface IChargeStation {
   lastMessageAt?: string;
 }
 
-@Entity('chargestation')
+@Entity('charge_station')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ChargeStation extends BaseEntity implements IChargeStation {
   @Column({
