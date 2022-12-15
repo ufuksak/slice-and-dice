@@ -249,6 +249,38 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /auth/forgotPassword:
+    post:
+      tags:
+        - SliceDice
+      summary: Save The Slice Dice  Selections
+      operationId: postSaveRepo
+      requestBody:
+        description: 'save repo selections'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmail'
+      responses:
+        '201':
+          description: 'Password reset link has been sent'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /auth/ping:
     get:
       tags:
@@ -733,6 +765,13 @@ components:
             code: 'error.auth.github-access-token-expired'
             status: 412
   schemas:
+    UserEmail:
+      type: object
+      properties:
+        name:
+          type: string
+          format: email
+
     UserResponse:
       type: object
       properties:

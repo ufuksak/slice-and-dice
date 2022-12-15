@@ -4,7 +4,7 @@ import { forwardError } from '../forward-error';
 import { initLogger, Logger } from '../helpers/logger';
 import { AppDataSource } from '../orm';
 import { User } from '../orm/entity/user';
-import { deriveTokens, ITokens, verifyRefreshToken } from '../providers/encryption';
+import { deriveResetToken, deriveTokens, hashWithMD5, ITokens, verifyRefreshToken } from '../providers/encryption';
 import { MainServices } from '../services/main.services';
 import { userHasPrivilege } from '../orm/entity/privilege';
 import ApiError, { UserDuplicated } from '../helpers/APIError';
@@ -46,7 +46,7 @@ class MainController {
       const user = req.user as User;
       await this.login(user, res);
     } catch (e: any) {
-      console.error(e.message);
+      this.logger.error(e.message);
       res.status(403).json({ error: e.message });
     }
   });
@@ -64,8 +64,33 @@ class MainController {
       // logout user
       await this.logout(user, res);
     } catch (e: any) {
-      console.error(e.message);
+      this.logger.error(e.message);
       res.status(403).send({ error: e.message });
+    }
+  });
+
+  postForgotPassword = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { name } = req.body;
+      if (!name) {
+        res.status(400).json({ error: 'invalid params' });
+      }
+      // find a user account
+      const user = await AppDataSource.getRepository(User).findOneBy({ name: name });
+      if (!user) {
+        res.status(404).json({ error: 'invalid params' });
+      }
+      const resetToken = deriveResetToken({ name });
+      const hash = hashWithMD5(name);
+      await this.service.emailPasswordResetLink(name, hash, resetToken);
+      const response: GeneralResponse = {
+        code: 200,
+        message: `An email with a password reset link was sent to ${name}`,
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      this.logger.error(e.message);
+      res.status(500).json({ error: e.message });
     }
   });
 

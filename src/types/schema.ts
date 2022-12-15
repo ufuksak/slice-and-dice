@@ -23,6 +23,9 @@ export interface paths {
     post: operations["postSaveRepo"];
     delete: operations["deleteUserByName"];
   };
+  "/auth/forgotPassword": {
+    post: operations["postSaveRepo"];
+  };
   "/auth/ping": {
     get: {
       responses: {
@@ -88,6 +91,10 @@ export interface paths {
 
 export interface components {
   schemas: {
+    UserEmail: {
+      /** Format: email */
+      name?: string;
+    };
     UserResponse: {
       accessToken?: string;
       refreshToken?: string;
@@ -535,13 +542,13 @@ export interface components {
 export interface operations {
   postSaveRepo: {
     responses: {
-      /** User has been successfully created */
+      /** Password reset link has been sent */
       201: {
         headers: {
           Location?: string;
         };
         content: {
-          "application/json": components["schemas"]["UserResponse"];
+          "application/json": components["schemas"]["response"];
         };
       };
       400: components["responses"]["BadRequest"];
@@ -551,7 +558,7 @@ export interface operations {
     /** save repo selections */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserList"];
+        "application/json": components["schemas"]["UserEmail"];
       };
     };
   };

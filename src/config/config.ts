@@ -38,6 +38,13 @@ const envVarSchema = Joi.object({
 
   //AWS
   AWS_REGION: isEnv(GLOBAL.ENV_TEST) ? Joi.string() : Joi.string().required(),
+
+  // email
+  NO_REPLY_EMAIL_ADDRESS: Joi.string().default('noreply@casion.com'),
+  DEFAULT_EMAIL_RECEIVER: Joi.string().default('ufuksakar@gmail.com'),
+  SMTP_HOST_NAME: Joi.string().default('smtp.gmail.com'),
+  SMTP_PASSWORD: Joi.string().default('glvpbyivkejrylgt'),
+  SITE_URL: Joi.string().default('http://localhost:3001'),
 })
   .unknown()
   .required();
@@ -76,3 +83,10 @@ export const redisPassword = '';
 
 // AWS General
 export const awsRegion = isEnv(GLOBAL.ENV_TEST) ? 'eu-west-1' : envVars.AWS_REGION;
+
+// email
+export const noReplyEmailAddress = envVars.NO_REPLY_EMAIL_ADDRESS;
+export const receiverEmailAddress = envVars.DEFAULT_EMAIL_RECEIVER;
+export const smtpHostname = envVars.SMTP_HOST_NAME;
+export const smtpPassword = envVars.SMTP_PASSWORD;
+export const siteurl = envVars.SITE_URL;

@@ -11,6 +11,7 @@ import { Rate } from '../orm/entity/rate';
 import { Salary } from '../orm/entity/salary';
 import { SubDepartment } from '../orm/entity/subdepartment';
 import { User } from '../orm/entity/user';
+import { EmailProvider } from '../providers/email';
 import { TestDataSource } from '../test/test.datasource';
 import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
@@ -46,9 +47,12 @@ export class MainServices {
 
   private dbSource: DataSource;
 
+  private emailSender: EmailProvider;
+
   constructor() {
     this.logger = initLogger(this.constructor.name);
     this.dbSource = isEnv(GLOBAL.ENV_TEST) ? TestDataSource : AppDataSource;
+    this.emailSender = new EmailProvider();
   }
 
   public async postSaveUser(payload: payloadType) {
@@ -119,6 +123,10 @@ export class MainServices {
         throw new UserDuplicated(name, e);
       }
     }
+  }
+
+  public async emailPasswordResetLink(email: string, hash: string, resetToken: string) {
+    await this.emailSender.emailPasswordResetLink(email, hash, resetToken);
   }
 
   public async deleteUser(name: string) {

@@ -10,6 +10,7 @@ class GitRepoRouter {
     this.router.delete('/register', MainController.delete);
     this.router.post('/login', Auth.authenticate('local', { session: false }), MainController.postLogin);
     this.router.post('/logout', MainController.postLogout);
+    this.router.post('/forgotPassword', MainController.postForgotPassword);
     this.router.put('/update', Auth.authenticate('jwt', { session: false }), MainController.updateUser);
     this.router.get('/statistics', MainController.getStatistics);
     this.router.get('/users', Auth.authenticate('jwt', { session: false }), MainController.getUsers);
