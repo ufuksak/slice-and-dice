@@ -17,7 +17,7 @@ paths:
       summary: Save The Slice Dice  Selections
       operationId: postSaveRepo
       requestBody:
-        description: 'save repo selections'
+        description: 'login to the account'
         required: true
         content:
           'application/json':
@@ -192,7 +192,7 @@ paths:
       summary: Save The Slice Dice  Selections
       operationId: postSaveRepo
       requestBody:
-        description: 'save repo selections'
+        description: 'save the user'
         required: true
         content:
           application/json:
@@ -253,10 +253,10 @@ paths:
     post:
       tags:
         - SliceDice
-      summary: Save The Slice Dice  Selections
+      summary: Request the password reset link
       operationId: postSaveRepo
       requestBody:
-        description: 'save repo selections'
+        description: 'request password reset via email'
         required: true
         content:
           application/json:
