@@ -18,6 +18,7 @@ type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
 type ChargestationItem = components['schemas']['ChargeStation'];
 type ResponseItem = components['schemas']['response'];
+type Vehicle = components['schemas']['Vehicle'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -128,6 +129,18 @@ class MainController {
     }
   });
 
+  getVehicles: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.user as User;
+      if (!userHasPrivilege(user, { entity: User.name, action: 'admin', value: true })) {
+        res.status(403).json({ message: 'You have no power here!' });
+      }
+      res.status(200).send(await this.service.getVehicles());
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
   getStatistics: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
     try {
       let response;
@@ -215,6 +228,21 @@ class MainController {
         status: 'Accepted',
       };
       res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  postVehicle: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: Vehicle = req.body;
+      const vehicleObject = await this.service.setVehicle(payload);
+      const response: ResponseItem = {
+        code: 201,
+        message: `Vehicle Created. Id; ${vehicleObject.id}`,
+      };
+      res.status(201).json(response);
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);

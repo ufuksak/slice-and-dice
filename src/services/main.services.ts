@@ -17,6 +17,7 @@ import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
 import { DataSource } from 'typeorm';
 import { BootInfo } from '../orm/entity/bootInfo';
+import { Vehicle } from '../orm/entity/vehicle';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
@@ -24,6 +25,7 @@ type ChargingProfileItem = components['schemas']['ChargingProfile'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
 type ChargestationItem = components['schemas']['ChargeStation'];
+type VehicleItem = components['schemas']['Vehicle'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -138,6 +140,14 @@ export class MainServices {
     }
   }
 
+  public async getVehicles() {
+    try {
+      return await AppDataSource.getRepository(Vehicle).find();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   public async getUsers() {
     try {
       return await AppDataSource.getRepository(User).find({
@@ -146,6 +156,10 @@ export class MainServices {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  public async setVehicle(vehicle: VehicleItem) {
+    return AppDataSource.getRepository(Vehicle).save(vehicle);
   }
 
   public async setChargingProfile(chargingProfile: ChargingProfileItem) {

@@ -26,6 +26,10 @@ export interface paths {
   "/auth/forgotPassword": {
     post: operations["postSaveRepo"];
   };
+  "/auth/vehicle": {
+    get: operations["getVehicles"];
+    post: operations["postSaveVehicle"];
+  };
   "/auth/ping": {
     get: {
       responses: {
@@ -91,6 +95,14 @@ export interface paths {
 
 export interface components {
   schemas: {
+    VehicleList: components["schemas"]["Vehicle"][];
+    Vehicle: {
+      brand?: string;
+      model?: string;
+      year?: string;
+      pictureLink?: string;
+      postCode?: string;
+    };
     UserEmail: {
       /** Format: email */
       name?: string;
@@ -555,7 +567,7 @@ export interface operations {
       401: components["responses"]["Unauthorized"];
       500: components["responses"]["InternalServerError"];
     };
-    /** save repo selections */
+    /** request password reset via email */
     requestBody: {
       content: {
         "application/json": components["schemas"]["UserEmail"];
@@ -671,6 +683,42 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UserList"];
+      };
+    };
+  };
+  getVehicles: {
+    responses: {
+      /** A list of vehicles */
+      200: {
+        content: {
+          "application/json": components["schemas"]["VehicleList"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      412: components["responses"]["PreconditionFailed"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  postSaveVehicle: {
+    responses: {
+      /** Password reset link has been sent */
+      201: {
+        headers: {
+          Location?: string;
+        };
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      500: components["responses"]["InternalServerError"];
+    };
+    /** add vehicle */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Vehicle"];
       };
     };
   };

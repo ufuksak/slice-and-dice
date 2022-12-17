@@ -66,6 +66,7 @@ paths:
         '201':
           description: 'User has been successfully logged out'
           content:
+
             application/json:
               schema:
                 type: object
@@ -262,6 +263,59 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserEmail'
+      responses:
+        '201':
+          description: 'Password reset link has been sent'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/vehicle:
+    get:
+      tags:
+        - SliceDice
+      summary: Get The Vehicles
+      operationId: getVehicles
+      responses:
+        200:
+          description: A list of vehicles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleList'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - SliceDice
+      summary: Add The Vehicle
+      operationId: postSaveVehicle
+      requestBody:
+        description: 'add vehicle'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
       responses:
         '201':
           description: 'Password reset link has been sent'
@@ -765,6 +819,25 @@ components:
             code: 'error.auth.github-access-token-expired'
             status: 412
   schemas:
+    VehicleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Vehicle'
+
+    Vehicle:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: string
+        pictureLink:
+          type: string
+        postCode:
+          type: string
+
     UserEmail:
       type: object
       properties:
