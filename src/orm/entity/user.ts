@@ -7,6 +7,9 @@ import { Department } from './department';
 import { Privilege } from './privilege';
 import { Salary } from './salary';
 import { SubDepartment } from './subdepartment';
+import { Charge } from './charge';
+import { PaymentMethod } from './paymentMethod';
+import { Organization } from './organization';
 
 export interface IUser {
   name: string;
@@ -98,8 +101,17 @@ export class User extends BaseEntity implements IUser {
   @OneToMany(() => Privilege, (privilege) => privilege.user, { cascade: true })
   privileges: Privilege[];
 
+  @OneToMany(() => Charge, (charge) => charge.user, { cascade: true })
+  charge: Charge[];
+
+  @OneToMany(() => PaymentMethod, (paymentMethod) => paymentMethod.user, { cascade: true })
+  paymentMethod: PaymentMethod[];
+
   @ManyToOne(() => Department, (department) => department.user)
   department: Department;
+
+  @ManyToOne(() => Organization, (organization) => organization.user)
+  organization: Organization;
 
   @ManyToOne(() => SubDepartment, (subDepartment) => subDepartment.user)
   subDepartment: SubDepartment;
