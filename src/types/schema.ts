@@ -78,6 +78,12 @@ export interface paths {
   "/auth/remoteStopTransaction": {
     post: operations["RemoteStopTransaction"];
   };
+  "/auth/startTransaction": {
+    post: operations["StartTransaction"];
+  };
+  "/auth/stopTransaction": {
+    post: operations["StopTransaction"];
+  };
   "/auth/setChargingProfile": {
     post: operations["SetChargingProfile"];
   };
@@ -191,11 +197,8 @@ export interface components {
        * @description Unique identifier for this profile.
        */
       chargingProfileId: number;
-      /**
-       * Format: int32
-       * @description Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
-       */
-      transactionId?: number;
+      /** @description Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction. */
+      transactionId?: string;
       /**
        * Format: int32
        * @description Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.
@@ -317,11 +320,8 @@ export interface components {
       status: "Accepted" | "Rejected";
     };
     RemoteStopTransaction: {
-      /**
-       * Format: int32
-       * @description The identifier of the transaction which Charge Point is requested to stop.
-       */
-      transactionId: number;
+      /** @description The identifier of the transaction which Charge Point is requested to stop. */
+      transactionId: string;
     };
     RemoteStopTransactionResponse: {
       /**
@@ -335,22 +335,19 @@ export interface components {
       idTag: string;
       meterStart: number;
       reservationId?: number;
-      /** Format: date-time */
       timestamp: string;
     };
     StartTransactionResponse: {
       idTagInfo: {
-        /** Format: date-time */
         expiryDate?: string;
         parentIdTag?: string;
         /** @enum {string} */
         status: "Accepted" | "Blocked" | "Expired" | "Invalid" | "ConcurrentTx";
       };
-      transactionId: number;
+      transactionId: string;
     };
     ReserveNowRequest: {
       connectorId: number;
-      /** Format: date-time */
       expiryDate: string;
       idTag: string;
       parentIdTag?: string;
@@ -365,7 +362,7 @@ export interface components {
       meterStop: number;
       /** Format: date-time */
       timestamp: string;
-      transactionId: number;
+      transactionId: string;
       /** @enum {string} */
       reason?:
         | "EmergencyStop"
@@ -457,7 +454,6 @@ export interface components {
     };
     StopTransactionResponse: {
       idTagInfo?: {
-        /** Format: date-time */
         expiryDate?: string;
         parentIdTag?: string;
         /** @enum {string} */
@@ -522,7 +518,6 @@ export interface components {
         serialNumber?: string;
         /** Format: int32 */
         connectorId?: number;
-        /** Format: date-time */
         expiryDate?: string;
         /** Format: date-time */
         dateStart?: string;
@@ -973,6 +968,46 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["RemoteStopTransaction"];
+      };
+    };
+  };
+  StartTransaction: {
+    responses: {
+      /** This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["StartTransactionResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StartTransactionRequest"];
+      };
+    };
+  };
+  StopTransaction: {
+    responses: {
+      /** This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["StopTransactionResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StopTransactionRequest"];
       };
     };
   };

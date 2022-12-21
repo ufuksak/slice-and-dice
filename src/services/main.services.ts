@@ -18,14 +18,17 @@ import { UserDuplicated } from '../helpers/APIError';
 import { DataSource } from 'typeorm';
 import { BootInfo } from '../orm/entity/bootInfo';
 import { Vehicle } from '../orm/entity/vehicle';
+import { StartTransaction } from '../orm/entity/startTransaction';
+import { Reservation } from '../orm/entity/reservation';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
 type ChargingProfileItem = components['schemas']['ChargingProfile'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
-type ChargestationItem = components['schemas']['ChargeStation'];
+type ChargeStationItem = components['schemas']['ChargeStation'];
 type VehicleItem = components['schemas']['Vehicle'];
+type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -177,7 +180,7 @@ export class MainServices {
     await AppDataSource.getRepository(Connector).save(connector);
   }
 
-  public async setChargeStation(chargeStationItem: ChargestationItem) {
+  public async setChargeStation(chargeStationItem: ChargeStationItem) {
     let chargeStationObject: ChargeStation = chargeStationItem as ChargeStation;
     await AppDataSource.getRepository(ChargeStation).save(chargeStationObject);
     const bootInfo = chargeStationObject.bootInfo;
@@ -201,6 +204,32 @@ export class MainServices {
         response = stationResponse;
       });
     return response;
+  }
+
+  public async startTransaction(startTransactionRequest: StartTransactionRequest) {
+    let reservationObject = await AppDataSource.getRepository(Reservation).findOneBy({
+      id: startTransactionRequest.reservationId?.toString(),
+    });
+    if (reservationObject === null) {
+      reservationObject = new Reservation();
+    }
+    let connectorObject = await AppDataSource.getRepository(Connector).findOneBy({
+      id: startTransactionRequest.connectorId?.toString(),
+    });
+    if (connectorObject === null) {
+      connectorObject = new Connector();
+    }
+    const startTransactionItem: StartTransaction = {
+      connector: connectorObject,
+      idTag: startTransactionRequest.idTag,
+      meterStart: startTransactionRequest.meterStart,
+      reservation: reservationObject,
+      timestamp: startTransactionRequest.timestamp,
+    } as StartTransaction;
+    const newTransaction: StartTransaction = await AppDataSource.getRepository(StartTransaction).save(
+      startTransactionItem,
+    );
+    return newTransaction;
   }
 
   public async getStatistics() {

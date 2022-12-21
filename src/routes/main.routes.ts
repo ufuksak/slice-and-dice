@@ -27,6 +27,11 @@ class MainRouter {
     this.router.post('/setConnector', Auth.authenticate('jwt', { session: false }), MainController.setConnector);
     this.router.post('/chargeStation', Auth.authenticate('jwt', { session: false }), MainController.setChargeStation);
     this.router.get('/chargeStation', Auth.authenticate('jwt', { session: false }), MainController.getChargeStation);
+    this.router.post(
+      '/startTransaction',
+      Auth.authenticate('jwt', { session: false }),
+      MainController.startTransaction,
+    );
   }
 
   getRouter() {

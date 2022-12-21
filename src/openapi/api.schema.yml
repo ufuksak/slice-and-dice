@@ -557,6 +557,68 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
+  /auth/startTransaction:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.11. Start Transaction
+      operationId: StartTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartTransactionRequest'
+      responses:
+        '200':
+          description: >
+            This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/stopTransaction:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.12. Remote Stop Transaction
+      operationId: StopTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopTransactionRequest'
+      responses:
+        '200':
+          description: >
+            This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
   /auth/setChargingProfile:
     post:
       tags:
@@ -1008,8 +1070,7 @@ components:
           format: int32
           description: Unique identifier for this profile.
         transactionId:
-          type: integer
-          format: int32
+          type: string
           description: Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
         stackLevel:
           type: integer
@@ -1197,8 +1258,7 @@ components:
         - transactionId
       properties:
         transactionId:
-          type: integer
-          format: int32
+          type: string
           description: The identifier of the transaction which Charge Point is requested to stop.
 
     RemoteStopTransactionResponse:
@@ -1225,7 +1285,6 @@ components:
           type: integer
         timestamp:
           type: string
-          format: date-time
       additionalProperties: false
       required:
         - connectorId
@@ -1241,7 +1300,6 @@ components:
           properties:
             expiryDate:
               type: string
-              format: date-time
             parentIdTag:
               type: string
               maxLength: 20
@@ -1258,7 +1316,7 @@ components:
           required:
             - status
         transactionId:
-          type: integer
+          type: string
       additionalProperties: false
       required:
         - idTagInfo
@@ -1271,7 +1329,6 @@ components:
           type: integer
         expiryDate:
           type: string
-          format: date-time
         idTag:
           type: string
           maxLength: 20
@@ -1315,7 +1372,7 @@ components:
           type: string
           format: date-time
         transactionId:
-          type: integer
+          type: string
         reason:
           type: string
           additionalProperties: false
@@ -1454,7 +1511,6 @@ components:
           properties:
             expiryDate:
               type: string
-              format: date-time
             parentIdTag:
               type: string
               maxLength: 20
@@ -1575,7 +1631,6 @@ components:
                 format: int32
               expiryDate:
                 type: string
-                format: date-time
               dateStart:
                 type: string
                 format: date-time

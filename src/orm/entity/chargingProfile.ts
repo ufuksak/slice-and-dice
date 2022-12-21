@@ -4,7 +4,7 @@ import { BaseEntity } from './base';
 import { ChargingSchedule } from './chargingSchedule';
 
 export interface IChargingProfile {
-  transactionId?: number;
+  transactionId?: string;
   stackLevel: number;
   chargingProfilePurpose: string;
   chargingProfileKind: string;
@@ -20,7 +20,7 @@ export class ChargingProfile extends BaseEntity implements IChargingProfile {
   @Column({
     nullable: true,
   })
-  transactionId?: number;
+  transactionId?: string;
 
   @Column({
     nullable: true,

@@ -19,6 +19,8 @@ type ConnectorItem = components['schemas']['Connector'];
 type ChargeStationItem = components['schemas']['ChargeStation'];
 type ResponseItem = components['schemas']['response'];
 type Vehicle = components['schemas']['Vehicle'];
+type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
+type StartTransactionResponse = components['schemas']['StartTransactionResponse'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -300,6 +302,25 @@ class MainController {
       res
         .status(200)
         .json(await this.service.getChargeStation(queryParams.active, queryParams.model, queryParams.location));
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  startTransaction: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: StartTransactionRequest = req.body;
+      const savedObject = await this.service.startTransaction(payload);
+      const response: StartTransactionResponse = {
+        idTagInfo: {
+          expiryDate: Date.now().toString(),
+          parentIdTag: '',
+          status: 'Accepted',
+        },
+        transactionId: savedObject.id,
+      };
+      res.status(200).json(response);
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);

@@ -2,14 +2,14 @@
 import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './base';
 import { Connector } from './connector';
-import { Reservation } from './reserve';
+import { Reservation } from './reservation';
 
 export interface IStartTransaction {
   connector: Connector;
   idTag?: string;
   meterStart: number;
   reservation: Reservation;
-  timestamp: number;
+  timestamp: string;
 }
 
 @Entity('start_transaction')
@@ -36,5 +36,5 @@ export class StartTransaction extends BaseEntity implements IStartTransaction {
   @Column({
     nullable: true,
   })
-  timestamp: number;
+  timestamp: string;
 }

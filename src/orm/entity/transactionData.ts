@@ -17,10 +17,10 @@ export class TransactionData extends BaseEntity implements ITransactionData {
   })
   timestamp: number;
 
+  @JoinColumn()
   @OneToOne(() => TransactionData, (transactionData) => transactionData.id, { cascade: true })
   stopTransaction: StopTransaction;
 
-  @JoinColumn()
   @OneToMany(() => SampledValue, (sampledValue) => sampledValue.transactionData, { cascade: true })
   sampledValue: SampledValue[];
 }
