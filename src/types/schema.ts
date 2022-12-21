@@ -330,6 +330,140 @@ export interface components {
        */
       status: "Accepted" | "Rejected";
     };
+    StartTransactionRequest: {
+      connectorId: number;
+      idTag: string;
+      meterStart: number;
+      reservationId?: number;
+      /** Format: date-time */
+      timestamp: string;
+    };
+    StartTransactionResponse: {
+      idTagInfo: {
+        /** Format: date-time */
+        expiryDate?: string;
+        parentIdTag?: string;
+        /** @enum {string} */
+        status: "Accepted" | "Blocked" | "Expired" | "Invalid" | "ConcurrentTx";
+      };
+      transactionId: number;
+    };
+    ReserveNowRequest: {
+      connectorId: number;
+      /** Format: date-time */
+      expiryDate: string;
+      idTag: string;
+      parentIdTag?: string;
+      reservationId: number;
+    };
+    ReserveNowResponse: {
+      /** @enum {string} */
+      status: "Accepted" | "Faulted" | "Occupied" | "Rejected" | "Unavailable";
+    };
+    StopTransactionRequest: {
+      idTag?: string;
+      meterStop: number;
+      /** Format: date-time */
+      timestamp: string;
+      transactionId: number;
+      /** @enum {string} */
+      reason?:
+        | "EmergencyStop"
+        | "EVDisconnected"
+        | "HardReset"
+        | "Local"
+        | "Other"
+        | "PowerLoss"
+        | "Reboot"
+        | "Remote"
+        | "SoftReset"
+        | "UnlockCommand"
+        | "DeAuthorized";
+      transactionData?: {
+        /** Format: date-time */
+        timestamp: string;
+        sampledValue: {
+          value: string;
+          /** @enum {string} */
+          context?:
+            | "Interruption.Begin"
+            | "Interruption.End"
+            | "Sample.Clock"
+            | "Sample.Periodic"
+            | "Transaction.Begin"
+            | "Transaction.End"
+            | "Trigger"
+            | "Other";
+          /** @enum {string} */
+          format?: "Raw" | "SignedData";
+          /** @enum {string} */
+          measurand?:
+            | "Energy.Active.Export.Register"
+            | "Energy.Active.Import.Register"
+            | "Energy.Reactive.Export.Register"
+            | "Energy.Reactive.Import.Register"
+            | "Energy.Active.Export.Interval"
+            | "Energy.Active.Import.Interval"
+            | "Energy.Reactive.Export.Interval"
+            | "Energy.Reactive.Import.Interval"
+            | "Power.Active.Export"
+            | "Power.Active.Import"
+            | "Power.Offered"
+            | "Power.Reactive.Export"
+            | "Power.Reactive.Import"
+            | "Power.Factor"
+            | "Current.Import"
+            | "Current.Export"
+            | "Current.Offered"
+            | "Voltage"
+            | "Frequency"
+            | "Temperature"
+            | "SoC"
+            | "RPM";
+          /** @enum {string} */
+          phase?:
+            | "L1"
+            | "L2"
+            | "L3"
+            | "N"
+            | "L1-N"
+            | "L2-N"
+            | "L3-N"
+            | "L1-L2"
+            | "L2-L3"
+            | "L3-L1";
+          /** @enum {string} */
+          location?: "Cable" | "EV" | "Inlet" | "Outlet" | "Body";
+          /** @enum {string} */
+          unit?:
+            | "Wh"
+            | "kWh"
+            | "varh"
+            | "kvarh"
+            | "W"
+            | "kW"
+            | "VA"
+            | "kVA"
+            | "var"
+            | "kvar"
+            | "A"
+            | "V"
+            | "K"
+            | "Celcius"
+            | "Fahrenheit"
+            | "Percent";
+        }[];
+      }[];
+    };
+    StopTransactionResponse: {
+      idTagInfo?: {
+        /** Format: date-time */
+        expiryDate?: string;
+        parentIdTag?: string;
+        /** @enum {string} */
+        status: "Accepted" | "Blocked" | "Expired" | "Invalid" | "ConcurrentTx";
+      };
+    };
     TransactionList: {
       /** @description Charge point identity. */
       identity: string;
