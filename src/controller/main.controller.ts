@@ -16,7 +16,7 @@ type SetChargingProfile = components['schemas']['SetChargingProfile'];
 type SetChargingProfileResponse = components['schemas']['SetChargingProfileResponse'];
 type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
-type ChargestationItem = components['schemas']['ChargeStation'];
+type ChargeStationItem = components['schemas']['ChargeStation'];
 type ResponseItem = components['schemas']['response'];
 type Vehicle = components['schemas']['Vehicle'];
 
@@ -281,7 +281,7 @@ class MainController {
 
   setChargeStation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
     try {
-      const payload: ChargestationItem = req.body;
+      const payload: ChargeStationItem = req.body;
       await this.service.setChargeStation(payload);
       const response: ResponseItem = {
         code: 200,

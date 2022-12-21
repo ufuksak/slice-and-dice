@@ -2,7 +2,7 @@ import { Router } from 'express';
 import MainController from '../controller/main.controller';
 import Auth from '../middleware/auth';
 
-class GitRepoRouter {
+class MainRouter {
   private router = Router();
 
   constructor() {
@@ -34,4 +34,4 @@ class GitRepoRouter {
   }
 }
 
-export default new GitRepoRouter().getRouter();
+export default new MainRouter().getRouter();

@@ -178,16 +178,16 @@ export class MainServices {
   }
 
   public async setChargeStation(chargeStationItem: ChargestationItem) {
-    let chargestationObject: ChargeStation = chargeStationItem as ChargeStation;
-    await AppDataSource.getRepository(ChargeStation).save(chargestationObject);
-    const bootInfo = chargestationObject.bootInfo;
-    bootInfo.chargeStation = chargestationObject;
+    let chargeStationObject: ChargeStation = chargeStationItem as ChargeStation;
+    await AppDataSource.getRepository(ChargeStation).save(chargeStationObject);
+    const bootInfo = chargeStationObject.bootInfo;
+    bootInfo.chargeStation = chargeStationObject;
     await AppDataSource.getRepository(BootInfo).save(bootInfo);
-    chargestationObject.connectors.forEach((connector) => {
+    chargeStationObject.connectors.forEach((connector) => {
       let rateObject: Rate = connector.rate as Rate;
       AppDataSource.getRepository(Rate).save(rateObject);
       connector.rate = rateObject;
-      connector.chargestationObject = chargestationObject;
+      connector.chargestationObject = chargeStationObject;
       AppDataSource.getRepository(Connector).save(connector);
     });
   }
