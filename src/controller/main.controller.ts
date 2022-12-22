@@ -23,6 +23,8 @@ type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StartTransactionResponse = components['schemas']['StartTransactionResponse'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 type StopTransactionResponse = components['schemas']['StopTransactionResponse'];
+type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
+type ReserveNowResponse = components['schemas']['ReserveNowResponse'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -339,6 +341,20 @@ class MainController {
           parentIdTag: '',
           status: 'Accepted',
         },
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  reservationNow: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: ReserveNowRequest = req.body;
+      await this.service.reservationNow(payload);
+      const response: ReserveNowResponse = {
+        status: 'Accepted',
       };
       res.status(200).json(response);
     } catch (e: any) {

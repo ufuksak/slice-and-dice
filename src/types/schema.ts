@@ -84,6 +84,9 @@ export interface paths {
   "/auth/stopTransaction": {
     post: operations["StopTransaction"];
   };
+  "/auth/reserveNow": {
+    post: operations["ReserveNow"];
+  };
   "/auth/setChargingProfile": {
     post: operations["SetChargingProfile"];
   };
@@ -1006,6 +1009,26 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["StopTransactionRequest"];
+      };
+    };
+  };
+  ReserveNow: {
+    responses: {
+      /** Reservation Request is delivered */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ReserveNowResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReserveNowRequest"];
       };
     };
   };

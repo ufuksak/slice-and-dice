@@ -592,7 +592,7 @@ paths:
     post:
       tags:
         - ChargePoint
-      summary: 5.12. Remote Stop Transaction
+      summary: 5.12. Stop Transaction
       operationId: StopTransaction
       requestBody:
         required: true
@@ -608,6 +608,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StopTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/reserveNow:
+    post:
+      tags:
+        - ChargePoint
+      summary: Reserve Now
+      operationId: ReserveNow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveNowRequest'
+      responses:
+        '200':
+          description: Reservation Request is delivered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveNowResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':

@@ -33,6 +33,7 @@ type ChargeStationItem = components['schemas']['ChargeStation'];
 type VehicleItem = components['schemas']['Vehicle'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
+type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -266,6 +267,23 @@ export class MainServices {
       transactionData.stopTransaction = newStopTransaction;
       AppDataSource.getRepository(TransactionData).save(transactionData);
     });
+  }
+
+  public async reservationNow(reserveNowRequest: ReserveNowRequest) {
+    let connectorObject = await AppDataSource.getRepository(Connector).findOneBy({
+      id: reserveNowRequest.connectorId?.toString(),
+    });
+    if (connectorObject === null) {
+      connectorObject = new Connector();
+    }
+    const reservationItem: Reservation = {
+      connector: connectorObject,
+      expiryDate: reserveNowRequest.expiryDate,
+      idTag: reserveNowRequest.idTag,
+      parentIdTag: reserveNowRequest.parentIdTag,
+    } as unknown as Reservation;
+    const newReservation = await AppDataSource.getRepository(Reservation).save(reservationItem);
+    return newReservation;
   }
 
   public async getStatistics() {
