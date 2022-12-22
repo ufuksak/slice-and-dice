@@ -32,6 +32,7 @@ class MainRouter {
       Auth.authenticate('jwt', { session: false }),
       MainController.startTransaction,
     );
+    this.router.post('/stopTransaction', Auth.authenticate('jwt', { session: false }), MainController.stopTransaction);
   }
 
   getRouter() {

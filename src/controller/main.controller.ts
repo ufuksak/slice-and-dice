@@ -21,6 +21,8 @@ type ResponseItem = components['schemas']['response'];
 type Vehicle = components['schemas']['Vehicle'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StartTransactionResponse = components['schemas']['StartTransactionResponse'];
+type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
+type StopTransactionResponse = components['schemas']['StopTransactionResponse'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -319,6 +321,24 @@ class MainController {
           status: 'Accepted',
         },
         transactionId: savedObject.id,
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  stopTransaction: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: StopTransactionRequest = req.body;
+      await this.service.stopTransaction(payload);
+      const response: StopTransactionResponse = {
+        idTagInfo: {
+          expiryDate: Date.now().toString(),
+          parentIdTag: '',
+          status: 'Accepted',
+        },
       };
       res.status(200).json(response);
     } catch (e: any) {

@@ -1370,7 +1370,6 @@ components:
           type: integer
         timestamp:
           type: string
-          format: date-time
         transactionId:
           type: string
         reason:
@@ -1395,7 +1394,6 @@ components:
             properties:
               timestamp:
                 type: string
-                format: date-time
               sampledValue:
                 type: array
                 items:

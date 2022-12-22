@@ -1,26 +1,20 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base';
-import { Connector } from './connector';
 import { TransactionData } from './transactionData';
 
 export interface IStopTransaction {
-  connector: Connector;
   idTag?: string;
   meterStop: number;
   transactionId: number;
   reason: string;
-  transactionData: TransactionData;
-  timestamp: number;
+  transactionData: TransactionData[];
+  timestamp: string;
 }
 
 @Entity('stop_transaction')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class StopTransaction extends BaseEntity implements IStopTransaction {
-  @JoinColumn()
-  @OneToOne(() => Connector, (connector) => connector.id, { cascade: true })
-  connector: Connector;
-
   @Column({
     nullable: true,
   })
@@ -37,12 +31,11 @@ export class StopTransaction extends BaseEntity implements IStopTransaction {
   @Column()
   reason: string;
 
-  @JoinColumn()
-  @OneToOne(() => TransactionData, (transactionData) => transactionData.id, { cascade: true })
-  transactionData: TransactionData;
+  @OneToMany(() => TransactionData, (transactionData) => transactionData.id, { cascade: true })
+  transactionData: TransactionData[];
 
   @Column({
     nullable: true,
   })
-  timestamp: number;
+  timestamp: string;
 }

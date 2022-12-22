@@ -360,7 +360,6 @@ export interface components {
     StopTransactionRequest: {
       idTag?: string;
       meterStop: number;
-      /** Format: date-time */
       timestamp: string;
       transactionId: string;
       /** @enum {string} */
@@ -377,7 +376,6 @@ export interface components {
         | "UnlockCommand"
         | "DeAuthorized";
       transactionData?: {
-        /** Format: date-time */
         timestamp: string;
         sampledValue: {
           value: string;

@@ -9,7 +9,10 @@ import { Department } from '../orm/entity/department';
 import { Privilege } from '../orm/entity/privilege';
 import { Rate } from '../orm/entity/rate';
 import { Salary } from '../orm/entity/salary';
+import { SampledValue } from '../orm/entity/sampledValue';
+import { StopTransaction } from '../orm/entity/stopTransaction';
 import { SubDepartment } from '../orm/entity/subdepartment';
+import { TransactionData } from '../orm/entity/transactionData';
 import { User } from '../orm/entity/user';
 import { EmailProvider } from '../providers/email';
 import { TestDataSource } from '../test/test.datasource';
@@ -29,6 +32,7 @@ type ConnectorItem = components['schemas']['Connector'];
 type ChargeStationItem = components['schemas']['ChargeStation'];
 type VehicleItem = components['schemas']['Vehicle'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
+type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -230,6 +234,38 @@ export class MainServices {
       startTransactionItem,
     );
     return newTransaction;
+  }
+
+  public async stopTransaction(stopTransactionRequest: StopTransactionRequest) {
+    stopTransactionRequest.transactionData?.forEach((transactionData) => {
+      const transactionObject = new TransactionData();
+      transactionObject.timestamp = transactionData.timestamp;
+      transactionObject.sampledValue?.forEach((sampledValue) => {
+        const sampledValueObject = new SampledValue();
+        sampledValueObject.value = sampledValue.value;
+        sampledValueObject.context = sampledValue.context;
+        sampledValueObject.format = sampledValue.format;
+        sampledValueObject.measurand = sampledValue.measurand;
+        sampledValueObject.phase = sampledValue.phase;
+        sampledValueObject.location = sampledValue.location;
+        sampledValueObject.unit = sampledValue.unit;
+        AppDataSource.getRepository(SampledValue).save(sampledValueObject);
+      });
+    });
+
+    const stopTransactionItem: StopTransaction = {
+      idTag: stopTransactionRequest.idTag,
+      meterStop: stopTransactionRequest.meterStop,
+      timestamp: stopTransactionRequest.timestamp,
+      transactionId: stopTransactionRequest.transactionId,
+      reason: stopTransactionRequest.reason,
+      transactionData: stopTransactionRequest.transactionData,
+    } as unknown as StopTransaction;
+    const newStopTransaction = await AppDataSource.getRepository(StopTransaction).save(stopTransactionItem);
+    newStopTransaction.transactionData?.forEach((transactionData) => {
+      transactionData.stopTransaction = newStopTransaction;
+      AppDataSource.getRepository(TransactionData).save(transactionData);
+    });
   }
 
   public async getStatistics() {
