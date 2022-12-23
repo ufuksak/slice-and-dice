@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { noReplyEmailAddress, receiverEmailAddress, siteurl, smtpHostname, smtpPassword } from "../config/config";
+import { noReplyEmailAddress, receiverEmailAddress, siteurl, smtpHostname, smtpPassword } from '../config/config';
 
 export class EmailProvider {
   private transporter: any;
