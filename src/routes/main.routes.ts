@@ -34,6 +34,11 @@ class MainRouter {
     );
     this.router.post('/stopTransaction', Auth.authenticate('jwt', { session: false }), MainController.stopTransaction);
     this.router.post('/reserveNow', Auth.authenticate('jwt', { session: false }), MainController.reservationNow);
+    this.router.post(
+      '/cancelReservation',
+      Auth.authenticate('jwt', { session: false }),
+      MainController.cancelReservation,
+    );
   }
 
   getRouter() {

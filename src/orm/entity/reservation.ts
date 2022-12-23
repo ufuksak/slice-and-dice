@@ -31,4 +31,9 @@ export class Reservation extends BaseEntity implements IReservation {
     nullable: true,
   })
   parentIdTag: string;
+
+  @Column({
+    nullable: true,
+  })
+  status: string;
 }

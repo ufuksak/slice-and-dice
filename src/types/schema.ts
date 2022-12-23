@@ -543,11 +543,8 @@ export interface components {
       status?: "Accepted" | "Rejected" | "Scheduled";
     };
     CancelReservation: {
-      /**
-       * Format: int32
-       * @description Id of the reservation to cancel.
-       */
-      reservationId: number;
+      /** @description Id of the reservation to cancel. */
+      reservationId: string;
     };
     CancelReservationResponse: {
       /** @enum {string} */

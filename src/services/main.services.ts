@@ -34,6 +34,7 @@ type VehicleItem = components['schemas']['Vehicle'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
+type CancelReservationRequest = components['schemas']['CancelReservation'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -284,6 +285,18 @@ export class MainServices {
     } as unknown as Reservation;
     const newReservation = await AppDataSource.getRepository(Reservation).save(reservationItem);
     return newReservation;
+  }
+
+  public async cancelReservation(cancelReservationRequest: CancelReservationRequest) {
+    let reservationObject = await AppDataSource.getRepository(Reservation).findOneBy({
+      id: cancelReservationRequest.reservationId?.toString(),
+    });
+    if (reservationObject) {
+      reservationObject.status = 'Cancelled';
+    } else {
+      throw new Error(`Reservation Not Found. Id: ${cancelReservationRequest.reservationId}`);
+    }
+    await AppDataSource.getRepository(Reservation).save(reservationObject);
   }
 
   public async getStatistics() {
