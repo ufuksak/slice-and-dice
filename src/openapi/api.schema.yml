@@ -17,7 +17,7 @@ paths:
       summary: Save The Slice Dice  Selections
       operationId: postSaveRepo
       requestBody:
-        description: 'save repo selections'
+        description: 'login to the account'
         required: true
         content:
           'application/json':
@@ -66,6 +66,7 @@ paths:
         '201':
           description: 'User has been successfully logged out'
           content:
+
             application/json:
               schema:
                 type: object
@@ -192,7 +193,7 @@ paths:
       summary: Save The Slice Dice  Selections
       operationId: postSaveRepo
       requestBody:
-        description: 'save repo selections'
+        description: 'save the user'
         required: true
         content:
           application/json:
@@ -249,7 +250,92 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /ping:
+  /auth/forgotPassword:
+    post:
+      tags:
+        - SliceDice
+      summary: Request the password reset link
+      operationId: postSaveRepo
+      requestBody:
+        description: 'request password reset via email'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmail'
+      responses:
+        '201':
+          description: 'Password reset link has been sent'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/vehicle:
+    get:
+      tags:
+        - SliceDice
+      summary: Get The Vehicles
+      operationId: getVehicles
+      responses:
+        200:
+          description: A list of vehicles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleList'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - SliceDice
+      summary: Add The Vehicle
+      operationId: postSaveVehicle
+      requestBody:
+        description: 'add vehicle'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '201':
+          description: 'Password reset link has been sent'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/ping:
     get:
       tags:
         - Connection
@@ -268,7 +354,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /time:
+  /auth/time:
     get:
       tags:
         - Connection
@@ -279,13 +365,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  serverTime:
-                    type: integer
-                    description: UNIX time
-                example:
-                  serverTime: 1642521843938
+                $ref: '#/components/schemas/ServerTime'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -293,31 +373,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /CentralSystem/ChargePointList:
-    get:
-      tags:
-        - CentralSystem
-      summary: Get a list of connected charging stations.
-      operationId: ChargePointList
-      responses:
-        '200':
-          description: Successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChargePointListResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '5XX':
-          $ref: '#/components/responses/InternalError'
-
-  /CentralSystem/TransactionList:
+  /auth/transactionList:
     post:
       tags:
         - CentralSystem
@@ -347,7 +403,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /CentralSystem/ReservationList:
+  /auth/listReservation:
     post:
       tags:
         - CentralSystem
@@ -377,18 +433,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/CancelReservation:
+  /auth/cancelReservation:
     post:
       tags:
         - ChargePoint
       summary: 5.1. Cancel Reservation
-      description: >
-        To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point.
-        If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status
-        ‘Accepted’. Otherwise it SHALL return ‘Rejected’.
       operationId: CancelReservation
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -414,19 +464,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/ChangeAvailability:
+  /auth/changeAvailability:
     post:
       tags:
         - ChargePoint
       summary: 5.2. Change Availability
-      description: >
-        Central System can request a Charge Point to change its availability. A Charge Point is considered available
-        (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not
-        allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point
-        to change its availability. The Central System can change the availability to available or unavailable.
       operationId: ChangeAvailability
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -452,18 +495,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/RemoteStartTransaction:
+  /auth/remoteStartTransaction:
     post:
       tags:
         - ChargePoint
       summary: 5.11. Remote Start Transaction
-      description: >
-        Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon
-        receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has
-        accepted the request and will attempt to start a transaction.
       operationId: RemoteStartTransaction
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -489,19 +526,12 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/RemoteStopTransaction:
+  /auth/remoteStopTransaction:
     post:
       tags:
         - ChargePoint
       summary: 5.12. Remote Stop Transaction
-      description: >
-        Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to
-        Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf
-        and a status indicating whether it has accepted the request and a transaction with the given transactionId is
-        ongoing and will be stopped.
       operationId: RemoteStopTransaction
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -527,20 +557,104 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /ChargePoint/{identity}/SetChargingProfile:
+  /auth/startTransaction:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.11. Start Transaction
+      operationId: StartTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartTransactionRequest'
+      responses:
+        '200':
+          description: >
+            This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/stopTransaction:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.12. Stop Transaction
+      operationId: StopTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopTransactionRequest'
+      responses:
+        '200':
+          description: >
+            This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/reserveNow:
+    post:
+      tags:
+        - ChargePoint
+      summary: Reserve Now
+      operationId: ReserveNow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveNowRequest'
+      responses:
+        '200':
+          description: Reservation Request is delivered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveNowResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/setChargingProfile:
     post:
       tags:
         - ChargePoint
       summary: 5.16. Set Charging Profile
-      description: >
-        A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
-          • At the start of a transaction to set the charging profile for the transaction;
-          • In a RemoteStartTransaction.req sent to a Charge Point
-          • During a transaction to change the active profile for the transaction;
-          • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
       operationId: SetChargingProfile
-      parameters:
-        - $ref: '#/components/parameters/Identity'
       requestBody:
         required: true
         content:
@@ -555,6 +669,138 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SetChargingProfileResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/setRate:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.16. Set Rate Object
+      operationId: SetRateObject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateObject'
+      responses:
+        '200':
+          description: >
+            This contains the Rate Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/setConnector:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.17. Set Connector Object
+      operationId: SetConnector
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateObject'
+      responses:
+        '200':
+          description: >
+            This contains the Connector Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/chargeStation:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.18. Set Charge Station Object
+      operationId: SetChargeStation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargeStation'
+      responses:
+        '200':
+          description: >
+            This contains the ChargeStation Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+    get:
+      tags:
+        - ChargePoint
+      summary: Get a list of connected charging stations.
+      operationId: ChargePointList
+      parameters:
+        - in: query
+          name: location
+          description: 'location'
+          schema:
+            type: string
+        - in: query
+          name: model
+          description: 'model'
+          schema:
+            type: string
+        - in: query
+          name: active
+          description: 'active'
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargePointListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -665,6 +911,32 @@ components:
             code: 'error.auth.github-access-token-expired'
             status: 412
   schemas:
+    VehicleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Vehicle'
+
+    Vehicle:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: string
+        pictureLink:
+          type: string
+        postCode:
+          type: string
+
+    UserEmail:
+      type: object
+      properties:
+        name:
+          type: string
+          format: email
+
     UserResponse:
       type: object
       properties:
@@ -780,7 +1052,6 @@ components:
       type: object
       required:
         - chargingRateUnit
-        - chargingSchedulePeriod
       properties:
         duration:
           type: integer
@@ -795,24 +1066,18 @@ components:
           type: string
           enum: [ W, A ]
           description: The unit of measure Limit is expressed in.
-        chargingSchedulePeriod:
-          type: object
-          required:
-            - startPeriod
-            - limit
-          properties:
-            startPeriod:
-              type: integer
-              format: int32
-              description: Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
-            limit:
-              type: number
-              format: double
-              description: Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
-            numberPhases:
-              type: integer
-              format: int32
-              description: The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
+        startPeriod:
+          type: integer
+          format: int32
+          description: Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
+        limit:
+          type: number
+          format: double
+          description: Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
+        numberPhases:
+          type: integer
+          format: int32
+          description: The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
         minChargingRate:
           type: number
           format: double
@@ -835,8 +1100,7 @@ components:
           format: int32
           description: Unique identifier for this profile.
         transactionId:
-          type: integer
-          format: int32
+          type: string
           description: Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
         stackLevel:
           type: integer
@@ -892,31 +1156,105 @@ components:
           enum: [ Accepted, Rejected, NotSupported ]
 
     ChargePointListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChargeStation'
+
+    PriceComponent:
+      type: array
+      items:
+        type: object
+        properties:
+          tax:
+            type: number
+          step_size:
+            type: number
+          type:
+            type: string
+          price:
+            type: number
+
+    RateObject:
       type: object
-      required:
-        - ChargePointList
       properties:
-        ChargePointList:
+        currency:
+          type: string
+        price_components:
+          $ref: '#/components/schemas/PriceComponent'
+
+    Connector:
+      type: object
+      properties:
+        active:
+          type: boolean
+        status:
+          type: string
+        type:
+          type: string
+        format:
+          type: string
+        power_type:
+          type: string
+        power:
+          type: number
+        chargestation:
+          type: string
+        rate:
+          $ref: '#/components/schemas/RateObject'
+
+    BootInfo:
+      type: object
+      properties:
+        chargeBoxSerialNumber:
+          type: string
+        chargePointModel:
+          type: string
+        chargePointSerialNumber:
+          type: string
+        chargePointVendor:
+          type: string
+        firmwareVersion:
+          type: string
+        iccid:
+          type: string
+        imsi:
+          type: string
+
+    ChargeStation:
+      type: object
+      properties:
+        location:
+          type: string
+        protocol:
+          type: string
+        endpoint:
+          type: string
+        static_endpoint:
+          type: string
+        online:
+          type: boolean
+        active:
+          type: boolean
+        public:
+          type: boolean
+        model:
+          type: string
+        bootInfo:
+          $ref: '#/components/schemas/BootInfo'
+        coordinates:
+          type: array
+          example: [4.865672799999999,
+                    52.3310936]
+        connectors:
           type: array
           items:
-            type: object
-            properties:
-              Identity:
-                type: string
-                description: Charge point identity.
-              Address:
-                type: string
-              Connection:
-                type: object
-                properties:
-                  Socket:
-                    type: integer
-                    format: int32
-                  IP:
-                    type: string
-                  Port:
-                    type: integer
-                    format: int32
+            $ref: '#/components/schemas/Connector'
+        lastConnectAt:
+          type: string
+        lastDisconnectAt:
+          type: string
+        lastMessageAt:
+          type: string
 
     RemoteStartTransactionJson:
       type: object
@@ -950,8 +1288,7 @@ components:
         - transactionId
       properties:
         transactionId:
-          type: integer
-          format: int32
+          type: string
           description: The identifier of the transaction which Charge Point is requested to stop.
 
     RemoteStopTransactionResponse:
@@ -963,6 +1300,261 @@ components:
           type: string
           description: Status indicating whether Charge Point accepts the request to stop a transaction.
           enum: [ Accepted, Rejected ]
+
+    StartTransactionRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+        idTag:
+          type: string
+          maxLength: 20
+        meterStart:
+          type: integer
+        reservationId:
+          type: integer
+        timestamp:
+          type: string
+      additionalProperties: false
+      required:
+        - connectorId
+        - idTag
+        - meterStart
+        - timestamp
+
+    StartTransactionResponse:
+      type: object
+      properties:
+        idTagInfo:
+          type: object
+          properties:
+            expiryDate:
+              type: string
+            parentIdTag:
+              type: string
+              maxLength: 20
+            status:
+              type: string
+              additionalProperties: false
+              enum:
+                - Accepted
+                - Blocked
+                - Expired
+                - Invalid
+                - ConcurrentTx
+          additionalProperties: false
+          required:
+            - status
+        transactionId:
+          type: string
+      additionalProperties: false
+      required:
+        - idTagInfo
+        - transactionId
+
+    ReserveNowRequest:
+      type: object
+      properties:
+        connectorId:
+          type: integer
+        expiryDate:
+          type: string
+        idTag:
+          type: string
+          maxLength: 20
+        parentIdTag:
+          type: string
+          maxLength: 20
+        reservationId:
+          type: integer
+      additionalProperties: false
+      required:
+        - connectorId
+        - expiryDate
+        - idTag
+        - reservationId
+
+    ReserveNowResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          additionalProperties: false
+          enum:
+            - Accepted
+            - Faulted
+            - Occupied
+            - Rejected
+            - Unavailable
+      additionalProperties: false
+      required:
+        - status
+
+    StopTransactionRequest:
+      type: object
+      properties:
+        idTag:
+          type: string
+          maxLength: 20
+        meterStop:
+          type: integer
+        timestamp:
+          type: string
+        transactionId:
+          type: string
+        reason:
+          type: string
+          additionalProperties: false
+          enum:
+            - EmergencyStop
+            - EVDisconnected
+            - HardReset
+            - Local
+            - Other
+            - PowerLoss
+            - Reboot
+            - Remote
+            - SoftReset
+            - UnlockCommand
+            - DeAuthorized
+        transactionData:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+              sampledValue:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    context:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Interruption.Begin
+                        - Interruption.End
+                        - Sample.Clock
+                        - Sample.Periodic
+                        - Transaction.Begin
+                        - Transaction.End
+                        - Trigger
+                        - Other
+                    format:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Raw
+                        - SignedData
+                    measurand:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Energy.Active.Export.Register
+                        - Energy.Active.Import.Register
+                        - Energy.Reactive.Export.Register
+                        - Energy.Reactive.Import.Register
+                        - Energy.Active.Export.Interval
+                        - Energy.Active.Import.Interval
+                        - Energy.Reactive.Export.Interval
+                        - Energy.Reactive.Import.Interval
+                        - Power.Active.Export
+                        - Power.Active.Import
+                        - Power.Offered
+                        - Power.Reactive.Export
+                        - Power.Reactive.Import
+                        - Power.Factor
+                        - Current.Import
+                        - Current.Export
+                        - Current.Offered
+                        - Voltage
+                        - Frequency
+                        - Temperature
+                        - SoC
+                        - RPM
+                    phase:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - L1
+                        - L2
+                        - L3
+                        - N
+                        - L1-N
+                        - L2-N
+                        - L3-N
+                        - L1-L2
+                        - L2-L3
+                        - L3-L1
+                    location:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Cable
+                        - EV
+                        - Inlet
+                        - Outlet
+                        - Body
+                    unit:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Wh
+                        - kWh
+                        - varh
+                        - kvarh
+                        - W
+                        - kW
+                        - VA
+                        - kVA
+                        - var
+                        - kvar
+                        - A
+                        - V
+                        - K
+                        - Celcius
+                        - Fahrenheit
+                        - Percent
+                  additionalProperties: false
+                  required:
+                    - value
+            additionalProperties: false
+            required:
+              - timestamp
+              - sampledValue
+      additionalProperties: false
+      required:
+        - transactionId
+        - timestamp
+        - meterStop
+
+    StopTransactionResponse:
+      type: object
+      properties:
+        idTagInfo:
+          type: object
+          properties:
+            expiryDate:
+              type: string
+            parentIdTag:
+              type: string
+              maxLength: 20
+            status:
+              type: string
+              additionalProperties: false
+              enum:
+                - Accepted
+                - Blocked
+                - Expired
+                - Invalid
+                - ConcurrentTx
+          additionalProperties: false
+          required:
+            - status
+      additionalProperties: false
 
     TransactionList:
       type: object
@@ -1036,10 +1628,8 @@ components:
           description: Charge point identity.
         dateFrom:
           type: string
-          format: date-time
         dateTo:
           type: string
-          format: date-time
 
     ReservationListResponse:
       type: object
@@ -1052,8 +1642,7 @@ components:
             type: object
             properties:
               id:
-                type: integer
-                format: int32
+                type: string
                 description: Reservation ID.
               idTag:
                 type: string
@@ -1063,17 +1652,13 @@ components:
               serialNumber:
                 type: string
               connectorId:
-                type: integer
-                format: int32
+                type: string
               expiryDate:
                 type: string
-                format: date-time
               dateStart:
                 type: string
-                format: date-time
               dateStop:
                 type: string
-                format: date-time
 
     ChangeAvailability:
       type: object
@@ -1105,9 +1690,9 @@ components:
         - reservationId
       properties:
         reservationId:
-          type: integer
-          format: int32
+          type: string
           description: Id of the reservation to cancel.
+
     CancelReservationResponse:
       type: object
       required:
@@ -1116,6 +1701,15 @@ components:
         status:
           type: string
           enum: [ Accepted, Rejected ]
+
+    ServerTime:
+      type: object
+      properties:
+        serverTime:
+          type: integer
+          description: UNIX time
+      example:
+        serverTime: 1642521843938
 
     ApiError:
       type: object

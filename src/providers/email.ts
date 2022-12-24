@@ -1,49 +1,38 @@
-import sendgrid from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
+import { noReplyEmailAddress, receiverEmailAddress, siteurl, smtpHostname, smtpPassword } from '../config/config';
 
-export interface EmailAttachment {
-  content: string;
-  filename: string;
-  type: string;
-  disposition: string;
+export class EmailProvider {
+  private transporter: any;
+
+  constructor() {
+    this.transporter = nodemailer.createTransport({
+      host: smtpHostname,
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: receiverEmailAddress,
+        pass: smtpPassword,
+      },
+      logger: true,
+    });
+  }
+
+  public async sendEmail(from: string, to: string | string[], subject: string, text: string, html?: string) {
+    await this.transporter.sendMail({
+      from,
+      to,
+      subject: subject,
+      text: text,
+      html: html,
+      headers: { 'x-myheader': 'test header' },
+    });
+  }
+
+  public async emailPasswordResetLink(email: string, hash: string, resetToken: string) {
+    const subject = `Casion App Password Reset Link`;
+    let content = `<p>Please, use the following link to reset your password:</p>`;
+    content += `<br><a href="${siteurl}/reset-password/${hash}/${resetToken}" target="_blank"><h2>RESET MY PASSWORD</h2></a>`;
+    return this.sendEmail(noReplyEmailAddress, email, subject, content);
+  }
 }
-
-const {
-  APP_NAME,
-  SITE_URL,
-  NO_REPLY_EMAIL_ADDRESS = 'noreply@email.com',
-  SENDGRID_API_KEY = 'SENDGRID_APY_KEY',
-} = process.env;
-sendgrid.setApiKey(SENDGRID_API_KEY);
-
-export const sendEmail = async (
-  from: string = NO_REPLY_EMAIL_ADDRESS,
-  to: string | string[],
-  subject: string,
-  text: string,
-  html?: string,
-  attachments?: EmailAttachment[],
-) => {
-  let message = {
-    from,
-    to,
-    subject,
-    text,
-    html: html ?? text,
-  };
-  // if there is at least 1 attachment
-  if (attachments?.length) {
-    Object.assign(message, { attachments });
-  }
-  if (typeof to === 'string') {
-    return sendgrid.send(message);
-  } else if (Array.isArray(to)) {
-    return sendgrid.sendMultiple(message);
-  }
-};
-
-export const emailPasswordResetLink = async (email: string, hash: string, resetToken: string) => {
-  const subject = `${APP_NAME} - Password Reset Link`;
-  let content = `<p>Please, use the following link to reset your password:</p>`;
-  content += `<br><a href="${SITE_URL}/reset-password/${hash}/${resetToken}" target="_blank"><h2>RESET MY PASSWORD</h2></a>`;
-  return sendEmail(undefined, email, subject, content);
-};

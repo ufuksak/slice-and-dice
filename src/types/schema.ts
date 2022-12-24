@@ -23,7 +23,14 @@ export interface paths {
     post: operations["postSaveRepo"];
     delete: operations["deleteUserByName"];
   };
-  "/ping": {
+  "/auth/forgotPassword": {
+    post: operations["postSaveRepo"];
+  };
+  "/auth/vehicle": {
+    get: operations["getVehicles"];
+    post: operations["postSaveVehicle"];
+  };
+  "/auth/ping": {
     get: {
       responses: {
         /** Successfully. */
@@ -38,16 +45,13 @@ export interface paths {
       };
     };
   };
-  "/time": {
+  "/auth/time": {
     get: {
       responses: {
         /** Successfully. */
         200: {
           content: {
-            "application/json": {
-              /** @description UNIX time */
-              serverTime?: number;
-            };
+            "application/json": components["schemas"]["ServerTime"];
           };
         };
         400: components["responses"]["BadRequest"];
@@ -56,45 +60,62 @@ export interface paths {
       };
     };
   };
-  "/CentralSystem/ChargePointList": {
-    get: operations["ChargePointList"];
-  };
-  "/CentralSystem/TransactionList": {
+  "/auth/transactionList": {
     post: operations["TransactionList"];
   };
-  "/CentralSystem/ReservationList": {
+  "/auth/listReservation": {
     post: operations["ReservationList"];
   };
-  "/ChargePoint/{identity}/CancelReservation": {
-    /** To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point. If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status ‘Accepted’. Otherwise it SHALL return ‘Rejected’. */
+  "/auth/cancelReservation": {
     post: operations["CancelReservation"];
   };
-  "/ChargePoint/{identity}/ChangeAvailability": {
-    /** Central System can request a Charge Point to change its availability. A Charge Point is considered available (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point to change its availability. The Central System can change the availability to available or unavailable. */
+  "/auth/changeAvailability": {
     post: operations["ChangeAvailability"];
   };
-  "/ChargePoint/{identity}/RemoteStartTransaction": {
-    /** Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has accepted the request and will attempt to start a transaction. */
+  "/auth/remoteStartTransaction": {
     post: operations["RemoteStartTransaction"];
   };
-  "/ChargePoint/{identity}/RemoteStopTransaction": {
-    /** Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf and a status indicating whether it has accepted the request and a transaction with the given transactionId is ongoing and will be stopped. */
+  "/auth/remoteStopTransaction": {
     post: operations["RemoteStopTransaction"];
   };
-  "/ChargePoint/{identity}/SetChargingProfile": {
-    /**
-     * A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
-     *   • At the start of a transaction to set the charging profile for the transaction;
-     *   • In a RemoteStartTransaction.req sent to a Charge Point
-     *   • During a transaction to change the active profile for the transaction;
-     *   • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
-     */
+  "/auth/startTransaction": {
+    post: operations["StartTransaction"];
+  };
+  "/auth/stopTransaction": {
+    post: operations["StopTransaction"];
+  };
+  "/auth/reserveNow": {
+    post: operations["ReserveNow"];
+  };
+  "/auth/setChargingProfile": {
     post: operations["SetChargingProfile"];
+  };
+  "/auth/setRate": {
+    post: operations["SetRateObject"];
+  };
+  "/auth/setConnector": {
+    post: operations["SetConnector"];
+  };
+  "/auth/chargeStation": {
+    get: operations["ChargePointList"];
+    post: operations["SetChargeStation"];
   };
 }
 
 export interface components {
   schemas: {
+    VehicleList: components["schemas"]["Vehicle"][];
+    Vehicle: {
+      brand?: string;
+      model?: string;
+      year?: string;
+      pictureLink?: string;
+      postCode?: string;
+    };
+    UserEmail: {
+      /** Format: email */
+      name?: string;
+    };
     UserResponse: {
       accessToken?: string;
       refreshToken?: string;
@@ -152,23 +173,21 @@ export interface components {
        * @enum {string}
        */
       chargingRateUnit: "W" | "A";
-      chargingSchedulePeriod: {
-        /**
-         * Format: int32
-         * @description Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
-         */
-        startPeriod: number;
-        /**
-         * Format: double
-         * @description Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
-         */
-        limit: number;
-        /**
-         * Format: int32
-         * @description The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
-         */
-        numberPhases?: number;
-      };
+      /**
+       * Format: int32
+       * @description Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
+       */
+      startPeriod?: number;
+      /**
+       * Format: double
+       * @description Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts.
+       */
+      limit?: number;
+      /**
+       * Format: int32
+       * @description The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
+       */
+      numberPhases?: number;
       /**
        * Format: double
        * @description Minimum charging rate supported by the electric vehicle. The unit of measure is defined by the chargingRateUnit. This parameter is intended to be used by a local smart charging algorithm to optimize the power allocation for in the case a charging process is inefficient at lower charging rates.
@@ -181,11 +200,8 @@ export interface components {
        * @description Unique identifier for this profile.
        */
       chargingProfileId: number;
-      /**
-       * Format: int32
-       * @description Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
-       */
-      transactionId?: number;
+      /** @description Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction. */
+      transactionId?: string;
       /**
        * Format: int32
        * @description Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.
@@ -237,19 +253,57 @@ export interface components {
        */
       status: "Accepted" | "Rejected" | "NotSupported";
     };
-    ChargePointListResponse: {
-      ChargePointList: {
-        /** @description Charge point identity. */
-        Identity?: string;
-        Address?: string;
-        Connection?: {
-          /** Format: int32 */
-          Socket?: number;
-          IP?: string;
-          /** Format: int32 */
-          Port?: number;
-        };
-      }[];
+    ChargePointListResponse: components["schemas"]["ChargeStation"][];
+    PriceComponent: {
+      tax?: number;
+      step_size?: number;
+      type?: string;
+      price?: number;
+    }[];
+    RateObject: {
+      currency?: string;
+      price_components?: components["schemas"]["PriceComponent"];
+    };
+    Connector: {
+      active?: boolean;
+      status?: string;
+      type?: string;
+      format?: string;
+      power_type?: string;
+      power?: number;
+      chargestation?: string;
+      rate?: components["schemas"]["RateObject"];
+    };
+    BootInfo: {
+      chargeBoxSerialNumber?: string;
+      chargePointModel?: string;
+      chargePointSerialNumber?: string;
+      chargePointVendor?: string;
+      firmwareVersion?: string;
+      iccid?: string;
+      imsi?: string;
+    };
+    ChargeStation: {
+      location?: string;
+      protocol?: string;
+      endpoint?: string;
+      static_endpoint?: string;
+      online?: boolean;
+      active?: boolean;
+      public?: boolean;
+      model?: string;
+      bootInfo?: components["schemas"]["BootInfo"];
+      /**
+       * @example [
+       *   4.865672799999999,
+       *   52.3310936
+       * ]
+       */
+      coordinates?: unknown[];
+      connectors?: components["schemas"]["Connector"][];
+      lastConnectAt?: string;
+      lastDisconnectAt?: string;
+      lastMessageAt?: string;
     };
     RemoteStartTransactionJson: {
       /**
@@ -269,11 +323,8 @@ export interface components {
       status: "Accepted" | "Rejected";
     };
     RemoteStopTransaction: {
-      /**
-       * Format: int32
-       * @description The identifier of the transaction which Charge Point is requested to stop.
-       */
-      transactionId: number;
+      /** @description The identifier of the transaction which Charge Point is requested to stop. */
+      transactionId: string;
     };
     RemoteStopTransactionResponse: {
       /**
@@ -281,6 +332,134 @@ export interface components {
        * @enum {string}
        */
       status: "Accepted" | "Rejected";
+    };
+    StartTransactionRequest: {
+      connectorId: number;
+      idTag: string;
+      meterStart: number;
+      reservationId?: number;
+      timestamp: string;
+    };
+    StartTransactionResponse: {
+      idTagInfo: {
+        expiryDate?: string;
+        parentIdTag?: string;
+        /** @enum {string} */
+        status: "Accepted" | "Blocked" | "Expired" | "Invalid" | "ConcurrentTx";
+      };
+      transactionId: string;
+    };
+    ReserveNowRequest: {
+      connectorId: number;
+      expiryDate: string;
+      idTag: string;
+      parentIdTag?: string;
+      reservationId: number;
+    };
+    ReserveNowResponse: {
+      /** @enum {string} */
+      status: "Accepted" | "Faulted" | "Occupied" | "Rejected" | "Unavailable";
+    };
+    StopTransactionRequest: {
+      idTag?: string;
+      meterStop: number;
+      timestamp: string;
+      transactionId: string;
+      /** @enum {string} */
+      reason?:
+        | "EmergencyStop"
+        | "EVDisconnected"
+        | "HardReset"
+        | "Local"
+        | "Other"
+        | "PowerLoss"
+        | "Reboot"
+        | "Remote"
+        | "SoftReset"
+        | "UnlockCommand"
+        | "DeAuthorized";
+      transactionData?: {
+        timestamp: string;
+        sampledValue: {
+          value: string;
+          /** @enum {string} */
+          context?:
+            | "Interruption.Begin"
+            | "Interruption.End"
+            | "Sample.Clock"
+            | "Sample.Periodic"
+            | "Transaction.Begin"
+            | "Transaction.End"
+            | "Trigger"
+            | "Other";
+          /** @enum {string} */
+          format?: "Raw" | "SignedData";
+          /** @enum {string} */
+          measurand?:
+            | "Energy.Active.Export.Register"
+            | "Energy.Active.Import.Register"
+            | "Energy.Reactive.Export.Register"
+            | "Energy.Reactive.Import.Register"
+            | "Energy.Active.Export.Interval"
+            | "Energy.Active.Import.Interval"
+            | "Energy.Reactive.Export.Interval"
+            | "Energy.Reactive.Import.Interval"
+            | "Power.Active.Export"
+            | "Power.Active.Import"
+            | "Power.Offered"
+            | "Power.Reactive.Export"
+            | "Power.Reactive.Import"
+            | "Power.Factor"
+            | "Current.Import"
+            | "Current.Export"
+            | "Current.Offered"
+            | "Voltage"
+            | "Frequency"
+            | "Temperature"
+            | "SoC"
+            | "RPM";
+          /** @enum {string} */
+          phase?:
+            | "L1"
+            | "L2"
+            | "L3"
+            | "N"
+            | "L1-N"
+            | "L2-N"
+            | "L3-N"
+            | "L1-L2"
+            | "L2-L3"
+            | "L3-L1";
+          /** @enum {string} */
+          location?: "Cable" | "EV" | "Inlet" | "Outlet" | "Body";
+          /** @enum {string} */
+          unit?:
+            | "Wh"
+            | "kWh"
+            | "varh"
+            | "kvarh"
+            | "W"
+            | "kW"
+            | "VA"
+            | "kVA"
+            | "var"
+            | "kvar"
+            | "A"
+            | "V"
+            | "K"
+            | "Celcius"
+            | "Fahrenheit"
+            | "Percent";
+        }[];
+      }[];
+    };
+    StopTransactionResponse: {
+      idTagInfo?: {
+        expiryDate?: string;
+        parentIdTag?: string;
+        /** @enum {string} */
+        status: "Accepted" | "Blocked" | "Expired" | "Invalid" | "ConcurrentTx";
+      };
     };
     TransactionList: {
       /** @description Charge point identity. */
@@ -322,29 +501,20 @@ export interface components {
     ReservationList: {
       /** @description Charge point identity. */
       identity: string;
-      /** Format: date-time */
       dateFrom?: string;
-      /** Format: date-time */
       dateTo?: string;
     };
     ReservationListResponse: {
       ReservationList: {
-        /**
-         * Format: int32
-         * @description Reservation ID.
-         */
-        id?: number;
+        /** @description Reservation ID. */
+        id?: string;
         /** @description The identifier to which this authorization applies. */
         idTag?: string;
         identity?: string;
         serialNumber?: string;
-        /** Format: int32 */
-        connectorId?: number;
-        /** Format: date-time */
+        connectorId?: string;
         expiryDate?: string;
-        /** Format: date-time */
         dateStart?: string;
-        /** Format: date-time */
         dateStop?: string;
       }[];
     };
@@ -365,15 +535,21 @@ export interface components {
       status?: "Accepted" | "Rejected" | "Scheduled";
     };
     CancelReservation: {
-      /**
-       * Format: int32
-       * @description Id of the reservation to cancel.
-       */
-      reservationId: number;
+      /** @description Id of the reservation to cancel. */
+      reservationId: string;
     };
     CancelReservationResponse: {
       /** @enum {string} */
       status: "Accepted" | "Rejected";
+    };
+    /**
+     * @example {
+     *   "serverTime": 1642521843938
+     * }
+     */
+    ServerTime: {
+      /** @description UNIX time */
+      serverTime?: number;
     };
     ApiError: {
       /**
@@ -497,23 +673,23 @@ export interface components {
 export interface operations {
   postSaveRepo: {
     responses: {
-      /** User has been successfully created */
+      /** Password reset link has been sent */
       201: {
         headers: {
           Location?: string;
         };
         content: {
-          "application/json": components["schemas"]["UserResponse"];
+          "application/json": components["schemas"]["response"];
         };
       };
       400: components["responses"]["BadRequest"];
       401: components["responses"]["Unauthorized"];
       500: components["responses"]["InternalServerError"];
     };
-    /** save repo selections */
+    /** request password reset via email */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserList"];
+        "application/json": components["schemas"]["UserEmail"];
       };
     };
   };
@@ -629,19 +805,40 @@ export interface operations {
       };
     };
   };
-  ChargePointList: {
+  getVehicles: {
     responses: {
-      /** Successfully. */
+      /** A list of vehicles */
       200: {
         content: {
-          "application/json": components["schemas"]["ChargePointListResponse"];
+          "application/json": components["schemas"]["VehicleList"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      412: components["responses"]["PreconditionFailed"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  postSaveVehicle: {
+    responses: {
+      /** Password reset link has been sent */
+      201: {
+        headers: {
+          Location?: string;
+        };
+        content: {
+          "application/json": components["schemas"]["response"];
         };
       };
       400: components["responses"]["BadRequest"];
       401: components["responses"]["Unauthorized"];
-      403: components["responses"]["Unauthorized"];
-      404: components["responses"]["NotFound"];
-      "5XX": components["responses"]["InternalError"];
+      500: components["responses"]["InternalServerError"];
+    };
+    /** add vehicle */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Vehicle"];
+      };
     };
   };
   TransactionList: {
@@ -684,14 +881,7 @@ export interface operations {
       };
     };
   };
-  /** To cancel a reservation the Central System SHALL send an CancelReservation.req PDU to the Charge Point. If the Charge Point has a reservation matching the reservationId in the request PDU, it SHALL return status ‘Accepted’. Otherwise it SHALL return ‘Rejected’. */
   CancelReservation: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This indicates the success or failure of the cancelling of a reservation by Central System. */
       200: {
@@ -711,14 +901,7 @@ export interface operations {
       };
     };
   };
-  /** Central System can request a Charge Point to change its availability. A Charge Point is considered available (“operative”) when it is charging or ready for charging. A Charge Point is considered unavailable when it does not allow any charging. The Central System SHALL send a ChangeAvailability.req PDU for requesting a Charge Point to change its availability. The Central System can change the availability to available or unavailable. */
   ChangeAvailability: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This indicates whether the Charge Point is able to perform the availability change. */
       200: {
@@ -738,14 +921,7 @@ export interface operations {
       };
     };
   };
-  /** Central System can request a Charge Point to start a transaction by sending a RemoteStartTransaction.req. Upon receipt, the Charge Point SHALL reply with RemoteStartTransaction.conf and a status indicating whether it has accepted the request and will attempt to start a transaction. */
   RemoteStartTransaction: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System. */
       200: {
@@ -765,14 +941,7 @@ export interface operations {
       };
     };
   };
-  /** Central System can request a Charge Point to stop a transaction by sending a RemoteStopTransaction.req to Charge Point with the identifier of the transaction. Charge Point SHALL reply with RemoteStopTransaction.conf and a status indicating whether it has accepted the request and a transaction with the given transactionId is ongoing and will be stopped. */
   RemoteStopTransaction: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
-      };
-    };
     responses: {
       /** This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU. */
       200: {
@@ -792,20 +961,67 @@ export interface operations {
       };
     };
   };
-  /**
-   * A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
-   *   • At the start of a transaction to set the charging profile for the transaction;
-   *   • In a RemoteStartTransaction.req sent to a Charge Point
-   *   • During a transaction to change the active profile for the transaction;
-   *   • Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
-   */
-  SetChargingProfile: {
-    parameters: {
-      path: {
-        /** Charge point identity */
-        identity: components["parameters"]["Identity"];
+  StartTransaction: {
+    responses: {
+      /** This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["StartTransactionResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StartTransactionRequest"];
       };
     };
+  };
+  StopTransaction: {
+    responses: {
+      /** This contains the field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["StopTransactionResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StopTransactionRequest"];
+      };
+    };
+  };
+  ReserveNow: {
+    responses: {
+      /** Reservation Request is delivered */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ReserveNowResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReserveNowRequest"];
+      };
+    };
+  };
+  SetChargingProfile: {
     responses: {
       /** This contains the field definition of the SetChargingProfile.conf PDU sent by the Charge Point to the Central System in response to a SetChargingProfile.req PDU. */
       200: {
@@ -822,6 +1038,91 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["SetChargingProfile"];
+      };
+    };
+  };
+  SetRateObject: {
+    responses: {
+      /** This contains the Rate Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RateObject"];
+      };
+    };
+  };
+  SetConnector: {
+    responses: {
+      /** This contains the Connector Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RateObject"];
+      };
+    };
+  };
+  ChargePointList: {
+    parameters: {
+      query: {
+        /** location */
+        location?: string;
+        /** model */
+        model?: string;
+        /** active */
+        active?: boolean;
+      };
+    };
+    responses: {
+      /** Successfully. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChargePointListResponse"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+  };
+  SetChargeStation: {
+    responses: {
+      /** This contains the ChargeStation Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChargeStation"];
       };
     };
   };
