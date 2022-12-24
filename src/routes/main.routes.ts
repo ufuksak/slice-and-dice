@@ -40,6 +40,7 @@ class MainRouter {
       MainController.cancelReservation,
     );
     this.router.post('/listReservation', Auth.authenticate('jwt', { session: false }), MainController.listReservation);
+    this.router.post('/applicationForm', Auth.authenticate('jwt', { session: false }), MainController.applicationForm);
   }
 
   getRouter() {

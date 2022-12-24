@@ -100,6 +100,9 @@ export interface paths {
     get: operations["ChargePointList"];
     post: operations["SetChargeStation"];
   };
+  "/auth/applicationForm": {
+    post: operations["FillApplicationForm"];
+  };
 }
 
 export interface components {
@@ -550,6 +553,20 @@ export interface components {
     ServerTime: {
       /** @description UNIX time */
       serverTime?: number;
+    };
+    ApplicationForm: {
+      name?: string;
+      email?: string;
+      phone?: string;
+      locationName?: string;
+      /** @enum {string} */
+      relocationToLocation?:
+        | "Owner"
+        | "Management"
+        | "Tenant"
+        | "Customer"
+        | "Other";
+      locationAddress?: string;
     };
     ApiError: {
       /**
@@ -1123,6 +1140,26 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["ChargeStation"];
+      };
+    };
+  };
+  FillApplicationForm: {
+    responses: {
+      /** This contains the ChargeStation Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ApplicationForm"];
       };
     };
   };

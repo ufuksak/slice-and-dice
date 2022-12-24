@@ -812,6 +812,37 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
+  /auth/applicationForm:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.21. Fill the Application Form
+      operationId: FillApplicationForm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationForm'
+      responses:
+        '200':
+          description: >
+            This contains the ChargeStation Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
 components:
   parameters:
     Identity:
@@ -1710,6 +1741,23 @@ components:
           description: UNIX time
       example:
         serverTime: 1642521843938
+
+    ApplicationForm:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        locationName:
+          type: string
+        relocationToLocation:
+          type: string
+          enum: [ Owner, Management, Tenant, Customer, Other ]
+        locationAddress:
+          type: string
 
     ApiError:
       type: object

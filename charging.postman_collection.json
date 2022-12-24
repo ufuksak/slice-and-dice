@@ -1,795 +1,832 @@
 {
-	"info": {
-		"_postman_id": "abcfcd01-da95-401f-bf6e-c5b0126efe5a",
-		"name": "slice-dice",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "2203400"
-	},
-	"item": [
-		{
-			"name": "auth_register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[\n    {\n        \"name\": \"ufuksakar@yahoo.com\",\n        \"password\": \"test\",\n        \"salary\": \"20000\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform2\",\n        \"on_contract\": \"true\",\n        \"privileges\": [\n            {\n                \"entity\": \"User\",\n                \"read\": true,\n                \"create\": true,\n                \"delete\": true,\n                \"update\": true,\n                \"admin\": true\n            }\n        ],\n        \"addresses\": [\n            {\n                \"inCareOf\": \"123\",\n                \"line1\": \"line1\",\n                \"line2\": \"line2\",\n                \"city\": \"istanbul\",\n                \"state\": \"no_state\",\n                \"zipcode\": \"34040\"\n            }\n        ]\n    }\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/register",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "forgetPassword",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"ufuk.sakar@virtasant.com\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/forgotPassword",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"forgotPassword"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "addVehicle",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTI3NzcwMywiZXhwIjoxNjcxMjc4MzAzfQ.MLeu6UWHFrnMfPqsDwUxyRaaeKcF6DLPPq6v_FRKWqY",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"brand\": \"Ford\",\n    \"model\": \"Fiesta\",\n    \"year\": \"2012\",\n    \"pictureLink\": \"https://www.ford.com.tr\",\n    \"postCode\": \"42040\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/vehicle",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"vehicle"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth_register_multiple",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[\n    {\n        \"name\": \"Abhishek\",\n        \"salary\": \"145000\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Anurag\",\n        \"salary\": \"90000\",\n        \"currency\": \"USD\",\n        \"department\": \"Banking\",\n        \"on_contract\": \"true\",\n        \"sub_department\": \"Loan\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Himani\",\n        \"salary\": \"240000\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform2\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Yatendra\",\n        \"salary\": \"30\",\n        \"currency\": \"USD\",\n        \"department\": \"Operations\",\n        \"sub_department\": \"CustomerOnboarding\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Ragini\",\n        \"salary\": \"30\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Nikhil\",\n        \"salary\": \"110000\",\n        \"currency\": \"USD\",\n        \"on_contract\": \"true\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Guljit\",\n        \"salary\": \"30\",\n        \"currency\": \"USD\",\n        \"department\": \"Administration\",\n        \"sub_department\": \"Agriculture\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Himanshu\",\n        \"salary\": \"70000\",\n        \"currency\": \"EUR\",\n        \"department\": \"Operations\",\n        \"sub_department\": \"CustomerOnboarding\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Anupam\",\n        \"salary\": \"200000000\",\n        \"currency\": \"INR\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    }\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/register",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth_delete",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[\n    {\n        \"name\": \"test@test.com\"\n    }\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/register",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth_update",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWNjZWVjMTMtYmRiNS00MzBiLTllODUtMTRkYWYzODBmODdhIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wNVQyMTo0MzoxOC4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wNVQyMTo0MzoxOC4wMDBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidGVzdDQ3QHRlc3QuY29tIiwiZGlzcGxheU5hbWUiOm51bGwsImZpcnN0TmFtZSI6bnVsbCwibGFzdE5hbWUiOm51bGwsImJpbyI6bnVsbCwiYXZhdGFyIjpudWxsLCJwaG9uZSI6bnVsbCwiY291bnRyeSI6bnVsbCwib25Db250cmFjdCI6dHJ1ZSwicHJpdmlsZWdlcyI6W3siaWQiOiI5OTkzYzllZS02NjZjLTRkYjUtOTIyNS1hYTI2ZDAzOTE1NGUiLCJjcmVhdGVkQXQiOiIyMDIyLTEyLTA1VDIxOjQzOjE4LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTEyLTA1VDIxOjQzOjE4LjAwMFoiLCJkZWxldGVkQXQiOm51bGwsImVudGl0eSI6IlVzZXIiLCJyZWFkIjp0cnVlLCJjcmVhdGUiOnRydWUsInVwZGF0ZSI6dHJ1ZSwiZGVsZXRlIjp0cnVlLCJhZG1pbiI6dHJ1ZX1dfSwiaWF0IjoxNjcwMjc2NTk4LCJleHAiOjE2NzAyNzcxOTh9.L8ZIIEfCkTA5H2Z9QcOG_fWMNGMV-sqVmcK-WesXpVU",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"AnupamTest1223\",\n    \"displayName\": \"test\",\n    \"firstName\": \"test\",\n    \"lastName\": \"test\",\n    \"bio\": \"test\",\n    \"avatar\": \"test\",\n    \"phone\": \"test\",\n    \"country\": \"test\",\n    \"salary\": \"60000\",\n    \"currency\": \"USD\",\n    \"department\": \"Engineering\",\n    \"sub_department\": \"Platform2\",\n    \"on_contract\": \"true\",\n    \"privileges\": [\n        {\n            \"entity\": \"User\",\n            \"read\": true,\n            \"create\": true,\n            \"update\": true,\n            \"delete\": true,\n            \"admin\": true\n        }\n    ],\n    \"addresses\": [\n        {\n            \"inCareOf\": \"123\",\n            \"line1\": \"line1\",\n            \"line2\": \"line2\",\n            \"city\": \"istanbul\",\n            \"state\": \"no_state\",\n            \"zipcode\": \"34040\"\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/update",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"update"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth_login",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiM2E0YTZhZGYtNWM3Mi00MmFhLWIwMTYtODg3MTNjYmM4NWJmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbWFpbCI6InRlc3QxMkB0ZXN0LmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjdmODEzMjkzLWZiNWUtNDdlOC1iYzRjLWI3M2EyZTVmMmM1NiIsImNyZWF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiQWRkcmVzcyIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjpmYWxzZX1dfSwiaWF0IjoxNjY5OTc4NTczLCJleHAiOjE2Njk5NzkxNzN9.Z8xuIxxycD7PbzUxg2-hT4ZyGlj6JmB6gLg7fZ1nN94",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"ufuk.sakar@virtasant.com\",\n    \"password\": \"test\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/login",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth_logout",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiM2E0YTZhZGYtNWM3Mi00MmFhLWIwMTYtODg3MTNjYmM4NWJmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbWFpbCI6InRlc3QxMkB0ZXN0LmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjdmODEzMjkzLWZiNWUtNDdlOC1iYzRjLWI3M2EyZTVmMmM1NiIsImNyZWF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiQWRkcmVzcyIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjpmYWxzZX1dfSwiaWF0IjoxNjY5OTc4NTczLCJleHAiOjE2Njk5NzkxNzN9.Z8xuIxxycD7PbzUxg2-hT4ZyGlj6JmB6gLg7fZ1nN94",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiaWF0IjoxNjY5OTgyNjU5fQ.hURnmfoWimHSzZw1WYYy5wj7ANm4en-LpaHEt71Dkro\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/logout",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "users",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTQ3NzYzMiwiZXhwIjoxNjcxNDc4MjMyfQ.dnkoDfllg4_kM9UxdFZXGFDz71G2tn0w_PLfcC5RJmc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/users",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "vehicles",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOGQwYmM0NmItZGFkMy00YzFjLTkwMzgtYzkyZTExMWM5YjNiIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQGdtYWlsLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNGIxZGM1YTEtZjc5My00ZDhiLWFmN2MtOGZiZGU5M2NhZTYzIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTMxMDkyMiwiZXhwIjoxNjcxMzExNTIyfQ.R26fKcD2Q1LtZqaT-KVvX4OjPtbMWIKWlw_YjZLrUb8",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/vehicle",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"vehicle"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "users_statistics",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTQ3NzYzMiwiZXhwIjoxNjcxNDc4MjMyfQ.dnkoDfllg4_kM9UxdFZXGFDz71G2tn0w_PLfcC5RJmc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{HOST}}/auth/statistics?contract=true",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"statistics"
-					],
-					"query": [
-						{
-							"key": "contract",
-							"value": "true"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "users_admin_by_id",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOGQwYmM0NmItZGFkMy00YzFjLTkwMzgtYzkyZTExMWM5YjNiIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQGdtYWlsLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNGIxZGM1YTEtZjc5My00ZDhiLWFmN2MtOGZiZGU5M2NhZTYzIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTMxMDkyMiwiZXhwIjoxNjcxMzExNTIyfQ.R26fKcD2Q1LtZqaT-KVvX4OjPtbMWIKWlw_YjZLrUb8",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{HOST}}/users/admin",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"users",
-						"admin"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "setChargingProfile",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTQ3NzYzMiwiZXhwIjoxNjcxNDc4MjMyfQ.dnkoDfllg4_kM9UxdFZXGFDz71G2tn0w_PLfcC5RJmc",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"connectorId\": 0,\n  \"csChargingProfiles\": {\n    \"chargingProfileId\": 0,\n    \"transactionId\": 0,\n    \"stackLevel\": 0,\n    \"chargingProfilePurpose\": \"ChargePointMaxProfile\",\n    \"chargingProfileKind\": \"Absolute\",\n    \"recurrencyKind\": \"Daily\",\n    \"validFrom\": \"2022-12-10T13:13:21.145Z\",\n    \"validTo\": \"2022-12-10T13:13:21.145Z\",\n    \"chargingSchedule\": {\n      \"duration\": 0,\n      \"startSchedule\": \"2022-12-10T13:13:21.145Z\",\n      \"chargingRateUnit\": \"W\",\n      \"startPeriod\": 0,\n      \"limit\": 0,\n      \"numberPhases\": 0,\n      \"minChargingRate\": 0\n    }\n  }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/setChargingProfile",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"setChargingProfile"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "setRate",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOGEwZWQxODgtMjc4ZS00Mjc1LTkzNDUtMGI2NmNiYWU0YjAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiYjZiMjhmODAtZjE2NS00NTMzLWI3MGEtN2IxNmI3NzBmMGZkIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTRaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTM4OTc2OSwiZXhwIjoxNjcxMzkwMzY5fQ.UqA5-yTP0MS7u7AzxER40QXlZLXY2PmE19RXS2-jd_A",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"currency\": \"EUR\",\n  \"price_components\": [\n    {\n      \"tax\": 10,\n      \"type\": \"FLAT\",\n      \"price\": 5\n    },\n    {\n      \"type\": \"ENERGY\",\n      \"price\": 0.35,\n      \"tax\": 19\n    },\n    {\n      \"tax\": 0,\n      \"type\": \"TIME\",\n      \"price\": 2.5\n    },\n    {\n      \"type\": \"PARKING_TIME\",\n      \"grace_period\": 1.5,\n      \"price\": 0.35,\n      \"tax\": 19\n    }\n  ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/setRate",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"setRate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "setConnector",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTAxNGVkNTMtOTNhNi00MzI0LTg2NDEtZDllNDA1ZTQyZmRmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xNFQwMjoyMToxMy4wNTJaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xNFQwMjoyMToxMy4wNTJaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidGVzdDUyQHRlc3QuY29tIiwiZGlzcGxheU5hbWUiOm51bGwsImZpcnN0TmFtZSI6bnVsbCwibGFzdE5hbWUiOm51bGwsImJpbyI6bnVsbCwiYXZhdGFyIjpudWxsLCJwaG9uZSI6bnVsbCwiY291bnRyeSI6bnVsbCwib25Db250cmFjdCI6dHJ1ZSwicHJpdmlsZWdlcyI6W3siaWQiOiJkNzNiMTI4Mi1jN2Q4LTQwYzQtYjI5YS1kZGY2ZmViMmE0YjQiLCJjcmVhdGVkQXQiOiIyMDIyLTEyLTE0VDAyOjIxOjEzLjA1N1oiLCJ1cGRhdGVkQXQiOiIyMDIyLTEyLTE0VDAyOjIxOjEzLjA1N1oiLCJkZWxldGVkQXQiOm51bGwsImVudGl0eSI6IlVzZXIiLCJyZWFkIjp0cnVlLCJjcmVhdGUiOnRydWUsInVwZGF0ZSI6dHJ1ZSwiZGVsZXRlIjp0cnVlLCJhZG1pbiI6dHJ1ZX1dfSwiaWF0IjoxNjcwOTk1MjczLCJleHAiOjE2NzA5OTU4NzN9.C5DJbkCmtgSLy0CpjEQRS3u3OehmvqdGs0QPy985VGo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"active\": true,\n  \"status\": \"Preparing\",\n  \"type\": \"J1772\",\n  \"format\": \"Socket\",\n  \"power_type\": \"AC_1_PHASE\",\n  \"power\": 11.1,\n  \"chargestation\": \"5eafcdae9e7760a2646be430\",\n  \"rate\": {\n    \"currency\": \"EUR\",\n    \"price_components\": [\n      {\n        \"tax\": 0,\n        \"step_size\": 1,\n        \"type\": \"TIME\",\n        \"price\": 1\n      }\n    ]\n  }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/setConnector",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"setConnector"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "setChargeStation",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZWQ2ZjA1MzAtNGE0NC00N2FlLTgwNGItMDgwODYxODlmNDcyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjgzZDk5MTctYWFlYS00ZDBhLWFhMzgtODVmZDUzMGQ4NDNjIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjlaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTU5NzM0OSwiZXhwIjoxNjcxNTk3OTQ5fQ.mm0OFQxvOaOyFV8glYmldDmuU5I9wmZompbt5J53wPg",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"location\": \"5f5e130ce35d6e2629ba6e4c\",\n    \"protocol\": \"ocpp1.6\",\n    \"endpoint\": \"edrv02\",\n    \"static_endpoint\": \"edrv02\",\n    \"online\": true,\n    \"active\": true,\n    \"public\": true,\n    \"model\": \"AWSE770003T2P0\",\n    \"bootInfo\": {\n        \"chargeBoxSerialNumber\": \"edrv02\",\n        \"chargePointModel\": \"AWSE770003T2P0\",\n        \"chargePointSerialNumber\": \"D2049A024A0\",\n        \"chargePointVendor\": \"eDRV-Test\",\n        \"firmwareVersion\": \"V0.67.50.2770.P0\",\n        \"iccid\": \"89883070000004642862\",\n        \"imsi\": \"234500011399988\"\n    },\n    \"coordinates\": [\n        4.865672799999999,\n        52.3310936\n    ],\n    \"connectors\": [\n        {\n            \"rate\": {\n                \"currency\": \"EUR\",\n                \"price_components\": [\n                    {\n                        \"tax\": 0,\n                        \"step_size\": 1,\n                        \"type\": \"TIME\",\n                        \"price\": 1\n                    }\n                ]\n            },\n            \"active\": true,\n            \"status\": \"Preparing\",\n            \"type\": \"J1772\",\n            \"format\": \"Socket\",\n            \"power_type\": \"AC_1_PHASE\",\n            \"power\": 2.01,\n            \"chargestation\": \"5eafcdae9e7760a2646be431\"\n        },\n        {\n            \"rate\": {\n                \"currency\": \"USD\",\n                \"price_components\": [\n                    {\n                        \"tax\": 0,\n                        \"step_size\": 1,\n                        \"type\": \"TIME\",\n                        \"price\": 1\n                    },\n                    {\n                        \"tax\": 10,\n                        \"type\": \"FLAT\",\n                        \"price\": 5\n                    }\n                ]\n            },\n            \"active\": true,\n            \"status\": \"Preparing\",\n            \"type\": \"J1772\",\n            \"format\": \"Socket\",\n            \"power_type\": \"AC_1_PHASE\",\n            \"power\": 2.01,\n            \"chargestation\": \"5eafcdae9e7760a2646be431\"\n        }\n    ],\n    \"lastConnectAt\": \"2021-10-13T12:27:48.988Z\",\n    \"lastDisconnectAt\": \"2021-10-13T12:27:45.718Z\",\n    \"lastMessageAt\": \"2021-10-13T12:30:09.293Z\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/chargestation",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"chargestation"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "chargeStation",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTU1ODIwMywiZXhwIjoxNjcxNTU4ODAzfQ.s4_JreyCx32dff-lShFzNBXvSwcaCAKxvyfu9iU0J00",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/chargestation?model=AWSE770003T2P0&location=5f5e130ce35d6e2629ba6e4c&active=true",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"chargestation"
-					],
-					"query": [
-						{
-							"key": "model",
-							"value": "AWSE770003T2P0"
-						},
-						{
-							"key": "location",
-							"value": "5f5e130ce35d6e2629ba6e4c"
-						},
-						{
-							"key": "active",
-							"value": "true"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "startTransaction",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZWQ2ZjA1MzAtNGE0NC00N2FlLTgwNGItMDgwODYxODlmNDcyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjY4M2Q5OTE3LWFhZWEtNGQwYS1hYTM4LTg1ZmQ1MzBkODQzYyIsImNyZWF0ZWRBdCI6IjIwMjItMTItMjFUMDE6MzU6NDkuNzY5WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMjFUMDE6MzU6NDkuNzY5WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiVXNlciIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjp0cnVlfV19LCJpYXQiOjE2NzE2ODQwNjIsImV4cCI6MTY3MTY4NDY2Mn0.0dmcAfj8s4sgj-BYksj1C2LMhZDZuNBOidWX_HD41g0",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"connectorId\": 123,\n    \"idTag\": \"12345\",\n    \"meterStart\": 111,\n    \"reservationId\": 222,\n    \"timestamp\": \"1671653812\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/startTransaction",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"startTransaction"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "stopTransaction",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTcyNjAxNiwiZXhwIjoxNjcxNzI2NjE2fQ.IjtFwRwPTQM47dxSPYNk71DE5ktRWqB0nufJxkWxBWo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"idTag\": \"12345\",\n    \"meterStop\": 111,\n    \"timestamp\": \"1671653812\",\n    \"transactionId\": \"c8ca6844-6816-41ab-b9e1-1c4f0de41705\",\n    \"reason\": \"EmergencyStop\",\n    \"transactionData\": [\n        {\n            \"timestamp\": \"1671653812\",\n            \"sampledValue\": [\n                {\n                    \"value\": \"test\",\n                    \"context\": \"Interruption.End\",\n                    \"format\": \"SignedData\",\n                    \"measurand\": \"Energy.Reactive.Import.Interval\",\n                    \"phase\": \"L2\",\n                    \"location\": \"EV\",\n                    \"unit\": \"kWh\"\n                }\n            ]\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/stopTransaction",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"stopTransaction"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "reserveNow",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTcyNzY3MiwiZXhwIjoxNjcxNzI4MjcyfQ.YsJUKMgFiKzOaeDm-pmffcte2OLQWMLibSqhdTDrhQ0",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"connectorId\": 123,\n    \"expiryDate\": \"1671653812\",\n    \"idTag\": \"12345\",\n    \"parentIdTag\": \"111\",\n    \"reservationId\": 222\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/reserveNow",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"reserveNow"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "cancelReservation",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTgxNzQ1MSwiZXhwIjoxNjcxODE4MDUxfQ.Ab6-VDsiUxqzF2-C1kE6ATsugavOHxvDIWvutxs7Qqk",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"connectorId\": 123,\n    \"expiryDate\": \"1671653812\",\n    \"idTag\": \"12345\",\n    \"parentIdTag\": \"111\",\n    \"reservationId\": 222\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/cancelReservation",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"cancelReservation"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "listReservation",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTg5NzE5MSwiZXhwIjoxNjcxODk3NzkxfQ.0ifkVJeI-DcbITIN9am7oeKCSIOK9Se5Y1gjyDm2cvU",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"identity\": \"8369f920-fea1-47b1-a765-634fce504200\",\n    \"dateFrom\": \"1671091417000\",\n    \"dateTo\": \"1691891417000\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{HOST}}/auth/listReservation",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"auth",
-						"listReservation"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "abcfcd01-da95-401f-bf6e-c5b0126efe5a",
+    "name": "slice-dice",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "2203400"
+  },
+  "item": [
+    {
+      "name": "auth_register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n    {\n        \"name\": \"ufuksakar@yahoo.com\",\n        \"password\": \"test\",\n        \"salary\": \"20000\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform2\",\n        \"on_contract\": \"true\",\n        \"privileges\": [\n            {\n                \"entity\": \"User\",\n                \"read\": true,\n                \"create\": true,\n                \"delete\": true,\n                \"update\": true,\n                \"admin\": true\n            }\n        ],\n        \"addresses\": [\n            {\n                \"inCareOf\": \"123\",\n                \"line1\": \"line1\",\n                \"line2\": \"line2\",\n                \"city\": \"istanbul\",\n                \"state\": \"no_state\",\n                \"zipcode\": \"34040\"\n            }\n        ]\n    }\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/register",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "forgetPassword",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"ufuk.sakar@virtasant.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/forgotPassword",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "forgotPassword"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addVehicle",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTI3NzcwMywiZXhwIjoxNjcxMjc4MzAzfQ.MLeu6UWHFrnMfPqsDwUxyRaaeKcF6DLPPq6v_FRKWqY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"brand\": \"Ford\",\n    \"model\": \"Fiesta\",\n    \"year\": \"2012\",\n    \"pictureLink\": \"https://www.ford.com.tr\",\n    \"postCode\": \"42040\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/vehicle",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "vehicle"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth_register_multiple",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n    {\n        \"name\": \"Abhishek\",\n        \"salary\": \"145000\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Anurag\",\n        \"salary\": \"90000\",\n        \"currency\": \"USD\",\n        \"department\": \"Banking\",\n        \"on_contract\": \"true\",\n        \"sub_department\": \"Loan\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Himani\",\n        \"salary\": \"240000\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform2\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Yatendra\",\n        \"salary\": \"30\",\n        \"currency\": \"USD\",\n        \"department\": \"Operations\",\n        \"sub_department\": \"CustomerOnboarding\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Ragini\",\n        \"salary\": \"30\",\n        \"currency\": \"USD\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Nikhil\",\n        \"salary\": \"110000\",\n        \"currency\": \"USD\",\n        \"on_contract\": \"true\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Guljit\",\n        \"salary\": \"30\",\n        \"currency\": \"USD\",\n        \"department\": \"Administration\",\n        \"sub_department\": \"Agriculture\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Himanshu\",\n        \"salary\": \"70000\",\n        \"currency\": \"EUR\",\n        \"department\": \"Operations\",\n        \"sub_department\": \"CustomerOnboarding\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    },\n    {\n        \"name\": \"Anupam\",\n        \"salary\": \"200000000\",\n        \"currency\": \"INR\",\n        \"department\": \"Engineering\",\n        \"sub_department\": \"Platform\",\n        \"password\": \"test\",\n        \"addresses\": [\n            {\n                \"line1\": \"Taksim\",\n                \"city\": \"Istanbul\"\n            }\n        ]\n    }\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/register",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth_delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n    {\n        \"name\": \"test@test.com\"\n    }\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/register",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth_update",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWNjZWVjMTMtYmRiNS00MzBiLTllODUtMTRkYWYzODBmODdhIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wNVQyMTo0MzoxOC4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wNVQyMTo0MzoxOC4wMDBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidGVzdDQ3QHRlc3QuY29tIiwiZGlzcGxheU5hbWUiOm51bGwsImZpcnN0TmFtZSI6bnVsbCwibGFzdE5hbWUiOm51bGwsImJpbyI6bnVsbCwiYXZhdGFyIjpudWxsLCJwaG9uZSI6bnVsbCwiY291bnRyeSI6bnVsbCwib25Db250cmFjdCI6dHJ1ZSwicHJpdmlsZWdlcyI6W3siaWQiOiI5OTkzYzllZS02NjZjLTRkYjUtOTIyNS1hYTI2ZDAzOTE1NGUiLCJjcmVhdGVkQXQiOiIyMDIyLTEyLTA1VDIxOjQzOjE4LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTEyLTA1VDIxOjQzOjE4LjAwMFoiLCJkZWxldGVkQXQiOm51bGwsImVudGl0eSI6IlVzZXIiLCJyZWFkIjp0cnVlLCJjcmVhdGUiOnRydWUsInVwZGF0ZSI6dHJ1ZSwiZGVsZXRlIjp0cnVlLCJhZG1pbiI6dHJ1ZX1dfSwiaWF0IjoxNjcwMjc2NTk4LCJleHAiOjE2NzAyNzcxOTh9.L8ZIIEfCkTA5H2Z9QcOG_fWMNGMV-sqVmcK-WesXpVU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"AnupamTest1223\",\n    \"displayName\": \"test\",\n    \"firstName\": \"test\",\n    \"lastName\": \"test\",\n    \"bio\": \"test\",\n    \"avatar\": \"test\",\n    \"phone\": \"test\",\n    \"country\": \"test\",\n    \"salary\": \"60000\",\n    \"currency\": \"USD\",\n    \"department\": \"Engineering\",\n    \"sub_department\": \"Platform2\",\n    \"on_contract\": \"true\",\n    \"privileges\": [\n        {\n            \"entity\": \"User\",\n            \"read\": true,\n            \"create\": true,\n            \"update\": true,\n            \"delete\": true,\n            \"admin\": true\n        }\n    ],\n    \"addresses\": [\n        {\n            \"inCareOf\": \"123\",\n            \"line1\": \"line1\",\n            \"line2\": \"line2\",\n            \"city\": \"istanbul\",\n            \"state\": \"no_state\",\n            \"zipcode\": \"34040\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/update",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "update"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth_login",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiM2E0YTZhZGYtNWM3Mi00MmFhLWIwMTYtODg3MTNjYmM4NWJmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbWFpbCI6InRlc3QxMkB0ZXN0LmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjdmODEzMjkzLWZiNWUtNDdlOC1iYzRjLWI3M2EyZTVmMmM1NiIsImNyZWF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiQWRkcmVzcyIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjpmYWxzZX1dfSwiaWF0IjoxNjY5OTc4NTczLCJleHAiOjE2Njk5NzkxNzN9.Z8xuIxxycD7PbzUxg2-hT4ZyGlj6JmB6gLg7fZ1nN94",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"ufuk.sakar@virtasant.com\",\n    \"password\": \"test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/login",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth_logout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiM2E0YTZhZGYtNWM3Mi00MmFhLWIwMTYtODg3MTNjYmM4NWJmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wMlQwNzo1NTo1NS44MjBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbWFpbCI6InRlc3QxMkB0ZXN0LmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjdmODEzMjkzLWZiNWUtNDdlOC1iYzRjLWI3M2EyZTVmMmM1NiIsImNyZWF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMDJUMDc6NTU6NTUuODI4WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiQWRkcmVzcyIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjpmYWxzZX1dfSwiaWF0IjoxNjY5OTc4NTczLCJleHAiOjE2Njk5NzkxNzN9.Z8xuIxxycD7PbzUxg2-hT4ZyGlj6JmB6gLg7fZ1nN94",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiaWF0IjoxNjY5OTgyNjU5fQ.hURnmfoWimHSzZw1WYYy5wj7ANm4en-LpaHEt71Dkro\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/logout",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "users",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTQ3NzYzMiwiZXhwIjoxNjcxNDc4MjMyfQ.dnkoDfllg4_kM9UxdFZXGFDz71G2tn0w_PLfcC5RJmc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/users",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "vehicles",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOGQwYmM0NmItZGFkMy00YzFjLTkwMzgtYzkyZTExMWM5YjNiIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQGdtYWlsLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNGIxZGM1YTEtZjc5My00ZDhiLWFmN2MtOGZiZGU5M2NhZTYzIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTMxMDkyMiwiZXhwIjoxNjcxMzExNTIyfQ.R26fKcD2Q1LtZqaT-KVvX4OjPtbMWIKWlw_YjZLrUb8",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/vehicle",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "vehicle"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "users_statistics",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTQ3NzYzMiwiZXhwIjoxNjcxNDc4MjMyfQ.dnkoDfllg4_kM9UxdFZXGFDz71G2tn0w_PLfcC5RJmc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{HOST}}/auth/statistics?contract=true",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "statistics"
+          ],
+          "query": [
+            {
+              "key": "contract",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "users_admin_by_id",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOGQwYmM0NmItZGFkMy00YzFjLTkwMzgtYzkyZTExMWM5YjNiIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzRaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQGdtYWlsLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNGIxZGM1YTEtZjc5My00ZDhiLWFmN2MtOGZiZGU5M2NhZTYzIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QxODowMjowMi40MzZaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTMxMDkyMiwiZXhwIjoxNjcxMzExNTIyfQ.R26fKcD2Q1LtZqaT-KVvX4OjPtbMWIKWlw_YjZLrUb8",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{HOST}}/users/admin",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "users",
+            "admin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "setChargingProfile",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTQ3NzYzMiwiZXhwIjoxNjcxNDc4MjMyfQ.dnkoDfllg4_kM9UxdFZXGFDz71G2tn0w_PLfcC5RJmc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"connectorId\": 0,\n  \"csChargingProfiles\": {\n    \"chargingProfileId\": 0,\n    \"transactionId\": 0,\n    \"stackLevel\": 0,\n    \"chargingProfilePurpose\": \"ChargePointMaxProfile\",\n    \"chargingProfileKind\": \"Absolute\",\n    \"recurrencyKind\": \"Daily\",\n    \"validFrom\": \"2022-12-10T13:13:21.145Z\",\n    \"validTo\": \"2022-12-10T13:13:21.145Z\",\n    \"chargingSchedule\": {\n      \"duration\": 0,\n      \"startSchedule\": \"2022-12-10T13:13:21.145Z\",\n      \"chargingRateUnit\": \"W\",\n      \"startPeriod\": 0,\n      \"limit\": 0,\n      \"numberPhases\": 0,\n      \"minChargingRate\": 0\n    }\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/setChargingProfile",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "setChargingProfile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "setRate",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOGEwZWQxODgtMjc4ZS00Mjc1LTkzNDUtMGI2NmNiYWU0YjAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiYjZiMjhmODAtZjE2NS00NTMzLWI3MGEtN2IxNmI3NzBmMGZkIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xOFQxNTo1NjowOS4wOTRaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTM4OTc2OSwiZXhwIjoxNjcxMzkwMzY5fQ.UqA5-yTP0MS7u7AzxER40QXlZLXY2PmE19RXS2-jd_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"currency\": \"EUR\",\n  \"price_components\": [\n    {\n      \"tax\": 10,\n      \"type\": \"FLAT\",\n      \"price\": 5\n    },\n    {\n      \"type\": \"ENERGY\",\n      \"price\": 0.35,\n      \"tax\": 19\n    },\n    {\n      \"tax\": 0,\n      \"type\": \"TIME\",\n      \"price\": 2.5\n    },\n    {\n      \"type\": \"PARKING_TIME\",\n      \"grace_period\": 1.5,\n      \"price\": 0.35,\n      \"tax\": 19\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/setRate",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "setRate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "setConnector",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTAxNGVkNTMtOTNhNi00MzI0LTg2NDEtZDllNDA1ZTQyZmRmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xNFQwMjoyMToxMy4wNTJaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xNFQwMjoyMToxMy4wNTJaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidGVzdDUyQHRlc3QuY29tIiwiZGlzcGxheU5hbWUiOm51bGwsImZpcnN0TmFtZSI6bnVsbCwibGFzdE5hbWUiOm51bGwsImJpbyI6bnVsbCwiYXZhdGFyIjpudWxsLCJwaG9uZSI6bnVsbCwiY291bnRyeSI6bnVsbCwib25Db250cmFjdCI6dHJ1ZSwicHJpdmlsZWdlcyI6W3siaWQiOiJkNzNiMTI4Mi1jN2Q4LTQwYzQtYjI5YS1kZGY2ZmViMmE0YjQiLCJjcmVhdGVkQXQiOiIyMDIyLTEyLTE0VDAyOjIxOjEzLjA1N1oiLCJ1cGRhdGVkQXQiOiIyMDIyLTEyLTE0VDAyOjIxOjEzLjA1N1oiLCJkZWxldGVkQXQiOm51bGwsImVudGl0eSI6IlVzZXIiLCJyZWFkIjp0cnVlLCJjcmVhdGUiOnRydWUsInVwZGF0ZSI6dHJ1ZSwiZGVsZXRlIjp0cnVlLCJhZG1pbiI6dHJ1ZX1dfSwiaWF0IjoxNjcwOTk1MjczLCJleHAiOjE2NzA5OTU4NzN9.C5DJbkCmtgSLy0CpjEQRS3u3OehmvqdGs0QPy985VGo",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"active\": true,\n  \"status\": \"Preparing\",\n  \"type\": \"J1772\",\n  \"format\": \"Socket\",\n  \"power_type\": \"AC_1_PHASE\",\n  \"power\": 11.1,\n  \"chargestation\": \"5eafcdae9e7760a2646be430\",\n  \"rate\": {\n    \"currency\": \"EUR\",\n    \"price_components\": [\n      {\n        \"tax\": 0,\n        \"step_size\": 1,\n        \"type\": \"TIME\",\n        \"price\": 1\n      }\n    ]\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/setConnector",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "setConnector"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "setChargeStation",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZWQ2ZjA1MzAtNGE0NC00N2FlLTgwNGItMDgwODYxODlmNDcyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjgzZDk5MTctYWFlYS00ZDBhLWFhMzgtODVmZDUzMGQ4NDNjIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjlaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTU5NzM0OSwiZXhwIjoxNjcxNTk3OTQ5fQ.mm0OFQxvOaOyFV8glYmldDmuU5I9wmZompbt5J53wPg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"location\": \"5f5e130ce35d6e2629ba6e4c\",\n    \"protocol\": \"ocpp1.6\",\n    \"endpoint\": \"edrv02\",\n    \"static_endpoint\": \"edrv02\",\n    \"online\": true,\n    \"active\": true,\n    \"public\": true,\n    \"model\": \"AWSE770003T2P0\",\n    \"bootInfo\": {\n        \"chargeBoxSerialNumber\": \"edrv02\",\n        \"chargePointModel\": \"AWSE770003T2P0\",\n        \"chargePointSerialNumber\": \"D2049A024A0\",\n        \"chargePointVendor\": \"eDRV-Test\",\n        \"firmwareVersion\": \"V0.67.50.2770.P0\",\n        \"iccid\": \"89883070000004642862\",\n        \"imsi\": \"234500011399988\"\n    },\n    \"coordinates\": [\n        4.865672799999999,\n        52.3310936\n    ],\n    \"connectors\": [\n        {\n            \"rate\": {\n                \"currency\": \"EUR\",\n                \"price_components\": [\n                    {\n                        \"tax\": 0,\n                        \"step_size\": 1,\n                        \"type\": \"TIME\",\n                        \"price\": 1\n                    }\n                ]\n            },\n            \"active\": true,\n            \"status\": \"Preparing\",\n            \"type\": \"J1772\",\n            \"format\": \"Socket\",\n            \"power_type\": \"AC_1_PHASE\",\n            \"power\": 2.01,\n            \"chargestation\": \"5eafcdae9e7760a2646be431\"\n        },\n        {\n            \"rate\": {\n                \"currency\": \"USD\",\n                \"price_components\": [\n                    {\n                        \"tax\": 0,\n                        \"step_size\": 1,\n                        \"type\": \"TIME\",\n                        \"price\": 1\n                    },\n                    {\n                        \"tax\": 10,\n                        \"type\": \"FLAT\",\n                        \"price\": 5\n                    }\n                ]\n            },\n            \"active\": true,\n            \"status\": \"Preparing\",\n            \"type\": \"J1772\",\n            \"format\": \"Socket\",\n            \"power_type\": \"AC_1_PHASE\",\n            \"power\": 2.01,\n            \"chargestation\": \"5eafcdae9e7760a2646be431\"\n        }\n    ],\n    \"lastConnectAt\": \"2021-10-13T12:27:48.988Z\",\n    \"lastDisconnectAt\": \"2021-10-13T12:27:45.718Z\",\n    \"lastMessageAt\": \"2021-10-13T12:30:09.293Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/chargestation",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "chargestation"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "chargeStation",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTU1ODIwMywiZXhwIjoxNjcxNTU4ODAzfQ.s4_JreyCx32dff-lShFzNBXvSwcaCAKxvyfu9iU0J00",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/chargestation?model=AWSE770003T2P0&location=5f5e130ce35d6e2629ba6e4c&active=true",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "chargestation"
+          ],
+          "query": [
+            {
+              "key": "model",
+              "value": "AWSE770003T2P0"
+            },
+            {
+              "key": "location",
+              "value": "5f5e130ce35d6e2629ba6e4c"
+            },
+            {
+              "key": "active",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "startTransaction",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZWQ2ZjA1MzAtNGE0NC00N2FlLTgwNGItMDgwODYxODlmNDcyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjY4M2Q5OTE3LWFhZWEtNGQwYS1hYTM4LTg1ZmQ1MzBkODQzYyIsImNyZWF0ZWRBdCI6IjIwMjItMTItMjFUMDE6MzU6NDkuNzY5WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMjFUMDE6MzU6NDkuNzY5WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiVXNlciIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjp0cnVlfV19LCJpYXQiOjE2NzE2ODQwNjIsImV4cCI6MTY3MTY4NDY2Mn0.0dmcAfj8s4sgj-BYksj1C2LMhZDZuNBOidWX_HD41g0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"connectorId\": 123,\n    \"idTag\": \"12345\",\n    \"meterStart\": 111,\n    \"reservationId\": 222,\n    \"timestamp\": \"1671653812\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/startTransaction",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "startTransaction"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "stopTransaction",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTcyNjAxNiwiZXhwIjoxNjcxNzI2NjE2fQ.IjtFwRwPTQM47dxSPYNk71DE5ktRWqB0nufJxkWxBWo",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"idTag\": \"12345\",\n    \"meterStop\": 111,\n    \"timestamp\": \"1671653812\",\n    \"transactionId\": \"c8ca6844-6816-41ab-b9e1-1c4f0de41705\",\n    \"reason\": \"EmergencyStop\",\n    \"transactionData\": [\n        {\n            \"timestamp\": \"1671653812\",\n            \"sampledValue\": [\n                {\n                    \"value\": \"test\",\n                    \"context\": \"Interruption.End\",\n                    \"format\": \"SignedData\",\n                    \"measurand\": \"Energy.Reactive.Import.Interval\",\n                    \"phase\": \"L2\",\n                    \"location\": \"EV\",\n                    \"unit\": \"kWh\"\n                }\n            ]\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/stopTransaction",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "stopTransaction"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "reserveNow",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTcyNzY3MiwiZXhwIjoxNjcxNzI4MjcyfQ.YsJUKMgFiKzOaeDm-pmffcte2OLQWMLibSqhdTDrhQ0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"connectorId\": 123,\n    \"expiryDate\": \"1671653812\",\n    \"idTag\": \"12345\",\n    \"parentIdTag\": \"111\",\n    \"reservationId\": 222\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/reserveNow",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "reserveNow"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cancelReservation",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTgxNzQ1MSwiZXhwIjoxNjcxODE4MDUxfQ.Ab6-VDsiUxqzF2-C1kE6ATsugavOHxvDIWvutxs7Qqk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"connectorId\": 123,\n    \"expiryDate\": \"1671653812\",\n    \"idTag\": \"12345\",\n    \"parentIdTag\": \"111\",\n    \"reservationId\": 222\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/cancelReservation",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "cancelReservation"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listReservation",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTg5NzE5MSwiZXhwIjoxNjcxODk3NzkxfQ.0ifkVJeI-DcbITIN9am7oeKCSIOK9Se5Y1gjyDm2cvU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"identity\": \"8369f920-fea1-47b1-a765-634fce504200\",\n    \"dateFrom\": \"1671091417000\",\n    \"dateTo\": \"1691891417000\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/listReservation",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "listReservation"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "applicationForm",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTkxNjQwNSwiZXhwIjoxNjcxOTE3MDA1fQ.TaTNk0Ow7Qy9wdUtnWqBRPv6kQJggkvS6AG6M1Dq5-A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Jimmy Rahani\",\n    \"dateFrom\": \"ufuksakar@yahoo.com\",\n    \"phone\": \"00905557035175\",\n    \"locationName\": \"Burger King Area\",\n    \"relocationToLocation\": \"Tenant\",\n    \"locationAddress\": \"Jakarta 10210\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/applicationForm",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "applicationForm"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }

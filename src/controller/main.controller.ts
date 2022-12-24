@@ -29,6 +29,7 @@ type CancelReservationRequest = components['schemas']['CancelReservation'];
 type CancelReservationResponse = components['schemas']['CancelReservationResponse'];
 type ReservationListRequest = components['schemas']['ReservationList'];
 type ReservationListResponse = components['schemas']['ReservationListResponse'];
+type ApplicationFormRequest = components['schemas']['ApplicationForm'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -400,6 +401,21 @@ class MainController {
         } as unknown as ReservationListResponse);
       });
       res.status(200).json(reservationResponseList);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  applicationForm: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: ApplicationFormRequest = req.body;
+      await this.service.applicationForm(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'Application Form Is Accepted',
+      };
+      res.status(200).json(response);
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);

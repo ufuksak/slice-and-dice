@@ -23,6 +23,8 @@ import { BootInfo } from '../orm/entity/bootInfo';
 import { Vehicle } from '../orm/entity/vehicle';
 import { StartTransaction } from '../orm/entity/startTransaction';
 import { Reservation } from '../orm/entity/reservation';
+import { ApplicationForm } from '../orm/entity/applicationForm';
+import { receiverEmailAddress } from '../config/config';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
@@ -36,6 +38,7 @@ type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
 type CancelReservationRequest = components['schemas']['CancelReservation'];
 type ReservationListRequest = components['schemas']['ReservationList'];
+type ApplicationFormRequest = components['schemas']['ApplicationForm'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -329,6 +332,16 @@ export class MainServices {
         dateTo: new Date(Number(reservationListRequest.dateTo)),
       })
       .getRawMany();
+  }
+
+  public async applicationForm(applicationFormRequest: ApplicationFormRequest) {
+    await AppDataSource.getRepository(ApplicationForm).save(applicationFormRequest);
+    await this.emailSender.sendEmail(
+      'noreply@casion.com',
+      applicationFormRequest.email ? applicationFormRequest.email : receiverEmailAddress,
+      'Form Accepted',
+      `Thank you for applying to Casion, ${applicationFormRequest.name}`,
+    );
   }
 
   public async getStatistics() {
