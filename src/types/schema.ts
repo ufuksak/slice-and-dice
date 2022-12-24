@@ -63,7 +63,7 @@ export interface paths {
   "/auth/transactionList": {
     post: operations["TransactionList"];
   };
-  "/auth/reservationList": {
+  "/auth/listReservation": {
     post: operations["ReservationList"];
   };
   "/auth/cancelReservation": {
@@ -501,28 +501,20 @@ export interface components {
     ReservationList: {
       /** @description Charge point identity. */
       identity: string;
-      /** Format: date-time */
       dateFrom?: string;
-      /** Format: date-time */
       dateTo?: string;
     };
     ReservationListResponse: {
       ReservationList: {
-        /**
-         * Format: int32
-         * @description Reservation ID.
-         */
-        id?: number;
+        /** @description Reservation ID. */
+        id?: string;
         /** @description The identifier to which this authorization applies. */
         idTag?: string;
         identity?: string;
         serialNumber?: string;
-        /** Format: int32 */
-        connectorId?: number;
+        connectorId?: string;
         expiryDate?: string;
-        /** Format: date-time */
         dateStart?: string;
-        /** Format: date-time */
         dateStop?: string;
       }[];
     };

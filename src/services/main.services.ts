@@ -35,6 +35,7 @@ type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
 type CancelReservationRequest = components['schemas']['CancelReservation'];
+type ReservationListRequest = components['schemas']['ReservationList'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -297,6 +298,37 @@ export class MainServices {
       throw new Error(`Reservation Not Found. Id: ${cancelReservationRequest.reservationId}`);
     }
     await AppDataSource.getRepository(Reservation).save(reservationObject);
+  }
+
+  public async listReservation(reservationListRequest: ReservationListRequest) {
+    let connectorObject = await AppDataSource.getRepository(Connector).findOneBy({
+      id: reservationListRequest.identity?.toString(),
+    });
+
+    if (!connectorObject) {
+      throw new Error(`Connector Not Found. Id: ${reservationListRequest.identity}`);
+    }
+
+    return this.dbSource
+      .getRepository(Reservation)
+      .createQueryBuilder('reservation')
+      .select('reservation.id', 'id')
+      .addSelect('reservation.createdAt', 'createdAt')
+      .addSelect('reservation.expiryDate', 'expiryDate')
+      .addSelect('reservation.idTag', 'idTag')
+      .addSelect('reservation.parentIdTag', 'parentIdTag')
+      .addSelect('reservation.status', 'status')
+      .addSelect('connector.id', 'connectorId')
+      .innerJoin('reservation.connector', 'connector')
+      .where('connector.id = :identity')
+      .andWhere('reservation.createdAt >= :dateFrom')
+      .andWhere('reservation.createdAt < :dateTo')
+      .setParameters({
+        identity: connectorObject?.id,
+        dateFrom: new Date(Number(reservationListRequest.dateFrom)),
+        dateTo: new Date(Number(reservationListRequest.dateTo)),
+      })
+      .getRawMany();
   }
 
   public async getStatistics() {

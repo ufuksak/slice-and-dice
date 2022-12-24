@@ -27,6 +27,8 @@ type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
 type ReserveNowResponse = components['schemas']['ReserveNowResponse'];
 type CancelReservationRequest = components['schemas']['CancelReservation'];
 type CancelReservationResponse = components['schemas']['CancelReservationResponse'];
+type ReservationListRequest = components['schemas']['ReservationList'];
+type ReservationListResponse = components['schemas']['ReservationListResponse'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -373,6 +375,31 @@ class MainController {
         status: 'Accepted',
       };
       res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  listReservation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: ReservationListRequest = req.body;
+      const responseList = await this.service.listReservation(payload);
+      const reservationResponseList: ReservationListResponse[] = [];
+      responseList.forEach((reservation: any) => {
+        let expiryTime = Number(reservation.expiryDate.toString() + '000');
+        reservationResponseList.push({
+          id: reservation.id,
+          idTag: reservation.idTag,
+          identity: reservation.id,
+          serialNumber: reservation.id,
+          connectorId: reservation.connectorId,
+          expiryDate: reservation.expiryDate ? new Date(expiryTime).toISOString() : '',
+          dateStart: reservation.expiryDate ? new Date(expiryTime).toISOString() : '',
+          dateStop: reservation.expiryDate ? new Date(expiryTime).toISOString() : '',
+        } as unknown as ReservationListResponse);
+      });
+      res.status(200).json(reservationResponseList);
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);

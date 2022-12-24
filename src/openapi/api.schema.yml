@@ -403,7 +403,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
-  /auth/reservationList:
+  /auth/listReservation:
     post:
       tags:
         - CentralSystem
@@ -1628,10 +1628,8 @@ components:
           description: Charge point identity.
         dateFrom:
           type: string
-          format: date-time
         dateTo:
           type: string
-          format: date-time
 
     ReservationListResponse:
       type: object
@@ -1644,8 +1642,7 @@ components:
             type: object
             properties:
               id:
-                type: integer
-                format: int32
+                type: string
                 description: Reservation ID.
               idTag:
                 type: string
@@ -1655,16 +1652,13 @@ components:
               serialNumber:
                 type: string
               connectorId:
-                type: integer
-                format: int32
+                type: string
               expiryDate:
                 type: string
               dateStart:
                 type: string
-                format: date-time
               dateStop:
                 type: string
-                format: date-time
 
     ChangeAvailability:
       type: object
