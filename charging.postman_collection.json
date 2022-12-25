@@ -205,7 +205,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"ufuk.sakar@virtasant.com\",\n    \"password\": \"test\"\n}",
+          "raw": "{\n    \"name\": \"ufuksakar@yahoo.com\",\n    \"password\": \"test\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -486,7 +486,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTAxNGVkNTMtOTNhNi00MzI0LTg2NDEtZDllNDA1ZTQyZmRmIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xNFQwMjoyMToxMy4wNTJaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xNFQwMjoyMToxMy4wNTJaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidGVzdDUyQHRlc3QuY29tIiwiZGlzcGxheU5hbWUiOm51bGwsImZpcnN0TmFtZSI6bnVsbCwibGFzdE5hbWUiOm51bGwsImJpbyI6bnVsbCwiYXZhdGFyIjpudWxsLCJwaG9uZSI6bnVsbCwiY291bnRyeSI6bnVsbCwib25Db250cmFjdCI6dHJ1ZSwicHJpdmlsZWdlcyI6W3siaWQiOiJkNzNiMTI4Mi1jN2Q4LTQwYzQtYjI5YS1kZGY2ZmViMmE0YjQiLCJjcmVhdGVkQXQiOiIyMDIyLTEyLTE0VDAyOjIxOjEzLjA1N1oiLCJ1cGRhdGVkQXQiOiIyMDIyLTEyLTE0VDAyOjIxOjEzLjA1N1oiLCJkZWxldGVkQXQiOm51bGwsImVudGl0eSI6IlVzZXIiLCJyZWFkIjp0cnVlLCJjcmVhdGUiOnRydWUsInVwZGF0ZSI6dHJ1ZSwiZGVsZXRlIjp0cnVlLCJhZG1pbiI6dHJ1ZX1dfSwiaWF0IjoxNjcwOTk1MjczLCJleHAiOjE2NzA5OTU4NzN9.C5DJbkCmtgSLy0CpjEQRS3u3OehmvqdGs0QPy985VGo",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMmI0YjZmZmEtYjlhOC00YjE4LTk3NmUtMjc2OTFiYWUxYTBhIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6ImMwZGM1YWYzLWU4NjAtNDI3NC04YjBlLTliZjM5MjFhOTRlZSIsImNyZWF0ZWRBdCI6IjIwMjItMTItMjVUMTA6NDQ6MTEuOTYxWiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMjVUMTA6NDQ6MTEuOTYxWiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiVXNlciIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjp0cnVlfV19LCJpYXQiOjE2NzIwMDEzNjIsImV4cCI6MTY3MjAwMTk2Mn0.5hn5tEKDfu188HSzPVflb7cjhcvdMX-4-LvMcvmDA9s",
               "type": "string"
             }
           ]
@@ -799,7 +799,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjFmOGFiNjUtNzk3YS00NTFlLTkxMjYtNzNiMzE4YTY1NmY2IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNDlaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1ay5zYWthckB2aXJ0YXNhbnQuY29tIiwicGFzc3dvcmQiOm51bGwsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiNjlmZDIwMTctMDBkMC00NTczLTlmMjMtYmY3NzdiYWYyODAyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0xN1QwODowNzoyNy4zNTFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTkxNjQwNSwiZXhwIjoxNjcxOTE3MDA1fQ.TaTNk0Ow7Qy9wdUtnWqBRPv6kQJggkvS6AG6M1Dq5-A",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMmI0YjZmZmEtYjlhOC00YjE4LTk3NmUtMjc2OTFiYWUxYTBhIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiYzBkYzVhZjMtZTg2MC00Mjc0LThiMGUtOWJmMzkyMWE5NGVlIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTk3NTg1MSwiZXhwIjoxNjcxOTc2NDUxfQ.ogmzULAl8ovSRhUKSZgqJvuJI2BdCG8n0U9JTbr10as",
               "type": "string"
             }
           ]
@@ -808,7 +808,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Jimmy Rahani\",\n    \"dateFrom\": \"ufuksakar@yahoo.com\",\n    \"phone\": \"00905557035175\",\n    \"locationName\": \"Burger King Area\",\n    \"relocationToLocation\": \"Tenant\",\n    \"locationAddress\": \"Jakarta 10210\"\n}",
+          "raw": "{\n    \"name\": \"Jimmy Rahani\",\n    \"email\": \"ufuksakar@yahoo.com\",\n    \"phone\": \"00905557035175\",\n    \"locationName\": \"Burger King Area\",\n    \"relocationToLocation\": \"Tenant\",\n    \"locationAddress\": \"Jakarta 10210\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -823,6 +823,43 @@
           "path": [
             "auth",
             "applicationForm"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "meterValues",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMmI0YjZmZmEtYjlhOC00YjE4LTk3NmUtMjc2OTFiYWUxYTBhIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6ImMwZGM1YWYzLWU4NjAtNDI3NC04YjBlLTliZjM5MjFhOTRlZSIsImNyZWF0ZWRBdCI6IjIwMjItMTItMjVUMTA6NDQ6MTEuOTYxWiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMjVUMTA6NDQ6MTEuOTYxWiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiVXNlciIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjp0cnVlfV19LCJpYXQiOjE2NzIwMDYxOTQsImV4cCI6MTY3MjAwNjc5NH0.V2wX_Ky2nSTD-pcDeR_Qn8C5F0oBNPAscsfzO82VVQE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"connectorId\": \"a02b28e2-18c3-4898-b5bf-1582ed88335f\",\n    \"transactionId\": \"c8ca6844-6816-41ab-b9e1-1c4f0de41705\",\n    \"meterValue\": [\n        {\n            \"timestamp\": \"1671653812\",\n            \"sampledValue\": [\n                {\n                    \"value\": \"test\",\n                    \"context\": \"Interruption.End\",\n                    \"format\": \"SignedData\",\n                    \"measurand\": \"Energy.Reactive.Import.Interval\",\n                    \"phase\": \"L2\",\n                    \"location\": \"EV\",\n                    \"unit\": \"kWh\"\n                }\n            ]\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/meterValues",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "meterValues"
           ]
         }
       },

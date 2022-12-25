@@ -103,6 +103,9 @@ export interface paths {
   "/auth/applicationForm": {
     post: operations["FillApplicationForm"];
   };
+  "/auth/meterValues": {
+    post: operations["MeterValuesRequest"];
+  };
 }
 
 export interface components {
@@ -567,6 +570,85 @@ export interface components {
         | "Customer"
         | "Other";
       locationAddress?: string;
+    };
+    MeterValuesRequest: {
+      connectorId: string;
+      transactionId?: string;
+      meterValue: {
+        timestamp: string;
+        sampledValue: {
+          value: string;
+          /** @enum {string} */
+          context?:
+            | "Interruption.Begin"
+            | "Interruption.End"
+            | "Sample.Clock"
+            | "Sample.Periodic"
+            | "Transaction.Begin"
+            | "Transaction.End"
+            | "Trigger"
+            | "Other";
+          /** @enum {string} */
+          format?: "Raw" | "SignedData";
+          /** @enum {string} */
+          measurand?:
+            | "Energy.Active.Export.Register"
+            | "Energy.Active.Import.Register"
+            | "Energy.Reactive.Export.Register"
+            | "Energy.Reactive.Import.Register"
+            | "Energy.Active.Export.Interval"
+            | "Energy.Active.Import.Interval"
+            | "Energy.Reactive.Export.Interval"
+            | "Energy.Reactive.Import.Interval"
+            | "Power.Active.Export"
+            | "Power.Active.Import"
+            | "Power.Offered"
+            | "Power.Reactive.Export"
+            | "Power.Reactive.Import"
+            | "Power.Factor"
+            | "Current.Import"
+            | "Current.Export"
+            | "Current.Offered"
+            | "Voltage"
+            | "Frequency"
+            | "Temperature"
+            | "SoC"
+            | "RPM";
+          /** @enum {string} */
+          phase?:
+            | "L1"
+            | "L2"
+            | "L3"
+            | "N"
+            | "L1-N"
+            | "L2-N"
+            | "L3-N"
+            | "L1-L2"
+            | "L2-L3"
+            | "L3-L1";
+          /** @enum {string} */
+          location?: "Cable" | "EV" | "Inlet" | "Outlet" | "Body";
+          /** @enum {string} */
+          unit?:
+            | "Wh"
+            | "kWh"
+            | "varh"
+            | "kvarh"
+            | "W"
+            | "kW"
+            | "VA"
+            | "kVA"
+            | "var"
+            | "kvar"
+            | "A"
+            | "V"
+            | "K"
+            | "Celcius"
+            | "Celsius"
+            | "Fahrenheit"
+            | "Percent";
+        }[];
+      }[];
     };
     ApiError: {
       /**
@@ -1160,6 +1242,26 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["ApplicationForm"];
+      };
+    };
+  };
+  MeterValuesRequest: {
+    responses: {
+      /** This contains the Meter Value details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MeterValuesRequest"];
       };
     };
   };

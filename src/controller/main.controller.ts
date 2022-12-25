@@ -30,6 +30,7 @@ type CancelReservationResponse = components['schemas']['CancelReservationRespons
 type ReservationListRequest = components['schemas']['ReservationList'];
 type ReservationListResponse = components['schemas']['ReservationListResponse'];
 type ApplicationFormRequest = components['schemas']['ApplicationForm'];
+type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -414,6 +415,21 @@ class MainController {
       const response: ResponseItem = {
         code: '200',
         message: 'Application Form Is Accepted',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  meterValues: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: MeterValuesRequest = req.body;
+      await this.service.meterValues(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'Meter Value Recorded',
       };
       res.status(200).json(response);
     } catch (e: any) {

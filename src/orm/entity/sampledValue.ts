@@ -2,6 +2,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base';
 import { TransactionData } from './transactionData';
+import { MeterValue } from './meterValue';
 
 export interface ISampledValue {
   value: string;
@@ -53,4 +54,7 @@ export class SampledValue extends BaseEntity implements ISampledValue {
 
   @ManyToOne(() => TransactionData, (transactionData) => transactionData.id, { onDelete: 'CASCADE' })
   transactionData: TransactionData;
+
+  @ManyToOne(() => MeterValue, (meterValue) => meterValue.sampledValue, { onDelete: 'CASCADE' })
+  meterValue: MeterValue;
 }

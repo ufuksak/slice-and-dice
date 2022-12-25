@@ -25,6 +25,7 @@ import { StartTransaction } from '../orm/entity/startTransaction';
 import { Reservation } from '../orm/entity/reservation';
 import { ApplicationForm } from '../orm/entity/applicationForm';
 import { receiverEmailAddress } from '../config/config';
+import { MeterValueConnector } from '../orm/entity/meterValueConnector';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
@@ -39,6 +40,7 @@ type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
 type CancelReservationRequest = components['schemas']['CancelReservation'];
 type ReservationListRequest = components['schemas']['ReservationList'];
 type ApplicationFormRequest = components['schemas']['ApplicationForm'];
+type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -246,16 +248,8 @@ export class MainServices {
     stopTransactionRequest.transactionData?.forEach((transactionData) => {
       const transactionObject = new TransactionData();
       transactionObject.timestamp = transactionData.timestamp;
-      transactionObject.sampledValue?.forEach((sampledValue) => {
-        const sampledValueObject = new SampledValue();
-        sampledValueObject.value = sampledValue.value;
-        sampledValueObject.context = sampledValue.context;
-        sampledValueObject.format = sampledValue.format;
-        sampledValueObject.measurand = sampledValue.measurand;
-        sampledValueObject.phase = sampledValue.phase;
-        sampledValueObject.location = sampledValue.location;
-        sampledValueObject.unit = sampledValue.unit;
-        AppDataSource.getRepository(SampledValue).save(sampledValueObject);
+      transactionObject.sampledValue?.forEach(async (sampledValue) => {
+        await this.saveSampleValue(sampledValue);
       });
     });
 
@@ -272,6 +266,20 @@ export class MainServices {
       transactionData.stopTransaction = newStopTransaction;
       AppDataSource.getRepository(TransactionData).save(transactionData);
     });
+  }
+
+  private async saveSampleValue(sampledValue: SampledValue) {
+    const sampledValueObject = new SampledValue();
+    sampledValueObject.value = sampledValue.value;
+    sampledValueObject.context = sampledValue.context;
+    sampledValueObject.format = sampledValue.format;
+    sampledValueObject.measurand = sampledValue.measurand;
+    sampledValueObject.phase = sampledValue.phase;
+    sampledValueObject.location = sampledValue.location;
+    sampledValueObject.unit = sampledValue.unit;
+    sampledValueObject.meterValue = sampledValue.meterValue;
+    sampledValueObject.transactionData = sampledValue.transactionData;
+    await AppDataSource.getRepository(SampledValue).save(sampledValueObject);
   }
 
   public async reservationNow(reserveNowRequest: ReserveNowRequest) {
@@ -342,6 +350,37 @@ export class MainServices {
       'Form Accepted',
       `Thank you for applying to Casion, ${applicationFormRequest.name}`,
     );
+  }
+
+  public async meterValues(meterValuesRequest: MeterValuesRequest) {
+    let connectorObject = await AppDataSource.getRepository(Connector).findOneBy({
+      id: meterValuesRequest.connectorId?.toString(),
+    });
+    if (connectorObject === null) {
+      connectorObject = new Connector();
+    }
+    const meterValueConnector: MeterValueConnector = {
+      connector: connectorObject,
+      transactionId: meterValuesRequest.transactionId?.toString(),
+      meterValue: meterValuesRequest.meterValue,
+    } as MeterValueConnector;
+    const meterValueConnectorExisting = await AppDataSource.getRepository(MeterValueConnector).findOneBy({
+      transactionId: meterValuesRequest.transactionId,
+    });
+    let newMeterValueConnector: MeterValueConnector;
+    if (!meterValueConnectorExisting) {
+      newMeterValueConnector = await AppDataSource.getRepository(MeterValueConnector).save(meterValueConnector);
+    } else {
+      await AppDataSource.getRepository(MeterValueConnector).remove(meterValueConnectorExisting);
+      newMeterValueConnector = await AppDataSource.getRepository(MeterValueConnector).save(meterValueConnector);
+    }
+    meterValueConnector.meterValue?.forEach((meterValue) => {
+      meterValue.meterValueConnector = newMeterValueConnector;
+      meterValue.sampledValue?.forEach(async (sampledValue) => {
+        sampledValue.meterValue = meterValue;
+        await this.saveSampleValue(sampledValue);
+      });
+    });
   }
 
   public async getStatistics() {
