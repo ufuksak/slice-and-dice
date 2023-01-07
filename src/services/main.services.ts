@@ -43,6 +43,7 @@ type ReservationListRequest = components['schemas']['ReservationList'];
 type ApplicationFormRequest = components['schemas']['ApplicationForm'];
 type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
 type EncodeQrCode = components['schemas']['EncodeQrCode'];
+type DecodeQrCode = components['schemas']['DecodeQrCode'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -391,6 +392,12 @@ export class MainServices {
   public async encodeQrCode(encodeQrCode: EncodeQrCode) {
     if (encodeQrCode.name) {
       await this.qrCodeProvider.encode(encodeQrCode.name);
+    }
+  }
+
+  public async decodeQrCode(decodeQrCode: DecodeQrCode) {
+    if (decodeQrCode.name) {
+      await this.qrCodeProvider.decode(decodeQrCode.name);
     }
   }
 

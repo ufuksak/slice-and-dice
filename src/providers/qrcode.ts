@@ -1,10 +1,13 @@
-import { Encoder, QRByte, QRKanji, ErrorCorrectionLevel } from '@nuintun/qrcode';
+import { Encoder, QRByte, QRKanji, ErrorCorrectionLevel, Decoder } from '@nuintun/qrcode';
 
 export class QrCodeProvider {
   private qrcode: any;
 
+  private qrcodeDecoder: any;
+
   constructor() {
     this.qrcode = new Encoder();
+    this.qrcodeDecoder = new Decoder();
   }
 
   public async encode(name: string) {
@@ -19,5 +22,16 @@ export class QrCodeProvider {
       console.error(error);
     }
     console.log(this.qrcode.toDataURL());
+  }
+
+  public async decode(link: string) {
+    await this.qrcodeDecoder
+      .scan(link)
+      .then((result: { data: any }) => {
+        console.log(result.data);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
   }
 }

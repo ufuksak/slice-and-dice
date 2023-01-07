@@ -43,6 +43,7 @@ class MainRouter {
     this.router.post('/applicationForm', Auth.authenticate('jwt', { session: false }), MainController.applicationForm);
     this.router.post('/meterValues', Auth.authenticate('jwt', { session: false }), MainController.meterValues);
     this.router.post('/encodeQrCode', Auth.authenticate('jwt', { session: false }), MainController.encodeQrCode);
+    this.router.post('/decodeQrCode', Auth.authenticate('jwt', { session: false }), MainController.decodeQrCode);
   }
 
   getRouter() {

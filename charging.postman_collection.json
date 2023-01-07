@@ -614,7 +614,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZWQ2ZjA1MzAtNGE0NC00N2FlLTgwNGItMDgwODYxODlmNDcyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yMVQwMTozNTo0OS43NjNaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjY4M2Q5OTE3LWFhZWEtNGQwYS1hYTM4LTg1ZmQ1MzBkODQzYyIsImNyZWF0ZWRBdCI6IjIwMjItMTItMjFUMDE6MzU6NDkuNzY5WiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMjFUMDE6MzU6NDkuNzY5WiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiVXNlciIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjp0cnVlfV19LCJpYXQiOjE2NzE2ODQwNjIsImV4cCI6MTY3MTY4NDY2Mn0.0dmcAfj8s4sgj-BYksj1C2LMhZDZuNBOidWX_HD41g0",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjEwN2FhYTUtN2E4YS00MDRjLWJlZjItZTkxMzcwOTNmODM0IiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiM2M4ZjAyNjEtNTA4ZC00NTdmLTllZDEtMzMxZTdmOTAzMDRmIiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMTBaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMTBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MzExMTY2MywiZXhwIjoxNjczMTEyMjYzfQ.zBlir5kfbCMITD5oTEvwbIkqrXekxD8i-e0oTok4HXo",
               "type": "string"
             }
           ]
@@ -799,7 +799,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMmI0YjZmZmEtYjlhOC00YjE4LTk3NmUtMjc2OTFiYWUxYTBhIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjBaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiYzBkYzVhZjMtZTg2MC00Mjc0LThiMGUtOWJmMzkyMWE5NGVlIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjFaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMDo0NDoxMS45NjFaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MTk3NTg1MSwiZXhwIjoxNjcxOTc2NDUxfQ.ogmzULAl8ovSRhUKSZgqJvuJI2BdCG8n0U9JTbr10as",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjEwN2FhYTUtN2E4YS00MDRjLWJlZjItZTkxMzcwOTNmODM0IiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiM2M4ZjAyNjEtNTA4ZC00NTdmLTllZDEtMzMxZTdmOTAzMDRmIiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMTBaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMTBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MzExMTY2MywiZXhwIjoxNjczMTEyMjYzfQ.zBlir5kfbCMITD5oTEvwbIkqrXekxD8i-e0oTok4HXo",
               "type": "string"
             }
           ]
@@ -823,6 +823,80 @@
           "path": [
             "auth",
             "applicationForm"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "encodeQrCode",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjEwN2FhYTUtN2E4YS00MDRjLWJlZjItZTkxMzcwOTNmODM0IiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsImRpc3BsYXlOYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJiaW8iOm51bGwsImF2YXRhciI6bnVsbCwicGhvbmUiOm51bGwsImNvdW50cnkiOm51bGwsIm9uQ29udHJhY3QiOnRydWUsInByaXZpbGVnZXMiOlt7ImlkIjoiM2M4ZjAyNjEtNTA4ZC00NTdmLTllZDEtMzMxZTdmOTAzMDRmIiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMTBaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMTBaIiwiZGVsZXRlZEF0IjpudWxsLCJlbnRpdHkiOiJVc2VyIiwicmVhZCI6dHJ1ZSwiY3JlYXRlIjp0cnVlLCJ1cGRhdGUiOnRydWUsImRlbGV0ZSI6dHJ1ZSwiYWRtaW4iOnRydWV9XX0sImlhdCI6MTY3MzExMTY2MywiZXhwIjoxNjczMTEyMjYzfQ.zBlir5kfbCMITD5oTEvwbIkqrXekxD8i-e0oTok4HXo",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Jimmy Rahani\",\n    \"email\": \"ufuksakar@yahoo.com\",\n    \"phone\": \"00905557035175\",\n    \"locationName\": \"Burger King Area\",\n    \"relocationToLocation\": \"Tenant\",\n    \"locationAddress\": \"Jakarta 10210\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/applicationForm",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "applicationForm"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "decodeQrCode",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYjEwN2FhYTUtN2E4YS00MDRjLWJlZjItZTkxMzcwOTNmODM0IiwiY3JlYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwidXBkYXRlZEF0IjoiMjAyMy0wMS0wN1QxNDoxNDoyMy4zMDVaIiwiZGVsZXRlZEF0IjpudWxsLCJuYW1lIjoidWZ1a3Nha2FyQHlhaG9vLmNvbSIsInBhc3N3b3JkIjpudWxsLCJkaXNwbGF5TmFtZSI6bnVsbCwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiYmlvIjpudWxsLCJhdmF0YXIiOm51bGwsInBob25lIjpudWxsLCJjb3VudHJ5IjpudWxsLCJvbkNvbnRyYWN0Ijp0cnVlLCJwcml2aWxlZ2VzIjpbeyJpZCI6IjNjOGYwMjYxLTUwOGQtNDU3Zi05ZWQxLTMzMWU3ZjkwMzA0ZiIsImNyZWF0ZWRBdCI6IjIwMjMtMDEtMDdUMTQ6MTQ6MjMuMzEwWiIsInVwZGF0ZWRBdCI6IjIwMjMtMDEtMDdUMTQ6MTQ6MjMuMzEwWiIsImRlbGV0ZWRBdCI6bnVsbCwiZW50aXR5IjoiVXNlciIsInJlYWQiOnRydWUsImNyZWF0ZSI6dHJ1ZSwidXBkYXRlIjp0cnVlLCJkZWxldGUiOnRydWUsImFkbWluIjp0cnVlfV19LCJpYXQiOjE2NzMxMTc2NTksImV4cCI6MTY3MzExODI1OX0.RsIt-zsLWBbC8gXC40h1UKpKag6xtX4uq3X12DztYek",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"https://nuintun.github.io/qrcode/examples/qrcode.jpg\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{HOST}}/auth/decodeQrCode",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "auth",
+            "decodeQrCode"
           ]
         }
       },

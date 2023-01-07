@@ -32,6 +32,7 @@ type ReservationListResponse = components['schemas']['ReservationListResponse'];
 type ApplicationFormRequest = components['schemas']['ApplicationForm'];
 type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
 type EncodeQrCode = components['schemas']['EncodeQrCode'];
+type DecodeQrCode = components['schemas']['DecodeQrCode'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -446,6 +447,21 @@ class MainController {
       const response: ResponseItem = {
         code: '200',
         message: 'The code Is created',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  decodeQrCode: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: DecodeQrCode = req.body;
+      await this.service.decodeQrCode(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'The Qr Code Is decoded',
       };
       res.status(200).json(response);
     } catch (e: any) {

@@ -109,6 +109,9 @@ export interface paths {
   "/auth/encodeQrCode": {
     post: operations["EncodeQrCode"];
   };
+  "/auth/decodeQrCode": {
+    post: operations["DecodeQrCode"];
+  };
 }
 
 export interface components {
@@ -654,6 +657,9 @@ export interface components {
       }[];
     };
     EncodeQrCode: {
+      name?: string;
+    };
+    DecodeQrCode: {
       name?: string;
     };
     ApiError: {
@@ -1288,6 +1294,26 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["EncodeQrCode"];
+      };
+    };
+  };
+  DecodeQrCode: {
+    responses: {
+      /** This contains the barcode decoding */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DecodeQrCode"];
       };
     };
   };
