@@ -874,6 +874,37 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
+  /auth/encodeQrCode:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.23. Encode Qr Code
+      operationId: EncodeQrCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncodeQrCode'
+      responses:
+        '200':
+          description: >
+            This contains the barcode encoding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
 components:
   parameters:
     Identity:
@@ -1910,6 +1941,12 @@ components:
       required:
         - connectorId
         - meterValue
+
+    EncodeQrCode:
+      type: object
+      properties:
+        name:
+          type: string
 
     ApiError:
       type: object

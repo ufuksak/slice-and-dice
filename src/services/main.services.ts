@@ -15,6 +15,7 @@ import { SubDepartment } from '../orm/entity/subdepartment';
 import { TransactionData } from '../orm/entity/transactionData';
 import { User } from '../orm/entity/user';
 import { EmailProvider } from '../providers/email';
+import { QrCodeProvider } from '../providers/qrcode'
 import { TestDataSource } from '../test/test.datasource';
 import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
@@ -41,6 +42,7 @@ type CancelReservationRequest = components['schemas']['CancelReservation'];
 type ReservationListRequest = components['schemas']['ReservationList'];
 type ApplicationFormRequest = components['schemas']['ApplicationForm'];
 type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
+type EncodeQrCode = components['schemas']['EncodeQrCode'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -66,10 +68,13 @@ export class MainServices {
 
   private emailSender: EmailProvider;
 
+  private qrCodeProvider: QrCodeProvider;
+
   constructor() {
     this.logger = initLogger(this.constructor.name);
     this.dbSource = isEnv(GLOBAL.ENV_TEST) ? TestDataSource : AppDataSource;
     this.emailSender = new EmailProvider();
+    this.qrCodeProvider = new QrCodeProvider();
   }
 
   public async postSaveUser(payload: payloadType) {
@@ -381,6 +386,12 @@ export class MainServices {
         await this.saveSampleValue(sampledValue);
       });
     });
+  }
+
+  public async encodeQrCode(encodeQrCode: EncodeQrCode) {
+    if (encodeQrCode.name) {
+      await this.qrCodeProvider.encode(encodeQrCode.name);
+    }
   }
 
   public async getStatistics() {

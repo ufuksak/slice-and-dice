@@ -20,6 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@nuintun/qrcode": "^3.3.0",
     "@sendgrid/mail": "^7.7.0",
     "aws-sdk": "^2.1243.0",
     "axios": "^1.1.3",

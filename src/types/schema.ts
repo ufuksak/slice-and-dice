@@ -106,6 +106,9 @@ export interface paths {
   "/auth/meterValues": {
     post: operations["MeterValuesRequest"];
   };
+  "/auth/encodeQrCode": {
+    post: operations["EncodeQrCode"];
+  };
 }
 
 export interface components {
@@ -649,6 +652,9 @@ export interface components {
             | "Percent";
         }[];
       }[];
+    };
+    EncodeQrCode: {
+      name?: string;
     };
     ApiError: {
       /**
@@ -1262,6 +1268,26 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["MeterValuesRequest"];
+      };
+    };
+  };
+  EncodeQrCode: {
+    responses: {
+      /** This contains the barcode encoding */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EncodeQrCode"];
       };
     };
   };

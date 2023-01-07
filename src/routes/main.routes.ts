@@ -42,6 +42,7 @@ class MainRouter {
     this.router.post('/listReservation', Auth.authenticate('jwt', { session: false }), MainController.listReservation);
     this.router.post('/applicationForm', Auth.authenticate('jwt', { session: false }), MainController.applicationForm);
     this.router.post('/meterValues', Auth.authenticate('jwt', { session: false }), MainController.meterValues);
+    this.router.post('/encodeQrCode', Auth.authenticate('jwt', { session: false }), MainController.encodeQrCode);
   }
 
   getRouter() {
