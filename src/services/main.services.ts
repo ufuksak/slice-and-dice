@@ -391,13 +391,13 @@ export class MainServices {
 
   public async encodeQrCode(encodeQrCode: EncodeQrCode) {
     if (encodeQrCode.name) {
-      await this.qrCodeProvider.encode(encodeQrCode.name);
+      await this.qrCodeProvider.encodeDecodeMain('encode', '', 'qrcode', encodeQrCode.name);
     }
   }
 
   public async decodeQrCode(decodeQrCode: DecodeQrCode) {
     if (decodeQrCode.name) {
-      await this.qrCodeProvider.decode(decodeQrCode.name);
+      await this.qrCodeProvider.encodeDecodeMain('decode', decodeQrCode.name, 'qrcode', '');
     }
   }
 
