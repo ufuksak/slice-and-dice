@@ -1,4 +1,3 @@
-import { Encoder, QRByte, QRKanji, ErrorCorrectionLevel, Decoder } from '@nuintun/qrcode';
 import { readFileSync } from 'fs';
 import { normalize } from 'path';
 import * as QRCode from 'qrcode';
@@ -50,13 +49,6 @@ export const bctoa = async (buffer: Buffer, format?: BarcodeReaders, reportForma
 
 export class QrCodeProvider {
   private qrcode: any;
-
-  private qrcodeDecoder: any;
-
-  constructor() {
-    this.qrcode = new Encoder();
-    this.qrcodeDecoder = new Decoder();
-  }
 
   async atoqr(ascii: string, output: 'dataUrl' | string = 'dataUrl'): Promise<any> {
     if (output === 'dataUrl') {

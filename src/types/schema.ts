@@ -30,6 +30,10 @@ export interface paths {
     get: operations["getVehicles"];
     post: operations["postSaveVehicle"];
   };
+  "/auth/location": {
+    get: operations["getLocation"];
+    post: operations["postSaveVehicle"];
+  };
   "/auth/ping": {
     get: {
       responses: {
@@ -123,6 +127,15 @@ export interface components {
       year?: string;
       pictureLink?: string;
       postCode?: string;
+    };
+    LocationList: components["schemas"]["Location"][];
+    Location: {
+      longitude?: number;
+      latitude?: number;
+      name?: string;
+      location_id?: number;
+      kwh_7_is_available?: boolean;
+      "kwh_22_is_available?"?: boolean;
     };
     UserEmail: {
       /** Format: email */
@@ -950,6 +963,20 @@ export interface operations {
       content: {
         "application/json": components["schemas"]["Vehicle"];
       };
+    };
+  };
+  getLocation: {
+    responses: {
+      /** A list of location */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LocationList"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      412: components["responses"]["PreconditionFailed"];
+      500: components["responses"]["InternalServerError"];
     };
   };
   TransactionList: {

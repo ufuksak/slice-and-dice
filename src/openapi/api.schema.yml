@@ -335,6 +335,59 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /auth/location:
+    get:
+      tags:
+        - SliceDice
+      summary: Get The Location
+      operationId: getLocation
+      responses:
+        200:
+          description: A list of location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationList'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - SliceDice
+      summary: Add The Vehicle
+      operationId: postSaveVehicle
+      requestBody:
+        description: 'add vehicle'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '201':
+          description: 'Password reset link has been sent'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /auth/ping:
     get:
       tags:
@@ -1052,6 +1105,27 @@ components:
           type: string
         postCode:
           type: string
+
+    LocationList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Location'
+
+    Location:
+      type: object
+      properties:
+        longitude:
+          type: number
+        latitude:
+          type: number
+        name:
+          type: string
+        location_id:
+          type: number
+        kwh_7_is_available:
+          type: boolean
+        kwh_22_is_available?:
+          type: boolean
 
     UserEmail:
       type: object

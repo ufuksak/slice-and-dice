@@ -10,12 +10,13 @@ import { Privilege } from '../orm/entity/privilege';
 import { Rate } from '../orm/entity/rate';
 import { Salary } from '../orm/entity/salary';
 import { SampledValue } from '../orm/entity/sampledValue';
+import { StationLocation } from '../orm/entity/stationLocation';
 import { StopTransaction } from '../orm/entity/stopTransaction';
 import { SubDepartment } from '../orm/entity/subdepartment';
 import { TransactionData } from '../orm/entity/transactionData';
 import { User } from '../orm/entity/user';
 import { EmailProvider } from '../providers/email';
-import { QrCodeProvider } from '../providers/qrcode'
+import { QrCodeProvider } from '../providers/qrcode';
 import { TestDataSource } from '../test/test.datasource';
 import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
@@ -174,6 +175,14 @@ export class MainServices {
       return await AppDataSource.getRepository(User).find({
         relations: ['privileges'],
       });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  public async getLocations() {
+    try {
+      return await AppDataSource.getRepository(StationLocation).find();
     } catch (e) {
       console.error(e);
     }

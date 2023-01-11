@@ -22,13 +22,11 @@ export class Session extends BaseEntity implements ISession {
 
   @Column({
     nullable: true,
-    length: 50,
   })
   terminated_at_timestamp?: number;
 
   @Column({
     nullable: true,
-    length: 50,
   })
   time_limit: number;
 

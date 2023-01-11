@@ -469,6 +469,18 @@ class MainController {
       console.error(e.message);
     }
   });
+
+  getLocation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.user as User;
+      if (!userHasPrivilege(user, { entity: User.name, action: 'admin', value: true })) {
+        res.status(403).json({ message: 'You have no power here!' });
+      }
+      res.status(200).send(await this.service.getLocations());
+    } catch (e) {
+      console.error(e);
+    }
+  });
 }
 
 export default new MainController();
