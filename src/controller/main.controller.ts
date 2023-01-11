@@ -19,6 +19,7 @@ type ConnectorItem = components['schemas']['Connector'];
 type ChargeStationItem = components['schemas']['ChargeStation'];
 type ResponseItem = components['schemas']['response'];
 type Vehicle = components['schemas']['Vehicle'];
+type Location = components['schemas']['Location'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StartTransactionResponse = components['schemas']['StartTransactionResponse'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
@@ -254,7 +255,22 @@ class MainController {
       const vehicleObject = await this.service.setVehicle(payload);
       const response: ResponseItem = {
         code: 201,
-        message: `Vehicle Created. Id; ${vehicleObject.id}`,
+        message: `Vehicle Created. Id: ${vehicleObject.id}`,
+      };
+      res.status(201).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  postLocation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: Location = req.body;
+      const vehicleObject = await this.service.setLocation(payload);
+      const response: ResponseItem = {
+        code: 201,
+        message: `Location Created. Id: ${vehicleObject.id}`,
       };
       res.status(201).json(response);
     } catch (e: any) {

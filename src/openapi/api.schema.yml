@@ -318,7 +318,7 @@ paths:
               $ref: '#/components/schemas/Vehicle'
       responses:
         '201':
-          description: 'Password reset link has been sent'
+          description: 'Vehicle has been added'
           content:
             application/json:
               schema:
@@ -360,18 +360,18 @@ paths:
     post:
       tags:
         - SliceDice
-      summary: Add The Vehicle
-      operationId: postSaveVehicle
+      summary: Add The Location
+      operationId: postSaveLocation
       requestBody:
-        description: 'add vehicle'
+        description: 'add location'
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Vehicle'
+              $ref: '#/components/schemas/Location'
       responses:
         '201':
-          description: 'Password reset link has been sent'
+          description: 'Location has been added'
           content:
             application/json:
               schema:
@@ -1452,6 +1452,8 @@ components:
           type: string
         lastMessageAt:
           type: string
+        stationLocation:
+          $ref: '#/components/schemas/Location'
 
     RemoteStartTransactionJson:
       type: object

@@ -36,6 +36,7 @@ type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
 type ChargeStationItem = components['schemas']['ChargeStation'];
 type VehicleItem = components['schemas']['Vehicle'];
+type LocationItem = components['schemas']['Location'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
@@ -188,6 +189,10 @@ export class MainServices {
     }
   }
 
+  public async setLocation(location: LocationItem) {
+    return AppDataSource.getRepository(StationLocation).save(location);
+  }
+
   public async setVehicle(vehicle: VehicleItem) {
     return AppDataSource.getRepository(Vehicle).save(vehicle);
   }
@@ -213,6 +218,9 @@ export class MainServices {
     const bootInfo = chargeStationObject.bootInfo;
     bootInfo.chargeStation = chargeStationObject;
     await AppDataSource.getRepository(BootInfo).save(bootInfo);
+    const stationLocation = chargeStationObject.stationLocation;
+    stationLocation.chargeStation = chargeStationObject;
+    await AppDataSource.getRepository(StationLocation).save(stationLocation as StationLocation);
     chargeStationObject.connectors.forEach((connector) => {
       let rateObject: Rate = connector.rate as Rate;
       AppDataSource.getRepository(Rate).save(rateObject);

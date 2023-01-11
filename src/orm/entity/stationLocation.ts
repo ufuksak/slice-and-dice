@@ -7,7 +7,6 @@ export interface IStationLocation {
   longitude: number;
   latitude?: number;
   name: string;
-  location_id: number;
   kwh_7_is_available: boolean;
   kwh_22_is_available?: boolean;
 }
@@ -29,11 +28,6 @@ export class StationLocation extends BaseEntity implements IStationLocation {
     nullable: true,
   })
   name: string;
-
-  @Column({
-    nullable: true,
-  })
-  location_id: number;
 
   @Column({
     nullable: true,

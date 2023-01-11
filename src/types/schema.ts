@@ -32,7 +32,7 @@ export interface paths {
   };
   "/auth/location": {
     get: operations["getLocation"];
-    post: operations["postSaveVehicle"];
+    post: operations["postSaveLocation"];
   };
   "/auth/ping": {
     get: {
@@ -329,6 +329,7 @@ export interface components {
       lastConnectAt?: string;
       lastDisconnectAt?: string;
       lastMessageAt?: string;
+      stationLocation?: components["schemas"]["Location"];
     };
     RemoteStartTransactionJson: {
       /**
@@ -945,7 +946,7 @@ export interface operations {
   };
   postSaveVehicle: {
     responses: {
-      /** Password reset link has been sent */
+      /** Vehicle has been added */
       201: {
         headers: {
           Location?: string;
@@ -977,6 +978,28 @@ export interface operations {
       403: components["responses"]["Unauthorized"];
       412: components["responses"]["PreconditionFailed"];
       500: components["responses"]["InternalServerError"];
+    };
+  };
+  postSaveLocation: {
+    responses: {
+      /** Location has been added */
+      201: {
+        headers: {
+          Location?: string;
+        };
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      500: components["responses"]["InternalServerError"];
+    };
+    /** add location */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Location"];
+      };
     };
   };
   TransactionList: {
