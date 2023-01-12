@@ -40,6 +40,12 @@ class MainRouter {
       MainController.cancelReservation,
     );
     this.router.post('/listReservation', Auth.authenticate('jwt', { session: false }), MainController.listReservation);
+    this.router.post('/applicationForm', Auth.authenticate('jwt', { session: false }), MainController.applicationForm);
+    this.router.post('/meterValues', Auth.authenticate('jwt', { session: false }), MainController.meterValues);
+    this.router.post('/encodeQrCode', Auth.authenticate('jwt', { session: false }), MainController.encodeQrCode);
+    this.router.post('/decodeQrCode', Auth.authenticate('jwt', { session: false }), MainController.decodeQrCode);
+    this.router.get('/location', Auth.authenticate('jwt', { session: false }), MainController.getLocation);
+    this.router.post('/location', Auth.authenticate('jwt', { session: false }), MainController.postLocation);
   }
 
   getRouter() {

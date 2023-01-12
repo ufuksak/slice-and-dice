@@ -318,7 +318,60 @@ paths:
               $ref: '#/components/schemas/Vehicle'
       responses:
         '201':
-          description: 'Password reset link has been sent'
+          description: 'Vehicle has been added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+          headers:
+            Location:
+              schema:
+                type: string
+                format: URI
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/location:
+    get:
+      tags:
+        - SliceDice
+      summary: Get The Location
+      operationId: getLocation
+      responses:
+        200:
+          description: A list of location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationList'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        '412':
+          $ref: '#/components/responses/PreconditionFailed'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - SliceDice
+      summary: Add The Location
+      operationId: postSaveLocation
+      requestBody:
+        description: 'add location'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        '201':
+          description: 'Location has been added'
           content:
             application/json:
               schema:
@@ -812,6 +865,129 @@ paths:
         '5XX':
           $ref: '#/components/responses/InternalError'
 
+  /auth/applicationForm:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.21. Fill the Application Form
+      operationId: FillApplicationForm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationForm'
+      responses:
+        '200':
+          description: >
+            This contains the ChargeStation Object details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/meterValues:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.22. Fill the MeterValues
+      operationId: MeterValuesRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeterValuesRequest'
+      responses:
+        '200':
+          description: >
+            This contains the Meter Value details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/encodeQrCode:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.23. Encode Qr Code
+      operationId: EncodeQrCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncodeQrCode'
+      responses:
+        '200':
+          description: >
+            This contains the barcode encoding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
+
+  /auth/decodeQrCode:
+    post:
+      tags:
+        - ChargePoint
+      summary: 5.23. Decode Qr Code
+      operationId: DecodeQrCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecodeQrCode'
+      responses:
+        '200':
+          description: >
+            This contains the barcode decoding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/InternalError'
 components:
   parameters:
     Identity:
@@ -929,6 +1105,27 @@ components:
           type: string
         postCode:
           type: string
+
+    LocationList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Location'
+
+    Location:
+      type: object
+      properties:
+        longitude:
+          type: number
+        latitude:
+          type: number
+        name:
+          type: string
+        location_id:
+          type: number
+        kwh_7_is_available:
+          type: boolean
+        kwh_22_is_available?:
+          type: boolean
 
     UserEmail:
       type: object
@@ -1255,6 +1452,8 @@ components:
           type: string
         lastMessageAt:
           type: string
+        stationLocation:
+          $ref: '#/components/schemas/Location'
 
     RemoteStartTransactionJson:
       type: object
@@ -1710,6 +1909,156 @@ components:
           description: UNIX time
       example:
         serverTime: 1642521843938
+
+    ApplicationForm:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        locationName:
+          type: string
+        relocationToLocation:
+          type: string
+          enum: [ Owner, Management, Tenant, Customer, Other ]
+        locationAddress:
+          type: string
+
+    MeterValuesRequest:
+      type: object
+      properties:
+        connectorId:
+          type: string
+        transactionId:
+          type: string
+        meterValue:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+              sampledValue:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    context:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Interruption.Begin
+                        - Interruption.End
+                        - Sample.Clock
+                        - Sample.Periodic
+                        - Transaction.Begin
+                        - Transaction.End
+                        - Trigger
+                        - Other
+                    format:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Raw
+                        - SignedData
+                    measurand:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Energy.Active.Export.Register
+                        - Energy.Active.Import.Register
+                        - Energy.Reactive.Export.Register
+                        - Energy.Reactive.Import.Register
+                        - Energy.Active.Export.Interval
+                        - Energy.Active.Import.Interval
+                        - Energy.Reactive.Export.Interval
+                        - Energy.Reactive.Import.Interval
+                        - Power.Active.Export
+                        - Power.Active.Import
+                        - Power.Offered
+                        - Power.Reactive.Export
+                        - Power.Reactive.Import
+                        - Power.Factor
+                        - Current.Import
+                        - Current.Export
+                        - Current.Offered
+                        - Voltage
+                        - Frequency
+                        - Temperature
+                        - SoC
+                        - RPM
+                    phase:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - L1
+                        - L2
+                        - L3
+                        - N
+                        - L1-N
+                        - L2-N
+                        - L3-N
+                        - L1-L2
+                        - L2-L3
+                        - L3-L1
+                    location:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Cable
+                        - EV
+                        - Inlet
+                        - Outlet
+                        - Body
+                    unit:
+                      type: string
+                      additionalProperties: false
+                      enum:
+                        - Wh
+                        - kWh
+                        - varh
+                        - kvarh
+                        - W
+                        - kW
+                        - VA
+                        - kVA
+                        - var
+                        - kvar
+                        - A
+                        - V
+                        - K
+                        - Celcius
+                        - Celsius
+                        - Fahrenheit
+                        - Percent
+                  additionalProperties: false
+                  required:
+                    - value
+            additionalProperties: false
+            required:
+              - timestamp
+              - sampledValue
+      additionalProperties: false
+      required:
+        - connectorId
+        - meterValue
+
+    EncodeQrCode:
+      type: object
+      properties:
+        name:
+          type: string
+
+    DecodeQrCode:
+      type: object
+      properties:
+        name:
+          type: string
 
     ApiError:
       type: object

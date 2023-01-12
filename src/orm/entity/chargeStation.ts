@@ -3,6 +3,8 @@ import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { BaseEntity } from './base';
 import { BootInfo } from './bootInfo';
 import { Connector } from './connector';
+import { Session } from './session';
+import { StationLocation } from './stationLocation';
 
 export interface IChargeStation {
   location?: string;
@@ -14,6 +16,8 @@ export interface IChargeStation {
   public?: boolean;
   model?: string;
   bootInfo?: BootInfo;
+  stationLocation: StationLocation;
+  sessions: Session[];
   coordinates?: number[];
   connectors?: Connector[];
   lastConnectAt?: string;
@@ -67,6 +71,13 @@ export class ChargeStation extends BaseEntity implements IChargeStation {
   @JoinColumn()
   @OneToOne(() => BootInfo, (bootInfo) => bootInfo.chargeStation)
   bootInfo: BootInfo;
+
+  @JoinColumn()
+  @OneToOne(() => StationLocation, (stationLocation) => stationLocation.chargeStation)
+  stationLocation: StationLocation;
+
+  @OneToMany(() => Session, (session) => session.chargeStation)
+  sessions: Session[];
 
   @Column('simple-array', {
     nullable: true,

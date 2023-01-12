@@ -10,11 +10,13 @@ import { Privilege } from '../orm/entity/privilege';
 import { Rate } from '../orm/entity/rate';
 import { Salary } from '../orm/entity/salary';
 import { SampledValue } from '../orm/entity/sampledValue';
+import { StationLocation } from '../orm/entity/stationLocation';
 import { StopTransaction } from '../orm/entity/stopTransaction';
 import { SubDepartment } from '../orm/entity/subdepartment';
 import { TransactionData } from '../orm/entity/transactionData';
 import { User } from '../orm/entity/user';
 import { EmailProvider } from '../providers/email';
+import { QrCodeProvider } from '../providers/qrcode';
 import { TestDataSource } from '../test/test.datasource';
 import { components } from '../types/schema';
 import { UserDuplicated } from '../helpers/APIError';
@@ -23,6 +25,9 @@ import { BootInfo } from '../orm/entity/bootInfo';
 import { Vehicle } from '../orm/entity/vehicle';
 import { StartTransaction } from '../orm/entity/startTransaction';
 import { Reservation } from '../orm/entity/reservation';
+import { ApplicationForm } from '../orm/entity/applicationForm';
+import { receiverEmailAddress } from '../config/config';
+import { MeterValueConnector } from '../orm/entity/meterValueConnector';
 
 type PrivilegeItem = components['schemas']['PrivilegeItem'];
 type AddressItem = components['schemas']['AddressItem'];
@@ -31,11 +36,16 @@ type RateObject = components['schemas']['RateObject'];
 type ConnectorItem = components['schemas']['Connector'];
 type ChargeStationItem = components['schemas']['ChargeStation'];
 type VehicleItem = components['schemas']['Vehicle'];
+type LocationItem = components['schemas']['Location'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
 type ReserveNowRequest = components['schemas']['ReserveNowRequest'];
 type CancelReservationRequest = components['schemas']['CancelReservation'];
 type ReservationListRequest = components['schemas']['ReservationList'];
+type ApplicationFormRequest = components['schemas']['ApplicationForm'];
+type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
+type EncodeQrCode = components['schemas']['EncodeQrCode'];
+type DecodeQrCode = components['schemas']['DecodeQrCode'];
 
 const isEnv = (environment: string): boolean => {
   return process.env.NODE_ENV === environment;
@@ -61,10 +71,13 @@ export class MainServices {
 
   private emailSender: EmailProvider;
 
+  private qrCodeProvider: QrCodeProvider;
+
   constructor() {
     this.logger = initLogger(this.constructor.name);
     this.dbSource = isEnv(GLOBAL.ENV_TEST) ? TestDataSource : AppDataSource;
     this.emailSender = new EmailProvider();
+    this.qrCodeProvider = new QrCodeProvider();
   }
 
   public async postSaveUser(payload: payloadType) {
@@ -168,6 +181,18 @@ export class MainServices {
     }
   }
 
+  public async getLocations() {
+    try {
+      return await AppDataSource.getRepository(StationLocation).find();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  public async setLocation(location: LocationItem) {
+    return AppDataSource.getRepository(StationLocation).save(location);
+  }
+
   public async setVehicle(vehicle: VehicleItem) {
     return AppDataSource.getRepository(Vehicle).save(vehicle);
   }
@@ -193,6 +218,9 @@ export class MainServices {
     const bootInfo = chargeStationObject.bootInfo;
     bootInfo.chargeStation = chargeStationObject;
     await AppDataSource.getRepository(BootInfo).save(bootInfo);
+    const stationLocation = chargeStationObject.stationLocation;
+    stationLocation.chargeStation = chargeStationObject;
+    await AppDataSource.getRepository(StationLocation).save(stationLocation as StationLocation);
     chargeStationObject.connectors.forEach((connector) => {
       let rateObject: Rate = connector.rate as Rate;
       AppDataSource.getRepository(Rate).save(rateObject);
@@ -243,16 +271,8 @@ export class MainServices {
     stopTransactionRequest.transactionData?.forEach((transactionData) => {
       const transactionObject = new TransactionData();
       transactionObject.timestamp = transactionData.timestamp;
-      transactionObject.sampledValue?.forEach((sampledValue) => {
-        const sampledValueObject = new SampledValue();
-        sampledValueObject.value = sampledValue.value;
-        sampledValueObject.context = sampledValue.context;
-        sampledValueObject.format = sampledValue.format;
-        sampledValueObject.measurand = sampledValue.measurand;
-        sampledValueObject.phase = sampledValue.phase;
-        sampledValueObject.location = sampledValue.location;
-        sampledValueObject.unit = sampledValue.unit;
-        AppDataSource.getRepository(SampledValue).save(sampledValueObject);
+      transactionObject.sampledValue?.forEach(async (sampledValue) => {
+        await this.saveSampleValue(sampledValue);
       });
     });
 
@@ -269,6 +289,20 @@ export class MainServices {
       transactionData.stopTransaction = newStopTransaction;
       AppDataSource.getRepository(TransactionData).save(transactionData);
     });
+  }
+
+  private async saveSampleValue(sampledValue: SampledValue) {
+    const sampledValueObject = new SampledValue();
+    sampledValueObject.value = sampledValue.value;
+    sampledValueObject.context = sampledValue.context;
+    sampledValueObject.format = sampledValue.format;
+    sampledValueObject.measurand = sampledValue.measurand;
+    sampledValueObject.phase = sampledValue.phase;
+    sampledValueObject.location = sampledValue.location;
+    sampledValueObject.unit = sampledValue.unit;
+    sampledValueObject.meterValue = sampledValue.meterValue;
+    sampledValueObject.transactionData = sampledValue.transactionData;
+    await AppDataSource.getRepository(SampledValue).save(sampledValueObject);
   }
 
   public async reservationNow(reserveNowRequest: ReserveNowRequest) {
@@ -329,6 +363,59 @@ export class MainServices {
         dateTo: new Date(Number(reservationListRequest.dateTo)),
       })
       .getRawMany();
+  }
+
+  public async applicationForm(applicationFormRequest: ApplicationFormRequest) {
+    await AppDataSource.getRepository(ApplicationForm).save(applicationFormRequest);
+    await this.emailSender.sendEmail(
+      'noreply@casion.com',
+      applicationFormRequest.email ? applicationFormRequest.email : receiverEmailAddress,
+      'Form Accepted',
+      `Thank you for applying to Casion, ${applicationFormRequest.name}`,
+    );
+  }
+
+  public async meterValues(meterValuesRequest: MeterValuesRequest) {
+    let connectorObject = await AppDataSource.getRepository(Connector).findOneBy({
+      id: meterValuesRequest.connectorId?.toString(),
+    });
+    if (connectorObject === null) {
+      connectorObject = new Connector();
+    }
+    const meterValueConnector: MeterValueConnector = {
+      connector: connectorObject,
+      transactionId: meterValuesRequest.transactionId?.toString(),
+      meterValue: meterValuesRequest.meterValue,
+    } as MeterValueConnector;
+    const meterValueConnectorExisting = await AppDataSource.getRepository(MeterValueConnector).findOneBy({
+      transactionId: meterValuesRequest.transactionId,
+    });
+    let newMeterValueConnector: MeterValueConnector;
+    if (!meterValueConnectorExisting) {
+      newMeterValueConnector = await AppDataSource.getRepository(MeterValueConnector).save(meterValueConnector);
+    } else {
+      await AppDataSource.getRepository(MeterValueConnector).remove(meterValueConnectorExisting);
+      newMeterValueConnector = await AppDataSource.getRepository(MeterValueConnector).save(meterValueConnector);
+    }
+    meterValueConnector.meterValue?.forEach((meterValue) => {
+      meterValue.meterValueConnector = newMeterValueConnector;
+      meterValue.sampledValue?.forEach(async (sampledValue) => {
+        sampledValue.meterValue = meterValue;
+        await this.saveSampleValue(sampledValue);
+      });
+    });
+  }
+
+  public async encodeQrCode(encodeQrCode: EncodeQrCode) {
+    if (encodeQrCode.name) {
+      await this.qrCodeProvider.encodeDecodeMain('encode', '', 'qrcode', encodeQrCode.name);
+    }
+  }
+
+  public async decodeQrCode(decodeQrCode: DecodeQrCode) {
+    if (decodeQrCode.name) {
+      await this.qrCodeProvider.encodeDecodeMain('decode', decodeQrCode.name, 'qrcode', '');
+    }
   }
 
   public async getStatistics() {

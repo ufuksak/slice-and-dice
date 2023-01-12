@@ -1,15 +1,18 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Entity, Column, BeforeInsert, OneToMany, ManyToOne } from 'typeorm';
 import { encryptPassword } from '../../providers/encryption';
+import { Area } from './area';
 import { BaseEntity } from './base';
 import { Address } from './address';
 import { Department } from './department';
 import { Privilege } from './privilege';
 import { Salary } from './salary';
+import { Session } from './session';
 import { SubDepartment } from './subdepartment';
 import { Charge } from './charge';
 import { PaymentMethod } from './paymentMethod';
 import { Organization } from './organization';
+import { Vehicle } from './vehicle';
 
 export interface IUser {
   name: string;
@@ -106,6 +109,15 @@ export class User extends BaseEntity implements IUser {
 
   @OneToMany(() => PaymentMethod, (paymentMethod) => paymentMethod.user, { cascade: true })
   paymentMethod: PaymentMethod[];
+
+  @OneToMany(() => Session, (session) => session.user, { cascade: true })
+  session: Session[];
+
+  @OneToMany(() => Vehicle, (vehicle) => vehicle.user, { cascade: true })
+  vehicle: Vehicle[];
+
+  @OneToMany(() => Area, (area) => area.user, { cascade: true })
+  area: Area[];
 
   @ManyToOne(() => Department, (department) => department.user)
   department: Department;

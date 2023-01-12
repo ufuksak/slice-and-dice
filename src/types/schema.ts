@@ -30,6 +30,10 @@ export interface paths {
     get: operations["getVehicles"];
     post: operations["postSaveVehicle"];
   };
+  "/auth/location": {
+    get: operations["getLocation"];
+    post: operations["postSaveLocation"];
+  };
   "/auth/ping": {
     get: {
       responses: {
@@ -100,6 +104,18 @@ export interface paths {
     get: operations["ChargePointList"];
     post: operations["SetChargeStation"];
   };
+  "/auth/applicationForm": {
+    post: operations["FillApplicationForm"];
+  };
+  "/auth/meterValues": {
+    post: operations["MeterValuesRequest"];
+  };
+  "/auth/encodeQrCode": {
+    post: operations["EncodeQrCode"];
+  };
+  "/auth/decodeQrCode": {
+    post: operations["DecodeQrCode"];
+  };
 }
 
 export interface components {
@@ -111,6 +127,15 @@ export interface components {
       year?: string;
       pictureLink?: string;
       postCode?: string;
+    };
+    LocationList: components["schemas"]["Location"][];
+    Location: {
+      longitude?: number;
+      latitude?: number;
+      name?: string;
+      location_id?: number;
+      kwh_7_is_available?: boolean;
+      "kwh_22_is_available?"?: boolean;
     };
     UserEmail: {
       /** Format: email */
@@ -304,6 +329,7 @@ export interface components {
       lastConnectAt?: string;
       lastDisconnectAt?: string;
       lastMessageAt?: string;
+      stationLocation?: components["schemas"]["Location"];
     };
     RemoteStartTransactionJson: {
       /**
@@ -550,6 +576,105 @@ export interface components {
     ServerTime: {
       /** @description UNIX time */
       serverTime?: number;
+    };
+    ApplicationForm: {
+      name?: string;
+      email?: string;
+      phone?: string;
+      locationName?: string;
+      /** @enum {string} */
+      relocationToLocation?:
+        | "Owner"
+        | "Management"
+        | "Tenant"
+        | "Customer"
+        | "Other";
+      locationAddress?: string;
+    };
+    MeterValuesRequest: {
+      connectorId: string;
+      transactionId?: string;
+      meterValue: {
+        timestamp: string;
+        sampledValue: {
+          value: string;
+          /** @enum {string} */
+          context?:
+            | "Interruption.Begin"
+            | "Interruption.End"
+            | "Sample.Clock"
+            | "Sample.Periodic"
+            | "Transaction.Begin"
+            | "Transaction.End"
+            | "Trigger"
+            | "Other";
+          /** @enum {string} */
+          format?: "Raw" | "SignedData";
+          /** @enum {string} */
+          measurand?:
+            | "Energy.Active.Export.Register"
+            | "Energy.Active.Import.Register"
+            | "Energy.Reactive.Export.Register"
+            | "Energy.Reactive.Import.Register"
+            | "Energy.Active.Export.Interval"
+            | "Energy.Active.Import.Interval"
+            | "Energy.Reactive.Export.Interval"
+            | "Energy.Reactive.Import.Interval"
+            | "Power.Active.Export"
+            | "Power.Active.Import"
+            | "Power.Offered"
+            | "Power.Reactive.Export"
+            | "Power.Reactive.Import"
+            | "Power.Factor"
+            | "Current.Import"
+            | "Current.Export"
+            | "Current.Offered"
+            | "Voltage"
+            | "Frequency"
+            | "Temperature"
+            | "SoC"
+            | "RPM";
+          /** @enum {string} */
+          phase?:
+            | "L1"
+            | "L2"
+            | "L3"
+            | "N"
+            | "L1-N"
+            | "L2-N"
+            | "L3-N"
+            | "L1-L2"
+            | "L2-L3"
+            | "L3-L1";
+          /** @enum {string} */
+          location?: "Cable" | "EV" | "Inlet" | "Outlet" | "Body";
+          /** @enum {string} */
+          unit?:
+            | "Wh"
+            | "kWh"
+            | "varh"
+            | "kvarh"
+            | "W"
+            | "kW"
+            | "VA"
+            | "kVA"
+            | "var"
+            | "kvar"
+            | "A"
+            | "V"
+            | "K"
+            | "Celcius"
+            | "Celsius"
+            | "Fahrenheit"
+            | "Percent";
+        }[];
+      }[];
+    };
+    EncodeQrCode: {
+      name?: string;
+    };
+    DecodeQrCode: {
+      name?: string;
     };
     ApiError: {
       /**
@@ -821,7 +946,7 @@ export interface operations {
   };
   postSaveVehicle: {
     responses: {
-      /** Password reset link has been sent */
+      /** Vehicle has been added */
       201: {
         headers: {
           Location?: string;
@@ -838,6 +963,42 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["Vehicle"];
+      };
+    };
+  };
+  getLocation: {
+    responses: {
+      /** A list of location */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LocationList"];
+        };
+      };
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      412: components["responses"]["PreconditionFailed"];
+      500: components["responses"]["InternalServerError"];
+    };
+  };
+  postSaveLocation: {
+    responses: {
+      /** Location has been added */
+      201: {
+        headers: {
+          Location?: string;
+        };
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      500: components["responses"]["InternalServerError"];
+    };
+    /** add location */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Location"];
       };
     };
   };
@@ -1123,6 +1284,86 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["ChargeStation"];
+      };
+    };
+  };
+  FillApplicationForm: {
+    responses: {
+      /** This contains the ChargeStation Object details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ApplicationForm"];
+      };
+    };
+  };
+  MeterValuesRequest: {
+    responses: {
+      /** This contains the Meter Value details */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MeterValuesRequest"];
+      };
+    };
+  };
+  EncodeQrCode: {
+    responses: {
+      /** This contains the barcode encoding */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EncodeQrCode"];
+      };
+    };
+  };
+  DecodeQrCode: {
+    responses: {
+      /** This contains the barcode decoding */
+      200: {
+        content: {
+          "application/json": components["schemas"]["response"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Unauthorized"];
+      404: components["responses"]["NotFound"];
+      "5XX": components["responses"]["InternalError"];
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DecodeQrCode"];
       };
     };
   };

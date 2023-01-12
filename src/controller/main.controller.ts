@@ -19,6 +19,7 @@ type ConnectorItem = components['schemas']['Connector'];
 type ChargeStationItem = components['schemas']['ChargeStation'];
 type ResponseItem = components['schemas']['response'];
 type Vehicle = components['schemas']['Vehicle'];
+type Location = components['schemas']['Location'];
 type StartTransactionRequest = components['schemas']['StartTransactionRequest'];
 type StartTransactionResponse = components['schemas']['StartTransactionResponse'];
 type StopTransactionRequest = components['schemas']['StopTransactionRequest'];
@@ -29,6 +30,10 @@ type CancelReservationRequest = components['schemas']['CancelReservation'];
 type CancelReservationResponse = components['schemas']['CancelReservationResponse'];
 type ReservationListRequest = components['schemas']['ReservationList'];
 type ReservationListResponse = components['schemas']['ReservationListResponse'];
+type ApplicationFormRequest = components['schemas']['ApplicationForm'];
+type MeterValuesRequest = components['schemas']['MeterValuesRequest'];
+type EncodeQrCode = components['schemas']['EncodeQrCode'];
+type DecodeQrCode = components['schemas']['DecodeQrCode'];
 
 type ChargePointParameters = operations['ChargePointList']['parameters'];
 
@@ -250,7 +255,22 @@ class MainController {
       const vehicleObject = await this.service.setVehicle(payload);
       const response: ResponseItem = {
         code: 201,
-        message: `Vehicle Created. Id; ${vehicleObject.id}`,
+        message: `Vehicle Created. Id: ${vehicleObject.id}`,
+      };
+      res.status(201).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  postLocation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: Location = req.body;
+      const vehicleObject = await this.service.setLocation(payload);
+      const response: ResponseItem = {
+        code: 201,
+        message: `Location Created. Id: ${vehicleObject.id}`,
       };
       res.status(201).json(response);
     } catch (e: any) {
@@ -403,6 +423,78 @@ class MainController {
     } catch (e: any) {
       res.status(500).json({ e });
       console.error(e.message);
+    }
+  });
+
+  applicationForm: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: ApplicationFormRequest = req.body;
+      await this.service.applicationForm(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'Application Form Is Accepted',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  meterValues: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: MeterValuesRequest = req.body;
+      await this.service.meterValues(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'Meter Value Recorded',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  encodeQrCode: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: EncodeQrCode = req.body;
+      await this.service.encodeQrCode(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'The code Is created',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  decodeQrCode: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const payload: DecodeQrCode = req.body;
+      await this.service.decodeQrCode(payload);
+      const response: ResponseItem = {
+        code: '200',
+        message: 'The Qr Code Is decoded',
+      };
+      res.status(200).json(response);
+    } catch (e: any) {
+      res.status(500).json({ e });
+      console.error(e.message);
+    }
+  });
+
+  getLocation: RequestHandler = forwardError(async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.user as User;
+      if (!userHasPrivilege(user, { entity: User.name, action: 'admin', value: true })) {
+        res.status(403).json({ message: 'You have no power here!' });
+      }
+      res.status(200).send(await this.service.getLocations());
+    } catch (e) {
+      console.error(e);
     }
   });
 }
